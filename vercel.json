@@ -9,6 +9,10 @@
       "destination": "/terms.html"
     },
     {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
       "source": "/subscribe",
       "destination": "/subscribe.html"
     },
@@ -25,10 +29,6 @@
       "destination": "/oauth/callback.html"
     },
     {
-      "source": "/login",
-      "destination": "/login.html"
-    },
-    {
       "source": "/webhook",
       "destination": "/api/webhook"
     },
@@ -39,6 +39,22 @@
     {
       "source": "/api/admin/:path*",
       "destination": "/api/admin/:path*"
+    },
+    {
+      "source": "/api/create-checkout-session",
+      "destination": "/api/create-checkout-session"
+    },
+    {
+      "source": "/api/webhook",
+      "destination": "/api/webhook"
+    },
+    {
+      "source": "/api/cancel-subscription",
+      "destination": "/api/cancel-subscription"
+    },
+    {
+      "source": "/api/subscription-status/:userId",
+      "destination": "/api/subscription-status/[userId]"
     }
   ],
   "headers": [
