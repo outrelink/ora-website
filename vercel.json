@@ -13,6 +13,10 @@
       "destination": "/contact.html"
     },
     {
+      "source": "/cookies",
+      "destination": "/cookies.html"
+    },
+    {
       "source": "/subscribe",
       "destination": "/subscribe.html"
     },
