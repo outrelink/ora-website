@@ -291,10 +291,13 @@
             }
         }
 
-        // Auto-select plan if provided in URL
-        if (urlParams.get('plan')) {
-            // Optionally auto-start checkout
-            // selectPlan(urlParams.get('plan'));
+        // Auto-start checkout if plan is provided in URL and autoCheckout=true
+        const autoCheckout = urlParams.get('autoCheckout') === 'true';
+        if (urlParams.get('plan') && autoCheckout && planId !== 'free') {
+            // Auto-start checkout for the selected plan
+            setTimeout(() => {
+                selectPlan(planId);
+            }, 500); // Small delay to ensure page is fully loaded
         }
     </script>
 

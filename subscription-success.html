@@ -120,7 +120,9 @@
             }
             
             // Try deep link: myora://subscription-success?sessionId=xxx&userId=xxx
-            const deepLink = `myora://subscription-success?sessionId=${sessionId || ''}&userId=${encodeURIComponent(userId)}`;
+            // Use session_id from URL (Stripe uses session_id) or sessionId
+            const sessionIdParam = sessionId || urlParams.get('session_id') || '';
+            const deepLink = `myora://subscription-success?sessionId=${sessionIdParam}&userId=${encodeURIComponent(userId)}`;
             
             // Try to open app
             window.location.href = deepLink;

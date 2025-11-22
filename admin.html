@@ -553,6 +553,7 @@
                 <div class="tab" onclick="switchTab('submissions')">Submissions</div>
                 <div class="tab" onclick="switchTab('analytics')">Analytics</div>
                 <div class="tab" onclick="switchTab('errors')">Errors</div>
+                <div class="tab" onclick="switchTab('marketing')">Marketing</div>
             </div>
 
             <!-- Overview Tab -->
@@ -708,8 +709,8 @@
                     <div id="usersList">
                         <div class="loading">Loading...</div>
                     </div>
+                    </div>
                 </div>
-            </div>
 
             <!-- Deals & Revenue Tab -->
             <div id="deals" class="content">
@@ -996,6 +997,85 @@
                 </div>
             </div>
 
+            <!-- Marketing Tab -->
+            <div id="marketing" class="content">
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Marketing Notifications</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Send marketing updates, tips, and industry insights to users who have opted in</p>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 32px; margin-bottom: 32px;">
+                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #ffffff; margin-bottom: 20px;">Create Marketing Notification</h3>
+                    
+                    <form id="marketingForm" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Title *</label>
+                            <input type="text" id="marketingTitle" placeholder="e.g., New Feature: Brand Vault Updates" required
+                                style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif;">
+                        </div>
+
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Message *</label>
+                            <textarea id="marketingMessage" placeholder="Write your marketing message here. Keep it concise and engaging..." required rows="6"
+                                style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                        </div>
+
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Type</label>
+                            <select id="marketingType" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif;">
+                                <option value="tip">Tip</option>
+                                <option value="update">Update</option>
+                                <option value="feature">New Feature</option>
+                                <option value="industry_news">Industry News</option>
+                                <option value="promotion">Promotion</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <button type="submit" 
+                                style="flex: 1; padding: 14px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'; this.style.borderColor='rgba(249, 115, 22, 0.5)'"
+                                onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'; this.style.borderColor='rgba(249, 115, 22, 0.3)'">
+                                Send Notification
+                            </button>
+                            <button type="button" onclick="previewMarketingNotification()"
+                                style="padding: 14px 24px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: rgba(255, 255, 255, 0.8); font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'"
+                                onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'">
+                                Preview
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #ffffff;">Recent Marketing Notifications</h3>
+                        <button onclick="loadMarketing()" 
+                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'"
+                            onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+                            Refresh
+                        </button>
+                    </div>
+                    <div id="marketingHistory" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="empty-state">Loading marketing history...</div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; margin-top: 32px;">
+                    <h4 style="font-family: 'Manrope', sans-serif; font-size: 18px; color: #ffffff; margin-bottom: 12px;">Best Practices</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                        <li><strong>Frequency:</strong> Send 1-2 marketing notifications per week maximum to avoid user fatigue</li>
+                        <li><strong>Timing:</strong> Best times are Tuesday-Thursday, 10 AM - 2 PM in your users' timezone</li>
+                        <li><strong>Content:</strong> Keep messages concise (under 100 characters for title, under 200 for message)</li>
+                        <li><strong>Value:</strong> Focus on tips, new features, or industry insights that provide real value</li>
+                        <li><strong>Segmentation:</strong> Consider sending different messages to free vs. paid users</li>
+                        <li><strong>Testing:</strong> Preview before sending to ensure formatting looks good</li>
+                    </ul>
+                </div>
+            </div>
+
             <!-- Errors Tab -->
             <div id="errors" class="content">
                 <div style="margin-bottom: 30px;">
@@ -1274,7 +1354,8 @@
                 loadBusinessIntelligence(),
                 loadSubmissions(),
                 loadAnalytics(),
-                loadErrors()
+                loadErrors(),
+                loadMarketing()
             ]);
         }
 
@@ -1302,16 +1383,16 @@
             const usersEl = document.getElementById('usersList');
             if (users && users.length > 0) {
                 usersEl.innerHTML = `
-                    <table>
-                        <thead>
-                            <tr>
+                        <table>
+                            <thead>
+                                <tr>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
                                 <th>Signup Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                </tr>
+                            </thead>
+                            <tbody>
                             ${users.map(user => `
                                 <tr>
                                     <td>${user.displayName}</td>
@@ -1321,11 +1402,11 @@
                                         ${user.isActive ? '<span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; margin-left: 8px;">Active</span>' : ''}
                                     </td>
                                     <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
                 
                 // Add click handlers to email cells
                 document.querySelectorAll('.email-clickable').forEach(cell => {
@@ -1336,7 +1417,7 @@
                         cell.onclick = () => openEmailModal(cell.textContent.trim());
                     }
                 });
-            } else {
+                } else {
                 usersEl.innerHTML = '<div class="empty-state">No users found</div>';
             }
         }
@@ -1604,7 +1685,7 @@
                                                 </span>
                                             </td>
                                             <td>$${revenue.toFixed(2)}</td>
-                                        </tr>
+                                    </tr>
                                     `;
                                 }).join('')}
                             </tbody>
@@ -2084,6 +2165,104 @@ ${err.stack}
             };
             return colors[severity] || 'rgba(255, 255, 255, 0.1)';
         }
+
+        // Marketing Functions
+        async function loadMarketing() {
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const response = await fetch(`/api/admin?type=marketing&token=${adminToken}`);
+                const data = await response.json();
+
+                const historyEl = document.getElementById('marketingHistory');
+                if (data.notifications && data.notifications.length > 0) {
+                    historyEl.innerHTML = data.notifications.map(notif => `
+                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                        <span class="badge" style="background: rgba(249, 115, 22, 0.2); color: #f97316;">${notif.type || 'update'}</span>
+                                        <span style="color: rgba(255, 255, 255, 0.6); font-size: 12px;">${new Date(notif.sent_at).toLocaleString()}</span>
+                                    </div>
+                                    <h4 style="color: #ffffff; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">${notif.title || 'No title'}</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.7); margin: 0; font-size: 14px; line-height: 1.6;">${notif.message || ''}</p>
+                                    <p style="color: rgba(255, 255, 255, 0.5); margin: 12px 0 0 0; font-size: 12px;">Sent to ${notif.recipient_count || 0} users</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    historyEl.innerHTML = '<div class="empty-state">No marketing notifications sent yet</div>';
+                }
+            } catch (error) {
+                console.error('Error loading marketing:', error);
+                document.getElementById('marketingHistory').innerHTML = '<div class="error">Failed to load marketing history</div>';
+            }
+        }
+
+        function previewMarketingNotification() {
+            const title = document.getElementById('marketingTitle').value;
+            const message = document.getElementById('marketingMessage').value;
+            const type = document.getElementById('marketingType').value;
+
+            if (!title || !message) {
+                alert('Please fill in title and message to preview');
+                return;
+            }
+
+            const preview = `
+Title: ${title}
+Type: ${type}
+Message: ${message}
+            `;
+            alert('Preview:\n\n' + preview);
+        }
+
+        // Handle marketing form submission
+        document.getElementById('marketingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('marketingTitle').value.trim();
+            const message = document.getElementById('marketingMessage').value.trim();
+            const type = document.getElementById('marketingType').value;
+
+            if (!title || !message) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (!confirm(`Send this marketing notification to all users who have opted in?\n\nTitle: ${title}\nMessage: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`)) {
+                return;
+            }
+
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const response = await fetch('/api/admin?type=marketing', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: adminToken,
+                        title: title,
+                        message: message,
+                        type: type
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`Marketing notification sent successfully to ${data.recipient_count || 0} users!`);
+                    document.getElementById('marketingForm').reset();
+                    loadMarketing();
+                } else {
+                    alert('Failed to send marketing notification: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error sending marketing notification:', error);
+                alert('Failed to send marketing notification. Please try again.');
+            }
+        });
 
         // Auto-refresh every 30 seconds
         setInterval(() => {
