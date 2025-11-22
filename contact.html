@@ -224,8 +224,8 @@
                         <div class="bg-gray-800 rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-3 text-orange-400">Email Support</h3>
                             <p class="text-white/80 mb-4">For general inquiries, support requests, or feedback:</p>
-                            <a href="mailto:support@myora.co" class="text-orange-400 hover:text-white transition-colors font-medium">
-                                support@myora.co
+                            <a href="mailto:official.myora.co@outlook.com" class="text-orange-400 hover:text-white transition-colors font-medium">
+                                official.myora.co@outlook.com
                             </a>
                         </div>
                         <div class="bg-gray-800 rounded-lg p-6">
@@ -296,14 +296,14 @@
             const message = document.getElementById('message').value;
             
             // Create mailto link
-            const mailtoLink = `mailto:support@myora.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            const mailtoLink = `mailto:official.myora.co@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
             
             // Open email client
             window.location.href = mailtoLink;
             
             // Show success message
             const formMessage = document.getElementById('formMessage');
-            formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at support@myora.co';
+            formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at official.myora.co@outlook.com';
             formMessage.classList.remove('hidden');
             formMessage.style.color = '#fb923c';
             
