@@ -19,7 +19,8 @@
             background: #0A0B14;
             color: #ffffff;
             min-height: 100vh;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
         }
 
         /* Background Grid */
@@ -35,8 +36,8 @@
         }
 
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
             position: relative;
             z-index: 1;
         }
@@ -118,76 +119,145 @@
             display: none;
         }
 
-        /* Header */
-        .header {
+        /* Dashboard Layout */
+        #dashboard {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            padding: 24px 32px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 16, 25, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
         }
 
-        .header h1 {
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px 0;
+        }
+
+        .sidebar-header .logout-btn {
+            padding: 8px 16px;
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            border-radius: 8px;
+            color: #ff3b30;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+
+        .sidebar-header .logout-btn:hover {
+            background: rgba(255, 59, 48, 0.2);
+            border-color: rgba(255, 59, 48, 0.3);
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 32px;
+        }
+
+        .nav-section-title {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: rgba(249, 115, 22, 0.1);
+            border-left-color: rgba(249, 115, 22, 0.5);
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px;
+            min-height: 100vh;
+        }
+
+        .content-header {
+            margin-bottom: 32px;
+        }
+
+        .content-header h2 {
             font-family: 'Manrope', sans-serif;
             font-size: 32px;
             font-weight: 600;
             color: #ffffff;
             letter-spacing: -0.5px;
+            margin: 0 0 8px 0;
         }
 
-        .header .logout-btn {
-            padding: 10px 20px;
-            background: rgba(255, 59, 48, 0.1);
-            border: 1px solid rgba(255, 59, 48, 0.2);
-            border-radius: 10px;
-            color: #ff3b30;
+        .content-header p {
+            color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .header .logout-btn:hover {
-            background: rgba(255, 59, 48, 0.2);
-            border-color: rgba(255, 59, 48, 0.3);
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-
-        .tab {
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .tab:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-        }
-
-        .tab.active {
-            background: rgba(249, 115, 22, 0.15);
-            border-color: rgba(249, 115, 22, 0.3);
-            color: #ffffff;
+            margin: 0;
         }
 
         /* Content */
@@ -203,17 +273,24 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
+            gap: 20px;
             margin-bottom: 32px;
         }
 
         .stat-card {
-            padding: 28px;
-            border-radius: 20px;
+            padding: 24px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         .stat-card h3 {
@@ -243,13 +320,14 @@
 
         /* Table Container */
         .table-container {
-            padding: 32px;
-            border-radius: 20px;
+            padding: 28px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             overflow-x: auto;
+            margin-bottom: 24px;
         }
 
         .table-container h3 {
@@ -538,29 +616,50 @@
 
         <!-- Main Dashboard (shown when authenticated) -->
         <div id="dashboard" style="display: none;">
-            <div class="header">
-                <h1>ORA Admin Dashboard</h1>
-                <button class="logout-btn" onclick="logout()">Logout</button>
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h1>ORA Admin</h1>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <div class="nav-section-title">Dashboard</div>
+                        <div class="nav-item active" onclick="switchTab('overview')">Overview</div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-section-title">Users & Revenue</div>
+                        <div class="nav-item" onclick="switchTab('users')">Users</div>
+                        <div class="nav-item" onclick="switchTab('subscriptions')">Subscriptions</div>
+                        <div class="nav-item" onclick="switchTab('deals')">Deals & Revenue</div>
+                        <div class="nav-item" onclick="switchTab('quotes')">Quotes</div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-section-title">Analytics & Insights</div>
+                        <div class="nav-item" onclick="switchTab('business')">Business Intelligence</div>
+                        <div class="nav-item" onclick="switchTab('analytics')">Analytics</div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-section-title">User Engagement</div>
+                        <div class="nav-item" onclick="switchTab('submissions')">Submissions</div>
+                        <div class="nav-item" onclick="switchTab('waitlist')">Waitlist</div>
+                        <div class="nav-item" onclick="switchTab('marketing')">Marketing</div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-section-title">System</div>
+                        <div class="nav-item" onclick="switchTab('errors')">Errors</div>
+                    </div>
+                </nav>
             </div>
 
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('overview')">Overview</div>
-                <div class="tab" onclick="switchTab('users')">Users</div>
-                <div class="tab" onclick="switchTab('subscriptions')">Subscriptions & Payments</div>
-                <div class="tab" onclick="switchTab('deals')">Deals & Revenue</div>
-                <div class="tab" onclick="switchTab('quotes')">Quotes</div>
-                <div class="tab" onclick="switchTab('business')">Business Intelligence</div>
-                <div class="tab" onclick="switchTab('submissions')">Submissions</div>
-                <div class="tab" onclick="switchTab('analytics')">Analytics</div>
-                <div class="tab" onclick="switchTab('errors')">Errors</div>
-                <div class="tab" onclick="switchTab('marketing')">Marketing</div>
-            </div>
+            <!-- Main Content Area -->
+            <div class="main-content">
 
             <!-- Overview Tab -->
             <div id="overview" class="content active">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Dashboard Overview</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Key metrics and recent activity at a glance</p>
+                <div class="content-header">
+                    <h2>Dashboard Overview</h2>
+                    <p>Key metrics and recent activity at a glance</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 30px;">
@@ -655,6 +754,10 @@
 
             <!-- Users Tab -->
             <div id="users" class="content">
+                <div class="content-header">
+                    <h2>Users</h2>
+                    <p>Manage and monitor all registered users</p>
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Users</h3>
@@ -714,9 +817,9 @@
 
             <!-- Deals & Revenue Tab -->
             <div id="deals" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Deals & Revenue Tracking</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Deals that users are tracking in the app, including active projects and completed work</p>
+                <div class="content-header">
+                    <h2>Deals & Revenue Tracking</h2>
+                    <p>Deals that users are tracking in the app, including active projects and completed work</p>
                 </div>
 
                 <div class="stats-grid">
@@ -761,6 +864,10 @@
 
             <!-- Subscriptions & Payments Tab -->
             <div id="subscriptions" class="content">
+                <div class="content-header">
+                    <h2>Subscriptions & Payments</h2>
+                    <p>Monitor subscription plans, revenue, and payment metrics</p>
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Monthly Recurring Revenue</h3>
@@ -819,9 +926,9 @@
 
             <!-- Business Intelligence Tab -->
             <div id="business" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Business Intelligence Dashboard</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Comprehensive metrics for due diligence, valuation, and business insights</p>
+                <div class="content-header">
+                    <h2>Business Intelligence Dashboard</h2>
+                    <p>Comprehensive metrics for due diligence, valuation, and business insights</p>
                 </div>
 
                 <!-- Key Metrics Grid -->
@@ -893,9 +1000,9 @@
 
             <!-- Quotes Tab -->
             <div id="quotes" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Quotes Generated</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Professional quotes created by users for their projects</p>
+                <div class="content-header">
+                    <h2>Quotes Generated</h2>
+                    <p>Professional quotes created by users for their projects</p>
                 </div>
 
                 <div class="stats-grid">
@@ -940,9 +1047,9 @@
 
             <!-- Submissions Tab -->
             <div id="submissions" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">User Submissions & Feedback</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Review and respond to user feedback, bug reports, and rate submissions</p>
+                <div class="content-header">
+                    <h2>User Submissions & Feedback</h2>
+                    <p>Review and respond to user feedback, bug reports, and rate submissions</p>
                 </div>
 
                 <div class="filter-bar" style="margin-bottom: 24px;">
@@ -969,8 +1076,55 @@
                 </div>
             </div>
 
+            <!-- Waitlist Tab -->
+            <div id="waitlist" class="content">
+                <div class="content-header">
+                    <h2>Waitlist Signups</h2>
+                    <p>Monitor new leads from the marketing site waitlist</p>
+                </div>
+
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Total Waitlist</h3>
+                        <div class="value" id="waitlistTotalCount">-</div>
+                        <div class="label">All signups</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Last 24 Hours</h3>
+                        <div class="value" id="waitlist24hCount">-</div>
+                        <div class="label">Recent signups</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Top Source</h3>
+                        <div class="value" id="waitlistTopSource">-</div>
+                        <div class="label">Most common source</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;">All Waitlist Signups</h3>
+                        <button 
+                            onclick="exportWaitlistCSV()" 
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
+                        >
+                            Export CSV
+                        </button>
+                    </div>
+                    <div id="waitlistList">
+                        <div class="loading">Loading waitlist...</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Analytics Tab -->
             <div id="analytics" class="content">
+                <div class="content-header">
+                    <h2>Analytics</h2>
+                    <p>User analytics and platform distribution</p>
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Users</h3>
@@ -999,9 +1153,9 @@
 
             <!-- Marketing Tab -->
             <div id="marketing" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Marketing Notifications</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Send marketing updates, tips, and industry insights to users who have opted in</p>
+                <div class="content-header">
+                    <h2>Marketing Notifications</h2>
+                    <p>Send marketing updates, tips, and industry insights to users who have opted in</p>
                 </div>
 
                 <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 32px; margin-bottom: 32px;">
@@ -1078,9 +1232,9 @@
 
             <!-- Errors Tab -->
             <div id="errors" class="content">
-                <div style="margin-bottom: 30px;">
-                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Real-Time Error Monitoring</h2>
-                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Live errors, console errors, and app crashes from all users</p>
+                <div class="content-header">
+                    <h2>Real-Time Error Monitoring</h2>
+                    <p>Live errors, console errors, and app crashes from all users</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 30px;">
@@ -1131,6 +1285,7 @@
                         <div class="loading">Loading...</div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -1241,11 +1396,20 @@
         }
 
         function switchTab(tabName) {
-            // Update tab buttons
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Find the nav item by tab name
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabName)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
 
             // Update content
             document.querySelectorAll('.content').forEach(content => {
@@ -1266,6 +1430,8 @@
                 loadBusinessIntelligence();
             } else if (tabName === 'submissions') {
                 loadSubmissions();
+            } else if (tabName === 'waitlist') {
+                loadWaitlist();
             } else if (tabName === 'analytics') {
                 loadAnalytics();
             } else if (tabName === 'errors') {
@@ -1343,6 +1509,7 @@
         let allQuotesData = [];
         let allSubmissionsData = [];
         let allSubscriptionsData = [];
+        let allWaitlistData = [];
 
         async function loadAllData() {
             await Promise.all([
@@ -1353,6 +1520,7 @@
                 loadQuotes(),
                 loadBusinessIntelligence(),
                 loadSubmissions(),
+                loadWaitlist(),
                 loadAnalytics(),
                 loadErrors(),
                 loadMarketing()
@@ -2010,6 +2178,100 @@
             
             const csv = [headers.join(','), ...rows.map(row => row.map(cell => `"${cell}"`).join(','))].join('\n');
             downloadCSV(csv, 'ora_submissions_' + new Date().toISOString().split('T')[0] + '.csv');
+        }
+
+        async function loadWaitlist() {
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const response = await fetch(`/api/admin?type=waitlist&token=${adminToken}`);
+                const data = await response.json();
+
+                allWaitlistData = data.waitlist || [];
+
+                document.getElementById('waitlistTotalCount').textContent = allWaitlistData.length;
+
+                const now = Date.now();
+                const last24h = allWaitlistData.filter(entry => {
+                    const created = new Date(entry.createdAt).getTime();
+                    return !isNaN(created) && (now - created) <= (24 * 60 * 60 * 1000);
+                }).length;
+                document.getElementById('waitlist24hCount').textContent = last24h;
+
+                const sourceMap = allWaitlistData.reduce((acc, entry) => {
+                    const source = (entry.source || 'unknown').toLowerCase();
+                    acc[source] = (acc[source] || 0) + 1;
+                    return acc;
+                }, {});
+                const topSourceEntry = Object.entries(sourceMap).sort((a, b) => b[1] - a[1])[0];
+                document.getElementById('waitlistTopSource').textContent = topSourceEntry ? `${topSourceEntry[0]} (${topSourceEntry[1]})` : '-';
+
+                renderWaitlistTable(allWaitlistData);
+            } catch (error) {
+                console.error('Error loading waitlist:', error);
+                document.getElementById('waitlistList').innerHTML = '<div class="error">Failed to load waitlist data</div>';
+            }
+        }
+
+        function renderWaitlistTable(waitlist) {
+            const container = document.getElementById('waitlistList');
+            if (!waitlist || waitlist.length === 0) {
+                container.innerHTML = '<div class="empty-state">No waitlist signups yet</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Source</th>
+                            <th>Signed Up</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${waitlist.map(entry => `
+                            <tr>
+                                <td class="email-clickable" data-email="${entry.email}">${entry.email}</td>
+                                <td>${entry.source || 'unknown'}</td>
+                                <td>${entry.createdAt ? new Date(entry.createdAt).toLocaleString() : '-'}</td>
+                                <td style="max-width: 280px;">
+                                    ${entry.metadata?.referer ? `<div><strong>Referrer:</strong> ${entry.metadata.referer}</div>` : ''}
+                                    ${entry.metadata?.user_agent ? `<div style="color: rgba(255, 255, 255, 0.7); font-size: 12px;">${entry.metadata.user_agent}</div>` : ''}
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.querySelectorAll('#waitlistList .email-clickable').forEach(cell => {
+                if (cell.textContent !== 'N/A') {
+                    cell.style.cursor = 'pointer';
+                    cell.style.color = 'rgba(59, 130, 246, 0.9)';
+                    cell.style.textDecoration = 'underline';
+                    cell.onclick = () => openEmailModal(cell.textContent.trim());
+                }
+            });
+        }
+
+        function exportWaitlistCSV() {
+            if (allWaitlistData.length === 0) {
+                alert('No waitlist data to export');
+                return;
+            }
+
+            const headers = ['Email', 'Source', 'Signed Up', 'Referrer', 'User Agent'];
+            const rows = allWaitlistData.map(entry => [
+                entry.email || '',
+                entry.source || '',
+                entry.createdAt ? new Date(entry.createdAt).toISOString() : '',
+                entry.metadata?.referer || '',
+                entry.metadata?.user_agent ? entry.metadata.user_agent.replace(/"/g, '""') : ''
+            ]);
+
+            const csv = [headers.join(','), ...rows.map(row => row.map(cell => `"${cell}"`).join(','))].join('\n');
+            downloadCSV(csv, 'ora_waitlist_' + new Date().toISOString().split('T')[0] + '.csv');
         }
 
         async function loadAnalytics() {
