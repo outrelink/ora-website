@@ -68,6 +68,10 @@ module.exports = async (req, res) => {
         return await handleErrors(req, res);
       case 'send-email':
         return await handleSendEmail(req, res);
+      case 'marketing':
+        return await handleMarketing(req, res);
+      case 'waitlist':
+        return await handleWaitlist(req, res);
       default:
         return res.status(400).json({ error: 'Invalid type parameter' });
     }
@@ -81,53 +85,66 @@ module.exports = async (req, res) => {
 // For now, let's use a simpler approach - load the handlers dynamically
 
 async function handleOverview(req, res) {
-  // Overview handler logic
-  const { default: handler } = await import('./overview.js');
+  const handler = require('../../lib/admin/overview.js');
   return handler(req, res);
 }
 
 async function handleUsers(req, res) {
-  const { default: handler } = await import('./users.js');
+  const handler = require('../../lib/admin/users.js');
   return handler(req, res);
 }
 
 async function handleSubscriptions(req, res) {
-  const { default: handler } = await import('./subscriptions.js');
+  const handler = require('../../lib/admin/subscriptions.js');
   return handler(req, res);
 }
 
 async function handleDeals(req, res) {
-  const { default: handler } = await import('./deals.js');
+  const handler = require('../../lib/admin/deals.js');
   return handler(req, res);
 }
 
 async function handleQuotes(req, res) {
-  const { default: handler } = await import('./quotes.js');
+  const handler = require('../../lib/admin/quotes.js');
   return handler(req, res);
 }
 
 async function handleBusinessIntelligence(req, res) {
-  const { default: handler } = await import('./business-intelligence.js');
+  const handler = require('../../lib/admin/business-intelligence.js');
   return handler(req, res);
 }
 
 async function handleSubmissions(req, res) {
-  const { default: handler } = await import('./submissions.js');
+  const handler = require('../../lib/admin/submissions.js');
   return handler(req, res);
 }
 
 async function handleAnalytics(req, res) {
-  const { default: handler } = await import('./analytics.js');
+  const handler = require('../../lib/admin/analytics.js');
   return handler(req, res);
 }
 
 async function handleErrors(req, res) {
-  const { default: handler } = await import('./errors.js');
+  const handler = require('../../lib/admin/errors.js');
   return handler(req, res);
 }
 
 async function handleSendEmail(req, res) {
-  const { default: handler } = await import('./send-email.js');
+  const handler = require('../../lib/admin/send-email.js');
+  return handler(req, res);
+}
+
+async function handleMarketing(req, res) {
+  const marketing = require('../../lib/admin/marketing.js');
+  if (req.method === 'POST') {
+    return await marketing.sendMarketingNotification(req, res);
+  } else {
+    return await marketing.getMarketingHistory(req, res);
+  }
+}
+
+async function handleWaitlist(req, res) {
+  const handler = require('../../lib/admin/waitlist.js');
   return handler(req, res);
 }
 
