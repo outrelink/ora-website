@@ -37,7 +37,7 @@
                         </div>
                         <span class="ml-3 text-lg font-semibold tracking-tight text-white font-sans">ORA</span>
                     </a>
-                    <a href="index.html" class="text-sm font-medium hover:text-white transition-colors font-sans">← Back to Home</a>
+                    <a href="/" class="text-sm font-medium hover:text-white transition-colors font-sans">← Back to Home</a>
                 </div>
             </div>
         </nav>
@@ -47,7 +47,21 @@
             <div class="max-w-5xl mx-auto px-6">
                 <div class="text-center mb-12">
                     <h1 class="text-4xl lg:text-5xl text-white tracking-tight mb-4 font-manrope font-medium">Choose Your Plan</h1>
-                    <p class="text-lg text-white/60 font-sans mb-4">Simple, transparent pricing designed for creators at every stage.</p>
+                    <p class="text-lg text-white/60 font-sans mb-4">Professional tools for content creators. Secure payments powered by Stripe. Cancel anytime.</p>
+                    <div class="flex items-center justify-center gap-4 mb-6 text-sm text-white/50 font-sans">
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Secure Payment
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                            Cancel Anytime
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            GDPR Compliant
+                        </span>
+                    </div>
                     <div id="selectedPlanNotice" class="hidden inline-block px-4 py-2 rounded-full text-sm font-medium text-white/80 border border-orange-500/30 font-sans" style="background: rgba(249, 115, 22, 0.1);">
                         <span id="selectedPlanText"></span>
                     </div>
@@ -58,7 +72,7 @@
                     <div data-plan-id="free" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
                         <div class="mb-8">
                             <h4 class="text-xl font-semibold text-white mb-2 font-sans">Free</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">Perfect for getting started.</p>
+                            <p class="text-sm text-white/60 mb-6 font-sans">Start your creator journey with essential tools.</p>
                             <div class="flex items-baseline gap-2">
                                 <span class="text-4xl text-white font-manrope font-medium">$0</span>
                                 <span class="text-sm text-white/40 font-sans">/month</span>
@@ -93,8 +107,8 @@
                             <span class="px-4 py-1 text-xs font-medium text-white rounded-full border border-orange-500/30 font-sans" style="background: rgba(249, 115, 22, 0.15);">Most Popular</span>
                         </div>
                         <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">For serious content creators.</p>
+                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Essentials</h4>
+                            <p class="text-sm text-white/60 mb-6 font-sans">Everything you need to scale your influencer business.</p>
                             <div class="flex items-baseline gap-2">
                                 <span class="text-4xl text-white font-manrope font-medium">$12.99</span>
                                 <span class="text-sm text-white/40 font-sans">/month</span>
@@ -123,15 +137,15 @@
                             </li>
                         </ul>
                         <button onclick="selectPlan('creator')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-orange-500/30 hover:border-orange-500/50 transition-all duration-300 font-sans" style="background: rgba(249, 115, 22, 0.15);">
-                            Choose Creator
+                            Choose Creator Essentials
                         </button>
                     </div>
                     
                     <!-- Pro Plan -->
                     <div data-plan-id="pro" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
                         <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Pro</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">For professional creators.</p>
+                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Pro</h4>
+                            <p class="text-sm text-white/60 mb-6 font-sans">Advanced features for established creators and agencies.</p>
                             <div class="flex items-baseline gap-2">
                                 <span class="text-4xl text-white font-manrope font-medium">$24.99</span>
                                 <span class="text-sm text-white/40 font-sans">/month</span>
@@ -160,15 +174,15 @@
                             </li>
                         </ul>
                         <button onclick="selectPlan('pro')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans" style="background: rgba(255, 255, 255, 0.03);">
-                            Choose Pro
+                            Choose Creator Pro
                         </button>
                     </div>
                     
                     <!-- Premium Plan -->
                     <div data-plan-id="premium" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
                         <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Premium</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">For agencies and power users.</p>
+                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Elite</h4>
+                            <p class="text-sm text-white/60 mb-6 font-sans">Enterprise-grade solution for agencies and high-volume creators.</p>
                             <div class="flex items-baseline gap-2">
                                 <span class="text-4xl text-white font-manrope font-medium">$49.99</span>
                                 <span class="text-sm text-white/40 font-sans">/month</span>
@@ -193,14 +207,24 @@
                             </li>
                         </ul>
                         <button onclick="selectPlan('premium')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans" style="background: rgba(255, 255, 255, 0.03);">
-                            Choose Premium
+                            Choose Creator Elite
                         </button>
                     </div>
                 </div>
 
-                <!-- Legal Links -->
-                <div class="text-center mt-12 text-sm text-white/40 font-sans">
-                    <p>By subscribing, you agree to our <a href="/terms-of-service" class="text-white/60 hover:text-white underline">Terms of Service</a> and <a href="/privacy-policy" class="text-white/60 hover:text-white underline">Privacy Policy</a>.</p>
+                <!-- Trust & Legal -->
+                <div class="text-center mt-12 space-y-4">
+                    <div class="flex items-center justify-center gap-6 text-sm text-white/50 font-sans">
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            SSL Encrypted
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Stripe Powered
+                        </span>
+                    </div>
+                    <p class="text-sm text-white/40 font-sans">By subscribing, you agree to our <a href="/terms-of-service" class="text-white/60 hover:text-white underline">Terms of Service</a> and <a href="/privacy-policy" class="text-white/60 hover:text-white underline">Privacy Policy</a>.</p>
                 </div>
             </div>
         </section>
@@ -216,9 +240,9 @@
         // Plan names mapping
         const planNames = {
             'free': 'Free',
-            'creator': 'Creator',
-            'pro': 'Pro',
-            'premium': 'Premium'
+            'creator': 'Creator Essentials',
+            'pro': 'Creator Pro',
+            'premium': 'Creator Elite'
         };
 
         // Show selected plan notice if coming from app
@@ -249,10 +273,21 @@
         // Select plan function
         function selectPlan(plan) {
             // Get user info from URL or prompt
-            const currentUserId = urlParams.get('userId') || userId;
-            const currentEmail = urlParams.get('email') || email || prompt('Enter your email:') || 'user@example.com';
+            let currentUserId = urlParams.get('userId') || userId || 'guest';
+            let currentEmail = urlParams.get('email') || email;
+
+            // If no email in URL, prompt user
+            if (!currentEmail) {
+                currentEmail = prompt('Enter the email address you use in the ORA app:');
+                if (!currentEmail || !currentEmail.trim()) {
+                    alert('Email is required to process your subscription.');
+                    return;
+                }
+            }
 
             // Create checkout session
+            // Note: If userId is 'guest', Stripe will create customer by email
+            // User can contact support later to link subscription to their app account
             createCheckoutSession(plan, currentUserId, currentEmail);
         }
 
@@ -303,12 +338,6 @@
 
     <!-- Vercel Analytics -->
     <script src="https://va.vercel-scripts.com/v1/script.js" defer></script>
-
-    <!-- Vercel Speed Insights -->
-    <script src="https://va.vercel-scripts.com/v1/speed-insights/script.js" defer></script>
-</body>
-</html>
-
 
     <!-- Vercel Speed Insights -->
     <script src="https://va.vercel-scripts.com/v1/speed-insights/script.js" defer></script>
