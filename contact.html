@@ -101,16 +101,16 @@
         .tracking-tight { letter-spacing: -0.025em; }
         
         /* Background */
-        .bg-black { background: #000000; }
-        .bg-gray-800 { background: rgba(31, 41, 55, 0.8); }
+        .bg-black { background: linear-gradient(135deg, #101429 0%, #1c2140 100%); }
+        .bg-gray-800 { background: rgba(255, 255, 255, 0.12); }
         .opacity-20 { opacity: 0.2; }
         
         /* Glass effect */
         .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .highlight {
             background: rgba(249, 115, 22, 0.1);
@@ -124,8 +124,8 @@
         input, textarea {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 0.5rem;
             color: #ffffff;
             font-family: inherit;
@@ -135,7 +135,7 @@
         input:focus, textarea:focus {
             outline: none;
             border-color: #fb923c;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.25);
         }
         input::placeholder, textarea::placeholder {
             color: rgba(255, 255, 255, 0.5);
@@ -203,7 +203,7 @@
                         </div>
                         <span class="ml-3 text-lg font-semibold tracking-tight text-white font-sans">ORA</span>
                     </a>
-                    <a href="index.html" class="text-sm font-medium hover:text-white transition-colors">← Back to Home</a>
+                    <a href="/" class="text-sm font-medium hover:text-white transition-colors">← Back to Home</a>
                 </div>
             </div>
         </nav>
@@ -224,15 +224,15 @@
                         <div class="bg-gray-800 rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-3 text-orange-400">Email Support</h3>
                             <p class="text-white/80 mb-4">For general inquiries, support requests, or feedback:</p>
-                            <a href="mailto:official.myora.co@outlook.com" class="text-orange-400 hover:text-white transition-colors font-medium">
-                                official.myora.co@outlook.com
+                            <a href="mailto:support@myora.co" class="text-orange-400 hover:text-white transition-colors font-medium">
+                                support@myora.co
                             </a>
                         </div>
                         <div class="bg-gray-800 rounded-lg p-6">
                             <h3 class="text-xl font-semibold mb-3 text-orange-400">Business Inquiries</h3>
                             <p class="text-white/80 mb-4">For partnerships, collaborations, or business opportunities:</p>
-                            <a href="mailto:official.myora.co@outlook.com" class="text-orange-400 hover:text-white transition-colors font-medium">
-                                official.myora.co@outlook.com
+                            <a href="mailto:team@myora.co" class="text-orange-400 hover:text-white transition-colors font-medium">
+                                team@myora.co
                             </a>
                         </div>
                     </div>
@@ -296,14 +296,14 @@
             const message = document.getElementById('message').value;
             
             // Create mailto link
-            const mailtoLink = `mailto:official.myora.co@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            const mailtoLink = `mailto:support@myora.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
             
             // Open email client
             window.location.href = mailtoLink;
             
             // Show success message
             const formMessage = document.getElementById('formMessage');
-            formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at official.myora.co@outlook.com';
+            formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at support@myora.co';
             formMessage.classList.remove('hidden');
             formMessage.style.color = '#fb923c';
             
