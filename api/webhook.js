@@ -48,13 +48,30 @@ module.exports = async (req, res) => {
       console.log('Checkout session completed:', session.id);
       
       // Get userId and planId from session metadata
-      const userId = session.metadata?.userId;
+      let userId = session.metadata?.userId;
       const planId = session.metadata?.planId;
       
-      if (userId && planId && userId !== 'guest') {
+      if (planId) {
         try {
-          // Get customer to find subscription
+          // Get customer to find subscription and email
           const customer = await stripe.customers.retrieve(session.customer);
+          const customerEmail = customer.email;
+          
+          // If userId is 'guest' or missing, try to find user by email
+          if (!userId || userId === 'guest') {
+            if (customerEmail) {
+              // Find user in Supabase by email
+              const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+              if (!authError && authUsers && authUsers.users) {
+                const matchingUser = authUsers.users.find(u => u.email === customerEmail);
+                if (matchingUser) {
+                  userId = matchingUser.id;
+                  console.log('Found user by email:', customerEmail, 'userId:', userId);
+                }
+              }
+            }
+          }
+          
           const subscriptions = await stripe.subscriptions.list({
             customer: customer.id,
             limit: 1,
@@ -62,7 +79,7 @@ module.exports = async (req, res) => {
 
           if (subscriptions.data.length > 0) {
             const stripeSubscription = subscriptions.data[0];
-            await saveSubscriptionToSupabase(userId, planId, customer.id, stripeSubscription);
+            await saveSubscriptionToSupabase(userId, planId, customer.id, stripeSubscription, customerEmail);
           }
         } catch (error) {
           console.error('Error handling checkout.session.completed:', error);
@@ -77,7 +94,23 @@ module.exports = async (req, res) => {
       // Get userId from customer metadata
       try {
         const customer = await stripe.customers.retrieve(subscriptionCreated.customer);
-        const userId = customer.metadata?.userId;
+        let userId = customer.metadata?.userId;
+        const customerEmail = customer.email;
+        
+        // If userId is 'guest' or missing, try to find user by email
+        if (!userId || userId === 'guest') {
+          if (customerEmail) {
+            // Find user in Supabase by email
+            const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+            if (!authError && authUsers && authUsers.users) {
+              const matchingUser = authUsers.users.find(u => u.email === customerEmail);
+              if (matchingUser) {
+                userId = matchingUser.id;
+                console.log('Found user by email:', customerEmail, 'userId:', userId);
+              }
+            }
+          }
+        }
         
         if (userId && userId !== 'guest') {
           // Determine plan from price ID
@@ -85,7 +118,14 @@ module.exports = async (req, res) => {
           const planId = getPlanIdFromPriceId(priceId);
           
           if (planId) {
-            await saveSubscriptionToSupabase(userId, planId, customer.id, subscriptionCreated);
+            await saveSubscriptionToSupabase(userId, planId, customer.id, subscriptionCreated, customerEmail);
+          }
+        } else if (customerEmail) {
+          // Save subscription with email for later linking when user logs in
+          const priceId = subscriptionCreated.items.data[0]?.price?.id;
+          const planId = getPlanIdFromPriceId(priceId);
+          if (planId) {
+            await saveSubscriptionToSupabaseByEmail(customerEmail, planId, customer.id, subscriptionCreated);
           }
         }
       } catch (error) {
@@ -178,9 +218,51 @@ module.exports = async (req, res) => {
 };
 
 /**
+ * Helper function to save subscription to Supabase by email (for later linking)
+ */
+async function saveSubscriptionToSupabaseByEmail(email, planId, stripeCustomerId, stripeSubscription) {
+  try {
+    // Store subscription with email in a way that can be linked later
+    // We'll store it with a temporary user_id that we can update when user logs in
+    // For now, store email in metadata or a separate field
+    
+    const subscriptionData = {
+      user_id: null, // Will be set when user logs in
+      plan: planId,
+      status: mapStripeStatusToSupabase(stripeSubscription.status),
+      stripe_customer_id: stripeCustomerId,
+      stripe_subscription_id: stripeSubscription.id,
+      customer_email: email, // Store email for matching
+      current_period_start: new Date(stripeSubscription.current_period_start * 1000).toISOString(),
+      current_period_end: new Date(stripeSubscription.current_period_end * 1000).toISOString(),
+      cancel_at_period_end: stripeSubscription.cancel_at_period_end || false,
+      trial_end: stripeSubscription.trial_end ? new Date(stripeSubscription.trial_end * 1000).toISOString() : null,
+      updated_at: new Date().toISOString(),
+    };
+
+    // Upsert by stripe_subscription_id
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .upsert(subscriptionData, {
+        onConflict: 'stripe_subscription_id',
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error saving subscription by email to Supabase:', error);
+    } else {
+      console.log('Subscription saved by email to Supabase:', data.id, 'for email:', email);
+    }
+  } catch (error) {
+    console.error('Error in saveSubscriptionToSupabaseByEmail:', error);
+  }
+}
+
+/**
  * Helper function to save subscription to Supabase
  */
-async function saveSubscriptionToSupabase(userId, planId, stripeCustomerId, stripeSubscription) {
+async function saveSubscriptionToSupabase(userId, planId, stripeCustomerId, stripeSubscription, customerEmail = null) {
   try {
     // Only save if userId is a valid UUID (not 'guest' or guest-xxx)
     if (!userId || userId === 'guest' || userId.startsWith('guest-')) {
@@ -207,6 +289,11 @@ async function saveSubscriptionToSupabase(userId, planId, stripeCustomerId, stri
       trial_end: stripeSubscription.trial_end ? new Date(stripeSubscription.trial_end * 1000).toISOString() : null,
       updated_at: new Date().toISOString(),
     };
+    
+    // If customerEmail is provided, also store it for matching
+    if (customerEmail) {
+      subscriptionData.customer_email = customerEmail;
+    }
 
     // Upsert subscription (insert or update if exists)
     // Using service role key bypasses RLS policies

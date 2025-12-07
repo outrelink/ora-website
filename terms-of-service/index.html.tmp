@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - ORA</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Protos Font -->
+  <style>
+    @font-face {
+      font-family: 'Protos';
+      src: url('../Protos.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+  <!-- Tailwind & Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="antialiased bg-black text-gray-100 selection:bg-orange-400/20 selection:text-orange-200" style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial">
+  <!-- Scroll progress -->
+  <div id="scroll-progress" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-orange-400 to-red-400 w-0 z-[60]" style="width: 0%;"></div>
+
+  <!-- Header -->
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 backdrop-blur-md border-b bg-black/70 border-white/5 transition-transform duration-300 will-change-transform">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
+      <div class="h-full flex items-center justify-between">
+        <!-- Brand -->
+        <a href="/" class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-md">
+          <span class="text-lg uppercase" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800; text-transform: uppercase;">ORA</span>
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-1 rounded-full border border-white/10 px-2">
+          <a href="/#features" class="px-3 py-2 text-sm text-gray-300 hover:text-white transition">Features</a>
+          <a href="/#product" class="px-3 py-2 text-sm text-gray-300 hover:text-white transition">Product</a>
+          <a href="/#analytics" class="px-3 py-2 text-sm text-gray-300 hover:text-white transition">Analytics</a>
+          <a href="/#pricing" class="px-3 py-2 text-sm text-gray-300 hover:text-white transition">Pricing</a>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3">
+          <a href="/login.html" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-gray-100 text-black hover:bg-gray-200 transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-orange-500">
+            Sign in
+          </a>
+          <button id="nav-toggle" aria-expanded="false" aria-controls="mobile-panel" class="md:hidden p-2 rounded-md transition-colors hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu w-5 h-5" aria-hidden="true"><path d="M4 12h16"></path><path d="M4 18h16"></path><path d="M4 6h16"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-5 h-5 hidden" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Content -->
+  <section class="relative overflow-hidden sm:pt-28 pt-24 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl border border-white/10 bg-gradient-to-b from-gray-950 to-black p-8 sm:p-12">
+        <h1 class="text-4xl sm:text-5xl tracking-tight mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">Privacy Policy</h1>
+        <p class="text-gray-400 mb-8">Last updated: October 14, 2025</p>
+        
+        <div class="rounded-lg border border-orange-400/20 bg-orange-400/10 p-4 mb-8">
+          <p class="text-sm text-gray-300"><strong>GDPR Compliant:</strong> This privacy policy complies with the General Data Protection Regulation (GDPR) and other applicable data protection laws.</p>
+        </div>
+        
+        <div class="prose prose-invert max-w-none">
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">1. Controller Information</h2>
+          <div class="rounded-lg border border-white/10 bg-white/5 p-6 mb-6">
+            <p class="text-gray-300">
+              <strong>Contact:</strong> privacy@myora.co
+            </p>
+          </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">2. Lawful Basis for Processing</h2>
+          <p class="text-gray-300 mb-4">We process your personal data based on the following lawful bases under GDPR Article 6:</p>
+          <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2 ml-4">
+                            <li><strong>Consent (Article 6(1)(a)):</strong> When you explicitly consent to data processing</li>
+                            <li><strong>Contract (Article 6(1)(b)):</strong> To perform our services under contract</li>
+                            <li><strong>Legitimate Interest (Article 6(1)(f)):</strong> For business operations and service improvement</li>
+                            <li><strong>Legal Obligation (Article 6(1)(c)):</strong> To comply with legal requirements</li>
+                        </ul>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">3. Categories of Personal Data We Collect</h2>
+          <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Identity Data</h3>
+              <p class="text-gray-300 text-sm">Name, email address, username, profile picture</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Contact Data</h3>
+              <p class="text-gray-300 text-sm">Email, phone number, billing address</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Technical Data</h3>
+              <p class="text-gray-300 text-sm">IP address, browser type, device information</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Usage Data</h3>
+              <p class="text-gray-300 text-sm">How you use our services, preferences, analytics</p>
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">4. How We Use Your Personal Data</h2>
+          <div class="space-y-4 mb-6">
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Service Provision</h3>
+              <p class="text-gray-300">To provide and maintain our influencer management platform, calculate rates, and generate analytics</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Account Management</h3>
+              <p class="text-gray-300">To create and manage your account, process payments, and provide customer support</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Communication</h3>
+              <p class="text-gray-300">To send service updates, support communications, and marketing (with consent)</p>
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">5. Data Retention</h2>
+          <p class="text-gray-300 mb-4">We retain your personal data only for as long as necessary to fulfill the purposes outlined in this policy:</p>
+          <div class="rounded-lg border border-white/10 bg-white/5 p-6 mb-6">
+            <ul class="space-y-2 text-gray-300 ml-4">
+                                <li><strong>Account Data:</strong> Until account deletion or 3 years of inactivity</li>
+                                <li><strong>Transaction Data:</strong> 7 years for tax and legal compliance</li>
+                                <li><strong>Marketing Data:</strong> Until consent is withdrawn</li>
+                                <li><strong>Technical Data:</strong> 2 years maximum</li>
+                                <li><strong>Analytics Data:</strong> Anonymized after 2 years</li>
+                            </ul>
+                        </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">6. Your GDPR Rights</h2>
+          <p class="text-gray-300 mb-4">Under GDPR, you have the following rights:</p>
+          <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right of Access (Article 15)</h3>
+              <p class="text-gray-300 text-sm">Request copies of your personal data</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right to Rectification (Article 16)</h3>
+              <p class="text-gray-300 text-sm">Correct inaccurate or incomplete data</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right to Erasure (Article 17)</h3>
+              <p class="text-gray-300 text-sm">Request deletion of your data</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right to Restrict Processing (Article 18)</h3>
+              <p class="text-gray-300 text-sm">Limit how we process your data</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right to Data Portability (Article 20)</h3>
+              <p class="text-gray-300 text-sm">Receive your data in a structured format</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-orange-400">Right to Object (Article 21)</h3>
+              <p class="text-gray-300 text-sm">Object to processing based on legitimate interests</p>
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">7. Data Security</h2>
+          <p class="text-gray-300 mb-4">We implement appropriate technical and organizational measures to protect your personal data:</p>
+          <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2 ml-4">
+                            <li>End-to-end encryption for sensitive data</li>
+                            <li>Regular security assessments and updates</li>
+                            <li>Access controls and multi-factor authentication</li>
+                            <li>Staff training on data protection</li>
+                            <li>Incident response procedures</li>
+                            <li>Secure data storage and transmission</li>
+                        </ul>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">8. International Data Transfers</h2>
+          <p class="text-gray-300 mb-4">If we transfer your data outside the EEA, we ensure adequate protection through:</p>
+          <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2 ml-4">
+                            <li>Adequacy decisions by the European Commission</li>
+                            <li>Standard Contractual Clauses (SCCs)</li>
+                            <li>Binding Corporate Rules</li>
+                            <li>Certification schemes</li>
+                        </ul>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">9. Data Breach Notification</h2>
+          <p class="text-gray-300 mb-4">In the event of a data breach that poses a risk to your rights and freedoms, we will:</p>
+          <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2 ml-4">
+                            <li>Notify the relevant supervisory authority within 72 hours</li>
+                            <li>Inform affected individuals without undue delay</li>
+                            <li>Provide clear information about the breach and our response</li>
+                        </ul>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">10. Children's Privacy</h2>
+          <p class="text-gray-300 mb-6">Our services are not directed to children under 16. We do not knowingly collect personal data from children under 16 without parental consent.</p>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">11. Third-Party Services</h2>
+          <p class="text-gray-300 mb-4">Our app integrates with third-party services to provide enhanced functionality:</p>
+          
+          <div class="rounded-lg border border-white/10 bg-white/5 p-6 mb-4">
+            <h3 class="text-lg font-semibold mb-3 text-orange-400">Social Media Platforms</h3>
+            <p class="text-gray-300 mb-3">We integrate with social media platforms (Instagram, TikTok, YouTube, Snapchat) to fetch your analytics data. These integrations:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+                                <li>Are secure and only access data you explicitly authorize</li>
+                                <li>Use OAuth 2.0 for secure authentication</li>
+                                <li>Do not store your social media passwords</li>
+                                <li>Allow you to revoke access at any time</li>
+                            </ul>
+                        </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-orange-400">Gmail Integration (Inbox Shield)</h3>
+            <p class="text-gray-300 mb-3">Our Inbox Shield feature uses Gmail API to help you discover brand collaboration opportunities. This integration:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+                                <li><strong>Read-only access:</strong> We only read your email metadata (subject, sender, snippet) - never full email content</li>
+                                <li><strong>No email modification:</strong> We never send, delete, or modify your emails</li>
+                                <li><strong>Purpose:</strong> Scans for brand collaboration emails that may be hidden in your Promotions tab</li>
+                                <li><strong>Data processing:</strong> All scanning happens locally on your device - we only display results</li>
+                                <li><strong>User control:</strong> You can disconnect Gmail at any time from within the app</li>
+                                <li><strong>Scope:</strong> Uses Gmail API read-only scope (gmail.readonly) - no write permissions</li>
+                                <li><strong>Privacy:</strong> We do not store your email content or share it with third parties</li>
+                            </ul>
+                        </div>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">12. Cookies and Tracking</h2>
+          <p class="text-gray-300 mb-4">We use cookies and similar technologies to:</p>
+          <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2 ml-4">
+                            <li>Enhance your experience and provide personalized content</li>
+                            <li>Analyze usage patterns and improve our services</li>
+                            <li>Remember your preferences and settings</li>
+                            <li>Ensure security and prevent fraud</li>
+                        </ul>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">13. Changes to This Policy</h2>
+          <p class="text-gray-300 mb-6">We may update this privacy policy from time to time. We will notify you of any material changes via email or through our services.</p>
+
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-weight: 600">14. Contact Information</h2>
+          <div class="rounded-lg border border-white/10 bg-white/5 p-6 mb-6">
+            <p class="text-gray-300">
+              <strong>Contact:</strong> privacy@myora.co
+            </p>
+          </div>
+
+          <div class="rounded-lg border border-orange-400/20 bg-orange-400/10 p-4">
+            <p class="text-sm text-gray-300"><strong>Exercise Your Rights:</strong> To exercise any of your GDPR rights, please contact us at privacy@myora.co with your request. We will respond within one month.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="md:col-span-2">
+          <a href="/" class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-md">
+            <span class="text-lg uppercase" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800; text-transform: uppercase;">ORA</span>
+          </a>
+          <p class="mt-3 text-sm text-gray-400 max-w-md">
+            The all-in-one platform for content creators to calculate rates, manage deals, and grow their business.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-sm">Product</h4>
+          <ul class="mt-3 space-y-2 text-sm text-gray-400">
+            <li><a href="/#features" class="hover:text-gray-200">Features</a></li>
+            <li><a href="/#product" class="hover:text-gray-200">Product</a></li>
+            <li><a href="/#analytics" class="hover:text-gray-200">Analytics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm">Company</h4>
+          <ul class="mt-3 space-y-2 text-sm text-gray-400">
+            <li><a href="/#pricing" class="hover:text-gray-200">Pricing</a></li>
+            <li><a href="/contact" class="hover:text-gray-200">Contact</a></li>
+            <li><a href="/privacy-policy" class="hover:text-gray-200">Privacy Policy</a></li>
+            <li><a href="/terms-of-service" class="hover:text-gray-200">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-500">
+          © <span id="year">2025</span> ORA. All rights reserved.
+        </p>
+        <div class="flex items-center gap-4 text-xs text-gray-500">
+          <a href="/privacy-policy" class="hover:text-gray-300">Privacy Policy</a>
+          <a href="/terms-of-service" class="hover:text-gray-300">Terms of Service</a>
+          <a href="/contact" class="hover:text-gray-300">Contact</a>
+          <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="inline-flex items-center gap-1 hover:text-gray-300">
+            Back to top
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up" class="lucide lucide-arrow-up w-3.5 h-3.5"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Icons
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide && window.lucide.createIcons) {
+        lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+      }
+    });
+
+    // Scroll progress
+    const progressEl = document.getElementById('scroll-progress');
+    function setProgress() {
+      const h = document.documentElement;
+      const st = h.scrollTop || document.body.scrollTop;
+      const sh = h.scrollHeight - h.clientHeight;
+      progressEl.style.width = (sh ? (st / sh) * 100 : 0) + '%';
+    }
+    setProgress();
+    window.addEventListener('scroll', setProgress, { passive: true });
+    window.addEventListener('resize', setProgress);
+
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -2,15 +2,19 @@
   "rewrites": [
     {
       "source": "/privacy-policy",
-      "destination": "/privacy.html"
+      "destination": "/privacy-policy/index.html"
     },
     {
       "source": "/terms-of-service",
-      "destination": "/terms.html"
+      "destination": "/terms-of-service/index.html"
     },
     {
       "source": "/contact",
-      "destination": "/contact.html"
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/community-guidelines",
+      "destination": "/community-guidelines.html"
     },
     {
       "source": "/cookies",
@@ -59,6 +63,22 @@
     {
       "source": "/api/subscription-status/:userId",
       "destination": "/api/subscription-status/[userId]"
+    },
+    {
+      "source": "/api/verify-iap-receipt",
+      "destination": "/api/verify-iap-receipt"
+    },
+    {
+      "source": "/api/apple-webhook",
+      "destination": "/api/apple-webhook"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
+    },
+    {
+      "source": "/resources",
+      "destination": "/resources.html"
     }
   ],
   "headers": [

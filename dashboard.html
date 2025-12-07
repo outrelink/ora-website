@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0A0B14;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(40px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .user-email {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .welcome-section {
+      margin-bottom: 3rem;
+    }
+    
+    .welcome-section h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .welcome-section p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(40px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-4px);
+      border-color: rgba(249, 115, 22, 0.3);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-card p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .coming-soon {
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">ORA</div>
+    <div class="user-info">
+      <span class="user-email" id="userEmail">Loading...</span>
+      <button class="btn btn-secondary" id="logoutBtn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="welcome-section">
+      <h1>Welcome to ORA</h1>
+      <p>Your complete creator business management platform</p>
+    </div>
+
+    <div class="features-grid" id="featuresGrid">
+      <div class="loading">Loading features...</div>
+    </div>
+
+    <div class="coming-soon">
+      <p>🚀 More features coming soon! Full web version with all app features will be available shortly.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    
+    // Initialize Supabase
+    const supabaseUrl = 'https://uljciarseazzcqptwuly.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVsamNpYXJzZWF6emNxcHR3dWx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2MDY2NTAsImV4cCI6MjA3NjE4MjY1MH0.lZVck8yUYbivl-CQF7gTvVRME8K-yjoEgZwHHSsKCcI';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    const userEmailEl = document.getElementById('userEmail');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const featuresGrid = document.getElementById('featuresGrid');
+    
+    // Check authentication
+    const checkAuth = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (!session || error) {
+        window.location.href = '/';
+        return;
+      }
+      
+      userEmailEl.textContent = session.user.email || 'User';
+      loadFeatures();
+    };
+    
+    // Load features
+    const loadFeatures = () => {
+      const features = [
+        {
+          icon: '💰',
+          title: 'Rate Calculator',
+          description: 'Calculate fair collaboration rates using AI-powered algorithms and real-time market data.',
+          link: '#',
+          comingSoon: false
+        },
+        {
+          icon: '📋',
+          title: 'Deal Manager',
+          description: 'Professional deal management system for tracking all your brand collaborations.',
+          link: '#',
+          comingSoon: false
+        },
+        {
+          icon: '🛡️',
+          title: 'Contract Guard',
+          description: 'AI-powered contract analysis to protect your business and identify red flags.',
+          link: '#',
+          comingSoon: false
+        },
+        {
+          icon: '🏢',
+          title: 'Brand Vault',
+          description: 'Access comprehensive database of brand information, industry rates, and collaboration insights.',
+          link: '#',
+          comingSoon: false
+        },
+        {
+          icon: '📊',
+          title: 'Revenue Tracking',
+          description: 'Comprehensive financial tracking for all your earnings and brand payments.',
+          link: '#',
+          comingSoon: false
+        },
+        {
+          icon: '📄',
+          title: 'Media Kit',
+          description: 'Generate professional media kits and portfolio presentations.',
+          link: '#',
+          comingSoon: false
+        }
+      ];
+      
+      featuresGrid.innerHTML = features.map(feature => `
+        <div class="feature-card" onclick="${feature.comingSoon ? '' : `window.location.href='${feature.link}'`}">
+          <div class="feature-icon">${feature.icon}</div>
+          <h3>${feature.title}</h3>
+          <p>${feature.description}</p>
+          ${feature.comingSoon ? '<p style="color: #F97316; margin-top: 0.5rem; font-size: 0.8rem;">Coming Soon</p>' : ''}
+        </div>
+      `).join('');
+    };
+    
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      localStorage.removeItem('ora_user');
+      localStorage.removeItem('ora_session');
+      window.location.href = '/';
+    });
+    
+    // Initialize
+    checkAuth();
+    
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>
+

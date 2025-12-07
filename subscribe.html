@@ -1,230 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white antialiased">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscribe - ORA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Preload Protos font for faster loading -->
+    <link rel="preload" href="Protos.otf" as="font" type="font/otf" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @font-face {
+            font-family: 'Protos';
+            src: url('Protos.otf') format('opentype');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
         body { font-family: 'Inter', sans-serif; }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
     </style>
 </head>
-<body class="min-h-screen antialiased text-white bg-black">
-    <!-- Background Grid -->
-    <div class="fixed inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 24px 24px;"></div>
-
+<body class="min-h-screen antialiased text-slate-900 bg-white">
     <!-- Main Container -->
     <div class="relative z-10 min-h-screen">
         
         <!-- Nav -->
-        <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-6">
-            <div class="max-w-4xl mx-auto glass-effect rounded-full px-6 py-3">
-                <div class="flex items-center justify-between">
-                    <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
-                            <img src="Adobe Express - file-2.png" alt="ORA Logo" class="w-12 h-12 object-cover rounded-xl">
-                        </div>
-                        <span class="ml-3 text-lg font-semibold tracking-tight text-white font-sans">ORA</span>
+        <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200/60">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <span class="text-lg font-semibold tracking-tight text-slate-900" style="font-family: 'Protos', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
                     </a>
-                    <a href="/" class="text-sm font-medium hover:text-white transition-colors font-sans">← Back to Home</a>
+                    <a href="/" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">← Back to Home</a>
                 </div>
             </div>
-        </nav>
+        </header>
 
         <!-- Content -->
         <section class="pt-32 pb-20">
-            <div class="max-w-5xl mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl lg:text-5xl text-white tracking-tight mb-4 font-manrope font-medium">Choose Your Plan</h1>
-                    <p class="text-lg text-white/60 font-sans mb-4">Professional tools for content creators. Secure payments powered by Stripe. Cancel anytime.</p>
-                    <div class="flex items-center justify-center gap-4 mb-6 text-sm text-white/50 font-sans">
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            Secure Payment
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                            Cancel Anytime
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            GDPR Compliant
-                        </span>
-                    </div>
-                    <div id="selectedPlanNotice" class="hidden inline-block px-4 py-2 rounded-full text-sm font-medium text-white/80 border border-orange-500/30 font-sans" style="background: rgba(249, 115, 22, 0.1);">
-                        <span id="selectedPlanText"></span>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    <!-- Free Plan -->
-                    <div data-plan-id="free" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Free</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">Start your creator journey with essential tools.</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-4xl text-white font-manrope font-medium">$0</span>
-                                <span class="text-sm text-white/40 font-sans">/month</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Basic Rate Calculator</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Limited Analytics</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">1 Collaboration Slot</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Email Support</span>
-                            </li>
-                        </ul>
-                        <button onclick="selectPlan('free')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans" style="background: rgba(255, 255, 255, 0.03);">
-                            Get Started Free
-                        </button>
-                    </div>
-                    
-                    <!-- Creator Plan - Featured -->
-                    <div data-plan-id="creator" class="relative rounded-2xl border border-orange-500/30 p-8" style="background: rgba(249, 115, 22, 0.05);">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <span class="px-4 py-1 text-xs font-medium text-white rounded-full border border-orange-500/30 font-sans" style="background: rgba(249, 115, 22, 0.15);">Most Popular</span>
-                        </div>
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Essentials</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">Everything you need to scale your influencer business.</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-4xl text-white font-manrope font-medium">$12.99</span>
-                                <span class="text-sm text-white/40 font-sans">/month</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">25 Deals</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Contract Templates</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Brand Vault Access</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Advanced Analytics</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Media Kit Export</span>
-                            </li>
-                        </ul>
-                        <button onclick="selectPlan('creator')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-orange-500/30 hover:border-orange-500/50 transition-all duration-300 font-sans" style="background: rgba(249, 115, 22, 0.15);">
-                            Choose Creator Essentials
-                        </button>
-                    </div>
-                    
-                    <!-- Pro Plan -->
-                    <div data-plan-id="pro" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Pro</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">Advanced features for established creators and agencies.</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-4xl text-white font-manrope font-medium">$24.99</span>
-                                <span class="text-sm text-white/40 font-sans">/month</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">100 Deals</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">AI Recommendations</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Unlimited Contracts</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">All Creator Features</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Priority Support</span>
-                            </li>
-                        </ul>
-                        <button onclick="selectPlan('pro')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans" style="background: rgba(255, 255, 255, 0.03);">
-                            Choose Creator Pro
-                        </button>
-                    </div>
-                    
-                    <!-- Premium Plan -->
-                    <div data-plan-id="premium" class="relative rounded-2xl border border-white/10 p-8" style="background: rgba(255, 255, 255, 0.02);">
-                        <div class="mb-8">
-                            <h4 class="text-xl font-semibold text-white mb-2 font-sans">Creator Elite</h4>
-                            <p class="text-sm text-white/60 mb-6 font-sans">Enterprise-grade solution for agencies and high-volume creators.</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-4xl text-white font-manrope font-medium">$49.99</span>
-                                <span class="text-sm text-white/40 font-sans">/month</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Unlimited Deals</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Unlimited Contracts</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">All Features</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
-                                <span class="text-sm text-white/70 font-sans">Priority Support</span>
-                            </li>
-                        </ul>
-                        <button onclick="selectPlan('premium')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans" style="background: rgba(255, 255, 255, 0.03);">
-                            Choose Creator Elite
-                        </button>
-                    </div>
+            <div class="max-w-6xl mx-auto px-6">
+                <!-- Loading/Processing State (shown when plan is selected from homepage) -->
+                <div id="processingState" class="hidden text-center mb-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+                    <h1 class="text-3xl lg:text-4xl text-slate-900 tracking-tight mb-4 font-manrope font-semibold">Preparing your subscription...</h1>
+                    <p class="text-lg text-slate-600">Please wait while we set up your checkout.</p>
                 </div>
 
-                <!-- Trust & Legal -->
-                <div class="text-center mt-12 space-y-4">
-                    <div class="flex items-center justify-center gap-6 text-sm text-white/50 font-sans">
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            SSL Encrypted
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            Stripe Powered
-                        </span>
+                <!-- Pricing Plans (shown when no plan is pre-selected) -->
+                <div id="pricingPlans">
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl lg:text-4xl text-slate-900 tracking-tight mb-4 font-manrope font-semibold">Choose Your Plan</h1>
+                        <p class="text-lg text-slate-600 mb-8">Select a plan to continue with your subscription</p>
+                        
+                        <!-- Billing Period Toggle -->
+                        <div class="flex items-center justify-center gap-3 mb-10">
+                            <span class="text-sm font-medium text-slate-700" id="monthlyLabel">Monthly</span>
+                            <button id="billingToggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer hover:bg-slate-300" onclick="toggleBillingPeriod()">
+                                <span id="toggleIndicator" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform translate-x-0.5 shadow-sm"></span>
+                            </button>
+                            <span class="text-sm font-medium text-slate-700" id="annualLabel">Annual <span class="text-orange-500 font-semibold">Save 20%</span></span>
+                        </div>
                     </div>
-                    <p class="text-sm text-white/40 font-sans">By subscribing, you agree to our <a href="/terms-of-service" class="text-white/60 hover:text-white underline">Terms of Service</a> and <a href="/privacy-policy" class="text-white/60 hover:text-white underline">Privacy Policy</a>.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="pricingGrid">
+                        <!-- Creator Essentials -->
+                        <div class="relative rounded-2xl border border-slate-200 p-8" style="background: rgba(255, 255, 255, 0.5);" data-plan-id="creator">
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold text-slate-900 mb-2">Creator Essentials</h4>
+                                <p class="text-sm text-slate-600 mb-6">Perfect for creators just starting their business journey.</p>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-4xl text-slate-900 font-semibold" id="creator-price">$19.99</span>
+                                    <span class="text-sm text-slate-400" id="creator-period">/month</span>
+                                </div>
+                                <div class="text-xs text-slate-500 mt-1" id="creator-savings" style="display: none;">
+                                    Save $48.00 per year
+                                </div>
+                            </div>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Smart Rate Calculator</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Deal Management</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Brand Vault</span>
+                                </li>
+                            </ul>
+                            <button onclick="selectPlan('creator')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50" style="background: rgba(255, 255, 255, 0.8);">
+                                Subscribe
+                            </button>
+                            <input type="hidden" id="creator-billing" value="month">
+                        </div>
+
+                        <!-- Creator Pro - Featured -->
+                        <div class="relative rounded-2xl border border-orange-300 p-8" style="background: rgba(249, 115, 22, 0.05);" data-plan-id="pro">
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                <span class="px-4 py-1 text-xs font-medium text-slate-900 rounded-full border border-orange-300" style="background: rgba(249, 115, 22, 0.9);">Most Popular</span>
+                            </div>
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold text-slate-900 mb-2">Creator Pro</h4>
+                                <p class="text-sm text-slate-600 mb-6">For professional creators and growing businesses.</p>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-4xl text-slate-900 font-semibold" id="pro-price">$39.99</span>
+                                    <span class="text-sm text-slate-400" id="pro-period">/month</span>
+                                </div>
+                                <div class="text-xs text-slate-500 mt-1" id="pro-savings" style="display: none;">
+                                    Save $96.00 per year
+                                </div>
+                            </div>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Everything in Essentials</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Contract Analysis</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Advanced Analytics</span>
+                                </li>
+                            </ul>
+                            <button onclick="selectPlan('pro')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-orange-300 hover:border-orange-400 transition-all duration-300" style="background: rgba(249, 115, 22, 0.15);">
+                                Subscribe
+                            </button>
+                            <input type="hidden" id="pro-billing" value="month">
+                        </div>
+
+                        <!-- Creator Elite -->
+                        <div class="relative rounded-2xl border border-slate-200 p-8" style="background: rgba(255, 255, 255, 0.5);" data-plan-id="premium">
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold text-slate-900 mb-2">Creator Elite</h4>
+                                <p class="text-sm text-slate-600 mb-6">For agencies and power users who need it all.</p>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-4xl text-slate-900 font-semibold" id="premium-price">$79.99</span>
+                                    <span class="text-sm text-slate-400" id="premium-period">/month</span>
+                                </div>
+                                <div class="text-xs text-slate-500 mt-1" id="premium-savings" style="display: none;">
+                                    Save $192.00 per year
+                                </div>
+                            </div>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Everything in Pro</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Advanced AI Insights</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <span class="text-sm text-slate-600">Priority Support</span>
+                                </li>
+                            </ul>
+                            <button onclick="selectPlan('premium')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50" style="background: rgba(255, 255, 255, 0.8);">
+                                Subscribe
+                            </button>
+                            <input type="hidden" id="premium-billing" value="month">
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-16 pt-12 border-t border-slate-200">
+                        <p class="text-sm text-slate-600 mb-4">All plans include comprehensive features, cloud sync, and regular updates.</p>
+                        <p class="text-sm text-slate-600" id="billing-note">Subscriptions are billed monthly and automatically renew.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -270,8 +215,113 @@
             }, 100);
         }
 
+        // Validate email format
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email.trim());
+        }
+
+        // Check if email exists in Supabase
+        async function checkEmailExists(email) {
+            try {
+                const response = await fetch('https://myora.co/api/check-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                if (!response.ok) {
+                    return { exists: false, error: 'Unable to verify email' };
+                }
+
+                const data = await response.json();
+                return { exists: data.exists, email: data.email };
+            } catch (error) {
+                console.error('Error checking email:', error);
+                return { exists: false, error: 'Unable to verify email' };
+            }
+        }
+
+        // Billing period state - check URL parameter first
+        const urlBilling = urlParams.get('billing');
+        let billingPeriod = urlBilling === 'annual' ? 'year' : 'month'; // 'month' or 'year'
+        
+        // Initialize display based on URL parameter
+        if (urlBilling === 'annual') {
+            setTimeout(() => {
+                toggleBillingPeriod();
+            }, 100);
+        }
+
+        // Pricing data
+        const pricing = {
+            creator: { month: 19.99, year: 191.88 }, // $15.99/month × 12
+            pro: { month: 39.99, year: 383.88 },     // $31.99/month × 12
+            premium: { month: 79.99, year: 767.88 }   // $63.99/month × 12
+        };
+
+        // Toggle billing period
+        function toggleBillingPeriod() {
+            billingPeriod = billingPeriod === 'month' ? 'year' : 'month';
+            updatePricingDisplay();
+        }
+
+        // Update pricing display based on billing period
+        function updatePricingDisplay() {
+            const isAnnual = billingPeriod === 'year';
+            const toggle = document.getElementById('billingToggle');
+            const indicator = document.getElementById('toggleIndicator');
+            const monthlyLabel = document.getElementById('monthlyLabel');
+            const annualLabel = document.getElementById('annualLabel');
+            const billingNote = document.getElementById('billing-note');
+
+            // Update toggle visual state
+            if (isAnnual) {
+                toggle.classList.remove('bg-slate-200');
+                toggle.classList.add('bg-orange-500');
+                indicator.classList.remove('translate-x-0.5');
+                indicator.classList.add('translate-x-5');
+                monthlyLabel.classList.remove('font-semibold');
+                annualLabel.classList.add('font-semibold');
+            } else {
+                toggle.classList.remove('bg-orange-500');
+                toggle.classList.add('bg-slate-200');
+                indicator.classList.remove('translate-x-5');
+                indicator.classList.add('translate-x-0.5');
+                monthlyLabel.classList.add('font-semibold');
+                annualLabel.classList.remove('font-semibold');
+            }
+
+            // Update pricing for each plan
+            ['creator', 'pro', 'premium'].forEach(plan => {
+                const priceEl = document.getElementById(`${plan}-price`);
+                const periodEl = document.getElementById(`${plan}-period`);
+                const savingsEl = document.getElementById(`${plan}-savings`);
+                const billingInput = document.getElementById(`${plan}-billing`);
+
+                if (isAnnual) {
+                    priceEl.textContent = `$${pricing[plan].year.toFixed(2)}`;
+                    periodEl.textContent = '/year';
+                    savingsEl.style.display = 'block';
+                    billingInput.value = 'year';
+                } else {
+                    priceEl.textContent = `$${pricing[plan].month.toFixed(2)}`;
+                    periodEl.textContent = '/month';
+                    savingsEl.style.display = 'none';
+                    billingInput.value = 'month';
+                }
+            });
+
+            // Update billing note
+            billingNote.textContent = isAnnual 
+                ? 'Subscriptions are billed annually and automatically renew. Save 20% compared to monthly billing.'
+                : 'Subscriptions are billed monthly and automatically renew.';
+        }
+
         // Select plan function
-        function selectPlan(plan) {
+        async function selectPlan(plan) {
             // Get user info from URL or prompt
             let currentUserId = urlParams.get('userId') || userId || 'guest';
             let currentEmail = urlParams.get('email') || email;
@@ -285,10 +335,34 @@
                 }
             }
 
+            // Validate email format
+            if (!isValidEmail(currentEmail)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Check if email already exists (to prevent duplicate accounts)
+            const emailCheck = await checkEmailExists(currentEmail);
+            if (emailCheck.error) {
+                // If check fails, redirect to homepage
+                alert('Unable to verify email. Please make sure you use the same email address you use in the ORA app.');
+                window.location.href = '/';
+                return;
+            } else if (emailCheck.exists) {
+                // Email exists - this is good, they can subscribe
+                console.log('Email found in system, proceeding with checkout');
+            } else {
+                // Email doesn't exist - redirect to homepage
+                alert('This email is not registered in the ORA app. You need to sign up in the app first, or use the email address you already use in the app.');
+                window.location.href = '/';
+                return;
+            }
+
+            // Determine plan ID based on billing period
+            const planId = billingPeriod === 'year' ? `${plan}-annual` : plan;
+
             // Create checkout session
-            // Note: If userId is 'guest', Stripe will create customer by email
-            // User can contact support later to link subscription to their app account
-            createCheckoutSession(plan, currentUserId, currentEmail);
+            createCheckoutSession(planId, currentUserId, currentEmail.trim().toLowerCase());
         }
 
         // Create Stripe Checkout session
@@ -326,10 +400,13 @@
             }
         }
 
-        // Auto-start checkout if plan is provided in URL and autoCheckout=true
-        const autoCheckout = urlParams.get('autoCheckout') === 'true';
-        if (urlParams.get('plan') && autoCheckout && planId !== 'free') {
-            // Auto-start checkout for the selected plan
+        // Auto-prompt for email and start checkout if plan is provided in URL
+        if (urlParams.get('plan') && planId !== 'free') {
+            // Hide pricing plans and show processing state
+            document.getElementById('pricingPlans').style.display = 'none';
+            document.getElementById('processingState').classList.remove('hidden');
+            
+            // Auto-start checkout for the selected plan (will prompt for email)
             setTimeout(() => {
                 selectPlan(planId);
             }, 500); // Small delay to ensure page is fully loaded

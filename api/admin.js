@@ -15,8 +15,12 @@ const businessIntelligence = require('../lib/admin/business-intelligence');
 const submissions = require('../lib/admin/submissions');
 const analytics = require('../lib/admin/analytics');
 const errors = require('../lib/admin/errors');
+const waitlist = require('../lib/admin/waitlist');
 const sendEmail = require('../lib/admin/send-email');
 const auth = require('../lib/admin/auth');
+const welcomeEmailSettings = require('../lib/admin/welcome-email-settings');
+const bulkEmail = require('../lib/admin/bulk-email');
+const emailHistory = require('../lib/admin/email-history');
 
 module.exports = async (req, res) => {
   const type = req.query.type || (req.body && req.body.type) || 'overview';
@@ -41,12 +45,20 @@ module.exports = async (req, res) => {
         return await analytics(req, res);
       case 'errors':
         return await errors(req, res);
+      case 'waitlist':
+        return await waitlist(req, res);
       case 'send-email':
         return await sendEmail(req, res);
+      case 'welcome-email-settings':
+        return await welcomeEmailSettings(req, res);
+      case 'bulk-email-users':
+        return await bulkEmail(req, res);
+      case 'email-history':
+        return await emailHistory(req, res);
       case 'auth':
         return await auth(req, res);
       default:
-        return res.status(400).json({ error: 'Invalid type parameter. Use: overview, users, subscriptions, deals, quotes, business, submissions, analytics, errors, send-email, or auth' });
+        return res.status(400).json({ error: 'Invalid type parameter. Use: overview, users, subscriptions, deals, quotes, business, submissions, analytics, errors, send-email, welcome-email-settings, bulk-email-users, email-history, or auth' });
     }
   } catch (error) {
     console.error(`Error in admin API router (${type}):`, error);

@@ -7,8 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Preload Protos font for faster loading -->
-    <link rel="preload" href="Protos.otf" as="font" type="font/otf" crossorigin>
     <style>
         * {
             margin: 0;
@@ -18,16 +16,27 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            color: #1e293b;
+            background: #0A0B14;
+            color: #ffffff;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            padding: 20px;
+        }
+
+        /* Background Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.2;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 100%;
-            margin: 0;
+            max-width: 1400px;
+            margin: 0 auto;
             position: relative;
             z-index: 1;
         }
@@ -38,25 +47,24 @@
             margin: 120px auto;
             padding: 48px;
             border-radius: 24px;
-            border: 1px solid #e2e8f0;
-            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             text-align: center;
-            box-shadow: 0 2px 0 rgba(0,0,0,0.03), 0 24px 48px -24px rgba(0,0,0,0.25);
         }
 
         .auth-section h2 {
             font-family: 'Manrope', sans-serif;
             font-size: 28px;
             font-weight: 600;
-            color: #1e293b;
+            color: #ffffff;
             margin-bottom: 8px;
         }
 
         .auth-section p {
             font-size: 14px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 32px;
         }
 
@@ -64,10 +72,10 @@
             width: 100%;
             padding: 14px 16px;
             margin-bottom: 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            background: #ffffff;
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
             font-size: 15px;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s;
@@ -75,20 +83,20 @@
 
         .auth-section input:focus {
             outline: none;
-            border-color: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.5);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .auth-section input::placeholder {
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .auth-section button {
             width: 100%;
             padding: 14px;
             margin-top: 8px;
-            background: #f97316;
-            border: 1px solid #f97316;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
             border-radius: 12px;
             color: #ffffff;
             font-weight: 600;
@@ -99,8 +107,8 @@
         }
 
         .auth-section button:hover {
-            background: #ea580c;
-            border-color: #ea580c;
+            background: rgba(249, 115, 22, 0.25);
+            border-color: rgba(249, 115, 22, 0.5);
         }
 
         .auth-error {
@@ -110,145 +118,76 @@
             display: none;
         }
 
-        /* Dashboard Layout */
-        #dashboard {
+        /* Header */
+        .header {
             display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: rgba(255, 255, 255, 0.9);
-            border-right: 1px solid #e2e8f0;
-            padding: 0;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding: 24px 32px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 3px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .sidebar-header h1 {
+        .header h1 {
             font-family: 'Manrope', sans-serif;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 600;
-            color: #1e293b;
+            color: #ffffff;
             letter-spacing: -0.5px;
-            margin: 0 0 8px 0;
         }
 
-        .sidebar-header .logout-btn {
-            padding: 8px 16px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 8px;
-            color: #ef4444;
-            font-size: 13px;
+        .header .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            border-radius: 10px;
+            color: #ff3b30;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Inter', sans-serif;
-            width: 100%;
         }
 
-        .sidebar-header .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.3);
+        .header .logout-btn:hover {
+            background: rgba(255, 59, 48, 0.2);
+            border-color: rgba(255, 59, 48, 0.3);
         }
 
-        .sidebar-nav {
-            padding: 16px 0;
-        }
-
-        .nav-section {
-            margin-bottom: 32px;
-        }
-
-        .nav-section-title {
-            padding: 8px 20px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .nav-item {
+        /* Tabs */
+        .tabs {
             display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: #334155;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Inter', sans-serif;
-            border-left: 3px solid transparent;
         }
 
-        .nav-item:hover {
-            background: rgba(0, 0, 0, 0.03);
-            color: #1e293b;
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
         }
 
-        .nav-item.active {
-            background: rgba(249, 115, 22, 0.1);
-            border-left-color: #f97316;
-            color: #1e293b;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 32px;
-            min-height: 100vh;
-        }
-
-        .content-header {
-            margin-bottom: 32px;
-        }
-
-        .content-header h2 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 32px;
-            font-weight: 600;
-            color: #1e293b;
-            letter-spacing: -0.5px;
-            margin: 0 0 8px 0;
-        }
-
-        .content-header p {
-            color: #64748b;
-            font-size: 14px;
-            margin: 0;
+        .tab.active {
+            background: rgba(249, 115, 22, 0.15);
+            border-color: rgba(249, 115, 22, 0.3);
+            color: #ffffff;
         }
 
         /* Content */
@@ -264,31 +203,23 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            gap: 24px;
             margin-bottom: 32px;
         }
 
         .stat-card {
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: #cbd5e1;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .stat-card h3 {
             font-size: 13px;
             font-weight: 500;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.5);
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -299,34 +230,33 @@
             font-family: 'Manrope', sans-serif;
             font-size: 36px;
             font-weight: 600;
-            color: #1e293b;
+            color: #ffffff;
             margin-bottom: 8px;
             line-height: 1.2;
         }
 
         .stat-card .label {
             font-size: 13px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.5);
             font-family: 'Inter', sans-serif;
         }
 
         /* Table Container */
         .table-container {
-            padding: 28px;
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 32px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             overflow-x: auto;
-            margin-bottom: 24px;
         }
 
         .table-container h3 {
             font-family: 'Manrope', sans-serif;
             font-size: 20px;
             font-weight: 600;
-            color: #1e293b;
+            color: #ffffff;
             margin-bottom: 24px;
         }
 
@@ -338,12 +268,12 @@
         th, td {
             padding: 14px 16px;
             text-align: left;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         th {
             font-weight: 600;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -351,13 +281,13 @@
         }
 
         td {
-            color: #1e293b;
+            color: #ffffff;
             font-size: 14px;
             font-family: 'Inter', sans-serif;
         }
 
         tr:hover {
-            background: rgba(0, 0, 0, 0.02);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         /* Filter Bar */
@@ -371,9 +301,9 @@
         .filter-btn {
             padding: 10px 20px;
             border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: rgba(255, 255, 255, 0.8);
-            color: #334155;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -382,14 +312,14 @@
         }
 
         .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.95);
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
         }
 
         .filter-btn.active {
             background: rgba(249, 115, 22, 0.15);
-            border-color: #f97316;
-            color: #1e293b;
+            border-color: rgba(249, 115, 22, 0.3);
+            color: #ffffff;
         }
 
         /* Badges */
@@ -416,7 +346,7 @@
         .loading, .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.5);
             font-family: 'Inter', sans-serif;
         }
 
@@ -451,8 +381,8 @@
         }
 
         .email-modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #e2e8f0;
+            background: rgba(10, 11, 20, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 32px;
             max-width: 600px;
@@ -460,7 +390,6 @@
             max-height: 90vh;
             overflow-y: auto;
             backdrop-filter: blur(40px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .email-modal-header {
@@ -474,13 +403,13 @@
             font-family: 'Manrope', sans-serif;
             font-size: 24px;
             font-weight: 600;
-            color: #1e293b;
+            color: #ffffff;
             margin: 0;
         }
 
         .email-modal-close {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             width: 32px;
             height: 32px;
@@ -488,13 +417,13 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: #1e293b;
+            color: #ffffff;
             font-size: 20px;
             transition: all 0.3s;
         }
 
         .email-modal-close:hover {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .email-form-group {
@@ -505,7 +434,7 @@
             display: block;
             font-size: 14px;
             font-weight: 500;
-            color: #1e293b;
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 8px;
             font-family: 'Inter', sans-serif;
         }
@@ -514,10 +443,10 @@
         .email-form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            background: #ffffff;
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s;
@@ -526,8 +455,8 @@
         .email-form-group input:focus,
         .email-form-group textarea:focus {
             outline: none;
-            border-color: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.5);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .email-form-group textarea {
@@ -537,7 +466,7 @@
 
         .email-form-group input::placeholder,
         .email-form-group textarea::placeholder {
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .email-modal-actions {
@@ -559,24 +488,24 @@
         }
 
         .email-modal-btn-primary {
-            background: #f97316;
-            border: 1px solid #f97316;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
             color: #ffffff;
         }
 
         .email-modal-btn-primary:hover {
-            background: #ea580c;
-            border-color: #ea580c;
+            background: rgba(249, 115, 22, 0.25);
+            border-color: rgba(249, 115, 22, 0.5);
         }
 
         .email-modal-btn-secondary {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .email-modal-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .email-success {
@@ -609,63 +538,36 @@
 
         <!-- Main Dashboard (shown when authenticated) -->
         <div id="dashboard" style="display: none;">
-            <!-- Sidebar Navigation -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <h1>ORA Admin</h1>
-                    <button class="logout-btn" onclick="logout()">Logout</button>
-                </div>
-                <nav class="sidebar-nav">
-                    <div class="nav-section">
-                        <div class="nav-section-title">Dashboard</div>
-                        <div class="nav-item active" onclick="switchTab('overview')">Overview</div>
-                    </div>
-                    <div class="nav-section">
-                        <div class="nav-section-title">Users & Revenue</div>
-                        <div class="nav-item" onclick="switchTab('users')">Users</div>
-                        <div class="nav-item" onclick="switchTab('subscriptions')">Subscriptions</div>
-                        <div class="nav-item" onclick="switchTab('deals')">Deals & Revenue</div>
-                        <div class="nav-item" onclick="switchTab('quotes')">Quotes</div>
-                    </div>
-                    <div class="nav-section">
-                        <div class="nav-section-title">Analytics & Insights</div>
-                        <div class="nav-item" onclick="switchTab('business')">Business Intelligence</div>
-                        <div class="nav-item" onclick="switchTab('analytics')">Analytics</div>
-                    </div>
-                    <div class="nav-section">
-                        <div class="nav-section-title">Email Management</div>
-                        <div class="nav-item" onclick="switchTab('email-history')">Email History</div>
-                        <div class="nav-item" onclick="switchTab('send-email')">Send Email</div>
-                        <div class="nav-item" onclick="switchTab('welcome-emails')">Welcome Emails</div>
-                        <div class="nav-item" onclick="switchTab('bulk-email')">Bulk Email</div>
-                        <div class="nav-item" onclick="switchTab('marketing')">Marketing</div>
-                    </div>
-                    <div class="nav-section">
-                        <div class="nav-section-title">User Engagement</div>
-                        <div class="nav-item" onclick="switchTab('submissions')">Submissions</div>
-                        <div class="nav-item" onclick="switchTab('waitlist')">Waitlist</div>
-                    </div>
-                    <div class="nav-section">
-                        <div class="nav-section-title">System</div>
-                        <div class="nav-item" onclick="switchTab('errors')">Errors</div>
-                    </div>
-                </nav>
+            <div class="header">
+                <h1>ORA Admin Dashboard</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
 
-            <!-- Main Content Area -->
-            <div class="main-content">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('overview')">Overview</div>
+                <div class="tab" onclick="switchTab('users')">Users</div>
+                <div class="tab" onclick="switchTab('subscriptions')">Subscriptions & Payments</div>
+                <div class="tab" onclick="switchTab('deals')">Deals & Revenue</div>
+                <div class="tab" onclick="switchTab('quotes')">Quotes</div>
+                <div class="tab" onclick="switchTab('business')">Business Intelligence</div>
+                <div class="tab" onclick="switchTab('submissions')">Submissions</div>
+                <div class="tab" onclick="switchTab('waitlist')">Waitlist</div>
+                <div class="tab" onclick="switchTab('analytics')">Analytics</div>
+                <div class="tab" onclick="switchTab('errors')">Errors</div>
+                <div class="tab" onclick="switchTab('marketing')">Marketing</div>
+            </div>
 
             <!-- Overview Tab -->
             <div id="overview" class="content active">
-                <div class="content-header">
-                    <h2>Dashboard Overview</h2>
-                    <p>Key metrics and recent activity at a glance</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Dashboard Overview</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Key metrics and recent activity at a glance</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 30px;">
-                    <div class="stat-card" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%); border: 1px solid rgba(249, 115, 22, 0.2);">
+                    <div class="stat-card" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0.05) 100%); border: 1px solid rgba(249, 115, 22, 0.2);">
                         <h3>Total Revenue</h3>
-                        <div class="value" id="overviewTotalRevenue" style="color: #1e293b;">-</div>
+                        <div class="value" id="overviewTotalRevenue" style="color: #f97316;">-</div>
                         <div class="label">All revenue sources</div>
                     </div>
                     <div class="stat-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); border: 1px solid rgba(59, 130, 246, 0.2);">
@@ -717,33 +619,33 @@
                         <div style="padding: 20px;">
                             <button 
                                 onclick="switchTab('subscriptions')" 
-                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
-                                onmouseover="this.style.background='rgba(255, 255, 255, 0.95)'"
-                                onmouseout="this.style.background='rgba(255, 255, 255, 0.8)'"
+                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
+                                onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                                onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                             >
                                 View Subscriptions & Revenue
                             </button>
                             <button 
                                 onclick="switchTab('submissions')" 
-                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
-                                onmouseover="this.style.background='#2563eb'"
-                                onmouseout="this.style.background='#3b82f6'"
+                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
+                                onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'"
+                                onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'"
                             >
                                 Review Feedback & Reports
                             </button>
                             <button 
                                 onclick="switchTab('users')" 
-                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
-                                onmouseover="this.style.background='rgba(16, 185, 129, 0.2)'"
-                                onmouseout="this.style.background='rgba(16, 185, 129, 0.1)'"
+                                style="width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
+                                onmouseover="this.style.background='rgba(16, 185, 129, 0.25)'"
+                                onmouseout="this.style.background='rgba(16, 185, 129, 0.15)'"
                             >
                                 Manage Users
                             </button>
                             <button 
                                 onclick="switchTab('business')" 
-                                style="width: 100%; padding: 14px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
-                                onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'"
-                                onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'"
+                                style="width: 100%; padding: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; text-align: left;"
+                                onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'"
+                                onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'"
                             >
                                 Business Intelligence
                             </button>
@@ -754,10 +656,6 @@
 
             <!-- Users Tab -->
             <div id="users" class="content">
-                <div class="content-header">
-                    <h2>Users</h2>
-                    <p>Manage and monitor all registered users</p>
-                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Users</h3>
@@ -788,22 +686,22 @@
                                 type="text" 
                                 id="usersSearch" 
                                 placeholder="Search users..." 
-                                style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 14px; width: 250px; font-family: 'Inter', sans-serif;"
+                                style="padding: 10px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 14px; width: 250px; font-family: 'Inter', sans-serif;"
                                 onkeyup="filterUsers()"
                             />
                             <button 
                                 onclick="openEmailModal()" 
-                                style="padding: 10px 20px; background: #3b82f6; border: 1px solid #3b82f6; border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='#2563eb'"
-                                onmouseout="this.style.background='#3b82f6'"
+                                style="padding: 10px 20px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'"
+                                onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'"
                             >
                                 Send Email
                             </button>
                             <button 
                                 onclick="exportUsersCSV()" 
-                                style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='rgba(255, 255, 255, 0.95)'"
-                                onmouseout="this.style.background='rgba(255, 255, 255, 0.8)'"
+                                style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                                onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                             >
                                 Export CSV
                             </button>
@@ -817,9 +715,9 @@
 
             <!-- Deals & Revenue Tab -->
             <div id="deals" class="content">
-                <div class="content-header">
-                    <h2>Deals & Revenue Tracking</h2>
-                    <p>Deals that users are tracking in the app, including active projects and completed work</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Deals & Revenue Tracking</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Deals that users are tracking in the app, including active projects and completed work</p>
                 </div>
 
                 <div class="stats-grid">
@@ -849,9 +747,9 @@
                         <h3 style="margin: 0;">Recent Deals</h3>
                         <button 
                             onclick="exportDealsCSV()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'"
-                            onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'"
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                         >
                             Export CSV
                         </button>
@@ -864,10 +762,6 @@
 
             <!-- Subscriptions & Payments Tab -->
             <div id="subscriptions" class="content">
-                <div class="content-header">
-                    <h2>Subscriptions & Payments</h2>
-                    <p>Monitor subscription plans, revenue, and payment metrics</p>
-                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Monthly Recurring Revenue</h3>
@@ -905,9 +799,9 @@
                         <h3 style="margin: 0;">Subscription Plans Breakdown</h3>
                         <button 
                             onclick="exportSubscriptionsCSV()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'"
-                            onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'"
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                         >
                             Export CSV
                         </button>
@@ -926,9 +820,9 @@
 
             <!-- Business Intelligence Tab -->
             <div id="business" class="content">
-                <div class="content-header">
-                    <h2>Business Intelligence Dashboard</h2>
-                    <p>Comprehensive metrics for due diligence, valuation, and business insights</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Business Intelligence Dashboard</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Comprehensive metrics for due diligence, valuation, and business insights</p>
                 </div>
 
                 <!-- Key Metrics Grid -->
@@ -1000,9 +894,9 @@
 
             <!-- Quotes Tab -->
             <div id="quotes" class="content">
-                <div class="content-header">
-                    <h2>Quotes Generated</h2>
-                    <p>Professional quotes created by users for their projects</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Quotes Generated</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Professional quotes created by users for their projects</p>
                 </div>
 
                 <div class="stats-grid">
@@ -1032,9 +926,9 @@
                         <h3 style="margin: 0;">Recent Quotes</h3>
                         <button 
                             onclick="exportQuotesCSV()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'"
-                            onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'"
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                         >
                             Export CSV
                         </button>
@@ -1047,9 +941,9 @@
 
             <!-- Submissions Tab -->
             <div id="submissions" class="content">
-                <div class="content-header">
-                    <h2>User Submissions & Feedback</h2>
-                    <p>Review and respond to user feedback, bug reports, and rate submissions</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">User Submissions & Feedback</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Review and respond to user feedback, bug reports, and rate submissions</p>
                 </div>
 
                 <div class="filter-bar" style="margin-bottom: 24px;">
@@ -1063,9 +957,9 @@
                         <h3 style="margin: 0;">Submissions</h3>
                         <button 
                             onclick="exportSubmissionsCSV()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'"
-                            onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'"
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                         >
                             Export CSV
                         </button>
@@ -1078,9 +972,9 @@
 
             <!-- Waitlist Tab -->
             <div id="waitlist" class="content">
-                <div class="content-header">
-                    <h2>Waitlist Signups</h2>
-                    <p>Monitor new leads from the marketing site waitlist</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Waitlist Signups</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Monitor new leads from the marketing site waitlist</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 30px;">
@@ -1106,9 +1000,9 @@
                         <h3 style="margin: 0;">All Waitlist Signups</h3>
                         <button 
                             onclick="exportWaitlistCSV()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'"
-                            onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'"
+                            style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                            onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                         >
                             Export CSV
                         </button>
@@ -1121,10 +1015,6 @@
 
             <!-- Analytics Tab -->
             <div id="analytics" class="content">
-                <div class="content-header">
-                    <h2>Analytics</h2>
-                    <p>User analytics and platform distribution</p>
-                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Users</h3>
@@ -1151,329 +1041,32 @@
                 </div>
             </div>
 
-            <!-- Email History Tab -->
-            <div id="email-history" class="content">
-                <div class="content-header">
-                    <h2>Email History</h2>
-                    <p>View all sent emails and their status</p>
-                </div>
-
-                <div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
-                    <select id="emailHistoryType" onchange="loadEmailHistory()"
-                        style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;">
-                        <option value="all">All Types</option>
-                        <option value="individual">Individual</option>
-                        <option value="welcome">Welcome</option>
-                        <option value="bulk">Bulk</option>
-                        <option value="marketing">Marketing</option>
-                    </select>
-                    <select id="emailHistoryStatus" onchange="loadEmailHistory()"
-                        style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;">
-                        <option value="all">All Status</option>
-                        <option value="sent">Sent</option>
-                        <option value="failed">Failed</option>
-                    </select>
-                    <input type="text" id="emailHistorySearch" placeholder="Search by email or subject..." onkeyup="loadEmailHistory()"
-                        style="flex: 1; min-width: 200px; padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif;">
-                </div>
-
-                <div class="table-container">
-                    <div id="emailHistoryList">
-                        <div class="loading">Loading email history...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Send Email Tab -->
-            <div id="send-email" class="content">
-                <div class="content-header">
-                    <h2>Send Email</h2>
-                    <p>Send individual emails to users</p>
-                </div>
-
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; max-width: 800px;">
-                    <div id="emailSuccess" class="email-success" style="display: none; margin-bottom: 20px; padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; color: #10b981; font-size: 14px;"></div>
-                    <form id="emailForm" onsubmit="sendEmail(event)">
-                        <div class="email-form-group">
-                            <label for="emailTo">To (Email Address)</label>
-                            <input 
-                                type="email" 
-                                id="emailTo" 
-                                required
-                                placeholder="user@example.com"
-                            />
-                        </div>
-                        <div class="email-form-group">
-                            <label for="emailSubject">Subject</label>
-                            <input 
-                                type="text" 
-                                id="emailSubject" 
-                                required
-                                placeholder="Email subject"
-                            />
-                        </div>
-                        <div class="email-form-group">
-                            <label for="emailMessage">Message</label>
-                            <textarea 
-                                id="emailMessage" 
-                                required
-                                placeholder="Enter your message here..."
-                                rows="10"
-                            ></textarea>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; margin-bottom: 20px;">
-                            <input type="checkbox" id="emailUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
-                            <label for="emailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
-                                Use branded HTML template (includes ORA logo and styling)
-                            </label>
-                        </div>
-                        <div class="email-modal-actions">
-                            <button type="submit" class="email-submit-btn">
-                                Send Email
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Welcome Emails Tab -->
-            <div id="welcome-emails" class="content">
-                <div class="content-header">
-                    <h2>Welcome Emails</h2>
-                    <p>Create and send welcome emails to new users</p>
-                </div>
-
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
-                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Welcome Email Template</h3>
-                    
-                    <form id="welcomeEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px;">
-                            <input type="checkbox" id="welcomeEmailAutoSend" style="width: 20px; height: 20px; cursor: pointer;">
-                            <label for="welcomeEmailAutoSend" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
-                                Automatically send welcome email when users sign up
-                            </label>
-                        </div>
-
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Subject *</label>
-                            <input type="text" id="welcomeEmailSubject" value="Welcome to ORA!" required
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
-                        </div>
-
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Message *</label>
-                            <textarea id="welcomeEmailMessage" required rows="12"
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;">Hi {{displayName}},
-
-Welcome to ORA! We're thrilled to have you join our community of creators who are taking control of their business.
-
-Since you're already in the app, you're all set to start using ORA's powerful features. Here's what you can do:
-
-Calculate fair rates for your work with our smart rate calculator
-
-Track and manage all your brand deals in one place
-
-Generate professional quotes and media kits to send to brands
-
-Analyze contracts before you sign to protect your rights
-
-Build and maintain your brand partnerships with our brand vault
-
-Track your revenue across all platforms and collaborations
-
-We're constantly improving ORA based on feedback from creators like you. If you have any questions, ideas, or need help, just reply to this email. we're here for you.
-
-Ready to take your creator business to the next level? Explore the app and start managing your deals today!
-
-Best,
-
-The ORA Team
-
-© 2025 ORA. All rights reserved.
-
-Visit us at https://myora.co</textarea>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Use {{displayName}} to personalize the email with the user's name</p>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px;">
-                            <input type="checkbox" id="welcomeEmailUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
-                            <label for="welcomeEmailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
-                                Use branded HTML template (includes ORA logo and styling)
-                            </label>
-                        </div>
-
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <button type="button" onclick="saveWelcomeEmailTemplate()"
-                                style="flex: 1; padding: 14px; background: #f97316; border: 1px solid #f97316; border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='#ea580c'"
-                                onmouseout="this.style.background='#f97316'">
-                                Save Template
-                            </button>
-                            <button type="button" onclick="previewWelcomeEmail()"
-                                style="padding: 14px 24px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;">
-                                Preview
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
-                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Send Welcome Email</h3>
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">User Email *</label>
-                            <input type="email" id="welcomeEmailTo" placeholder="user@example.com" required
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
-                        </div>
-                        <button type="button" onclick="sendWelcomeEmailToUser()"
-                            style="padding: 14px; background: #f97316; border: 1px solid #f97316; border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                            onmouseover="this.style.background='#ea580c'"
-                            onmouseout="this.style.background='#f97316'">
-                            Send Welcome Email
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bulk Email Tab -->
-            <div id="bulk-email" class="content">
-                <div class="content-header">
-                    <h2>Bulk Email</h2>
-                    <p>Send emails to multiple users individually (recipients won't see each other's emails)</p>
-                </div>
-
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
-                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Compose Bulk Email</h3>
-                    
-                    <form id="bulkEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Subject *</label>
-                            <input type="text" id="bulkEmailSubject" placeholder="e.g., Early Access Invitation" required
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
-                        </div>
-
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Message *</label>
-                            <textarea id="bulkEmailMessage" placeholder="Write your email message here. Use {{displayName}} to personalize with each user's name." required rows="10"
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Use {{displayName}} to personalize the email with each user's name. Each email will be sent individually so recipients won't see each other's addresses.</p>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px;">
-                            <input type="checkbox" id="bulkEmailUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
-                            <label for="bulkEmailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
-                                Use branded HTML template (includes ORA logo and styling)
-                            </label>
-                        </div>
-
-                        <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 12px;">Recipients</label>
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                                    <input type="radio" name="bulkEmailRecipients" value="all" checked style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span style="color: #1e293b; font-size: 14px;">All users (<span id="allUsersCount">-</span> users)</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                                    <input type="radio" name="bulkEmailRecipients" value="subscribed" style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span style="color: #1e293b; font-size: 14px;">Subscribed users only (<span id="subscribedUsersCount">-</span> users)</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                                    <input type="radio" name="bulkEmailRecipients" value="free" style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span style="color: #1e293b; font-size: 14px;">Free users only (<span id="freeUsersCount">-</span> users)</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                                    <input type="radio" name="bulkEmailRecipients" value="custom" style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span style="color: #1e293b; font-size: 14px;">Custom selection from users</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                                    <input type="radio" name="bulkEmailRecipients" value="manual" style="width: 18px; height: 18px; cursor: pointer;">
-                                    <span style="color: #1e293b; font-size: 14px;">Manual email list (paste emails)</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div id="customRecipientsSection" style="display: none;">
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Select Users</label>
-                            <div id="bulkEmailUserList" style="max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #ffffff;">
-                                <div class="loading">Loading users...</div>
-                            </div>
-                        </div>
-
-                        <div id="manualRecipientsSection" style="display: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500;">Email Addresses *</label>
-                                <button type="button" onclick="addEmailInput()"
-                                    style="padding: 8px 16px; background: #3b82f6; border: 1px solid #3b82f6; border-radius: 8px; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                    onmouseover="this.style.background='#2563eb'"
-                                    onmouseout="this.style.background='#3b82f6'">
-                                    + Add Email
-                                </button>
-                            </div>
-                            <div id="bulkEmailManualInputs" style="display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
-                                <div style="display: flex; gap: 8px; align-items: center;">
-                                    <input type="email" class="bulk-email-manual-input" placeholder="email@example.com"
-                                        style="flex: 1; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif;">
-                                    <button type="button" onclick="removeEmailInput(this)" style="padding: 10px 14px; background: #ef4444; border: 1px solid #ef4444; border-radius: 8px; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                        onmouseover="this.style.background='#dc2626'"
-                                        onmouseout="this.style.background='#ef4444'">Remove</button>
-                                </div>
-                            </div>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Add email addresses one at a time. Each email will be sent individually so recipients won't see each other's addresses.</p>
-                        </div>
-
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <button type="button" onclick="sendBulkEmail()"
-                                style="flex: 1; padding: 14px; background: #f97316; border: 1px solid #f97316; border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='#ea580c'"
-                                onmouseout="this.style.background='#f97316'">
-                                Send Bulk Email
-                            </button>
-                            <button type="button" onclick="previewBulkEmail()"
-                                style="padding: 14px 24px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;">
-                                Preview
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; margin-top: 32px;">
-                    <h4 style="font-family: 'Manrope', sans-serif; font-size: 18px; color: #1e293b; margin-bottom: 12px;">How It Works</h4>
-                    <ul style="color: #1e293b; font-size: 14px; line-height: 1.8; padding-left: 20px;">
-                        <li><strong>Individual Sends:</strong> Each email is sent separately, so recipients won't see each other's email addresses</li>
-                        <li><strong>Personalization:</strong> Use {{displayName}} in your message to personalize each email</li>
-                        <li><strong>Privacy:</strong> All emails are sent individually (not in a group), ensuring complete privacy</li>
-                        <li><strong>Progress:</strong> You'll see a progress indicator as emails are sent</li>
-                        <li><strong>Rate Limiting:</strong> Emails are sent in batches to avoid overwhelming the email server</li>
-                    </ul>
-                </div>
-            </div>
-
             <!-- Marketing Tab -->
             <div id="marketing" class="content">
-                <div class="content-header">
-                    <h2>Marketing Notifications</h2>
-                    <p>Send marketing updates, tips, and industry insights to users who have opted in</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Marketing Notifications</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Send marketing updates, tips, and industry insights to users who have opted in</p>
                 </div>
 
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
-                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Create Marketing Notification</h3>
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 32px; margin-bottom: 32px;">
+                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #ffffff; margin-bottom: 20px;">Create Marketing Notification</h3>
                     
                     <form id="marketingForm" style="display: flex; flex-direction: column; gap: 20px;">
                         <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Title *</label>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Title *</label>
                             <input type="text" id="marketingTitle" placeholder="e.g., New Feature: Brand Vault Updates" required
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                                style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif;">
                         </div>
 
                         <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Message *</label>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Message *</label>
                             <textarea id="marketingMessage" placeholder="Write your marketing message here. Keep it concise and engaging..." required rows="6"
-                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                                style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
                         </div>
 
                         <div>
-                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Type</label>
-                            <select id="marketingType" style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                            <label style="display: block; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Type</label>
+                            <select id="marketingType" style="width: 100%; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-family: 'Inter', sans-serif;">
                                 <option value="tip">Tip</option>
                                 <option value="update">Update</option>
                                 <option value="feature">New Feature</option>
@@ -1484,13 +1077,13 @@ Visit us at https://myora.co</textarea>
 
                         <div style="display: flex; gap: 12px; align-items: center;">
                             <button type="submit" 
-                                style="flex: 1; padding: 14px; background: #f97316; border: 1px solid #f97316; border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='rgba(255, 255, 255, 0.25)'; this.style.borderColor='rgba(255, 255, 255, 0.5)'"
-                                onmouseout="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'">
+                                style="flex: 1; padding: 14px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'; this.style.borderColor='rgba(249, 115, 22, 0.5)'"
+                                onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'; this.style.borderColor='rgba(249, 115, 22, 0.3)'">
                                 Send Notification
                             </button>
                             <button type="button" onclick="previewMarketingNotification()"
-                                style="padding: 14px 24px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                style="padding: 14px 24px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: rgba(255, 255, 255, 0.8); font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
                                 onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'"
                                 onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'">
                                 Preview
@@ -1501,9 +1094,9 @@ Visit us at https://myora.co</textarea>
 
                 <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 32px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b;">Recent Marketing Notifications</h3>
+                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #ffffff;">Recent Marketing Notifications</h3>
                         <button onclick="loadMarketing()" 
-                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                            style="padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
                             onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'"
                             onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
                             Refresh
@@ -1515,8 +1108,8 @@ Visit us at https://myora.co</textarea>
                 </div>
 
                 <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; margin-top: 32px;">
-                    <h4 style="font-family: 'Manrope', sans-serif; font-size: 18px; color: #1e293b; margin-bottom: 12px;">Best Practices</h4>
-                    <ul style="color: #1e293b; font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                    <h4 style="font-family: 'Manrope', sans-serif; font-size: 18px; color: #ffffff; margin-bottom: 12px;">Best Practices</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.8; padding-left: 20px;">
                         <li><strong>Frequency:</strong> Send 1-2 marketing notifications per week maximum to avoid user fatigue</li>
                         <li><strong>Timing:</strong> Best times are Tuesday-Thursday, 10 AM - 2 PM in your users' timezone</li>
                         <li><strong>Content:</strong> Keep messages concise (under 100 characters for title, under 200 for message)</li>
@@ -1529,9 +1122,9 @@ Visit us at https://myora.co</textarea>
 
             <!-- Errors Tab -->
             <div id="errors" class="content">
-                <div class="content-header">
-                    <h2>Real-Time Error Monitoring</h2>
-                    <p>Live errors, console errors, and app crashes from all users</p>
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-family: 'Manrope', sans-serif; font-size: 28px; color: #ffffff; margin-bottom: 10px;">Real-Time Error Monitoring</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Live errors, console errors, and app crashes from all users</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 30px;">
@@ -1562,17 +1155,17 @@ Visit us at https://myora.co</textarea>
                         <div style="display: flex; gap: 12px;">
                             <button 
                                 onclick="refreshErrors()" 
-                                style="padding: 10px 20px; background: #3b82f6; border: 1px solid #3b82f6; border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='#2563eb'"
-                                onmouseout="this.style.background='#3b82f6'"
+                                style="padding: 10px 20px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'"
+                                onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'"
                             >
                                 Refresh
                             </button>
                             <button 
                                 onclick="exportErrorsCSV()" 
-                                style="padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                onmouseover="this.style.background='rgba(255, 255, 255, 0.95)'"
-                                onmouseout="this.style.background='rgba(255, 255, 255, 0.8)'"
+                                style="padding: 10px 20px; background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; color: #ffffff; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                onmouseover="this.style.background='rgba(249, 115, 22, 0.25)'"
+                                onmouseout="this.style.background='rgba(249, 115, 22, 0.15)'"
                             >
                                 Export CSV
                             </button>
@@ -1582,7 +1175,6 @@ Visit us at https://myora.co</textarea>
                         <div class="loading">Loading...</div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
@@ -1621,12 +1213,6 @@ Visit us at https://myora.co</textarea>
                         required
                         placeholder="Enter your message here..."
                     ></textarea>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; margin-bottom: 20px;">
-                    <input type="checkbox" id="emailUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
-                    <label for="emailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
-                        Use branded HTML template (includes ORA logo and styling)
-                    </label>
                 </div>
                 <div class="email-modal-actions">
                     <button type="button" class="email-modal-btn email-modal-btn-secondary" onclick="closeEmailModal()">
@@ -1698,106 +1284,12 @@ Visit us at https://myora.co</textarea>
             loadAllData();
         }
 
-        async function loadEmailHistory() {
-            try {
-                const type = document.getElementById('emailHistoryType')?.value || 'all';
-                const status = document.getElementById('emailHistoryStatus')?.value || 'all';
-                const search = document.getElementById('emailHistorySearch')?.value || '';
-                
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const params = new URLSearchParams({
-                    type,
-                    status,
-                    limit: '50',
-                    offset: '0',
-                    ...(search && { search })
-                });
-                
-                const response = await fetch(`/api/admin?type=email-history&token=${adminToken}&${params}`);
-                const data = await response.json();
-
-                const emailHistoryEl = document.getElementById('emailHistoryList');
-                if (data.success && data.emails && data.emails.length > 0) {
-                    emailHistoryEl.innerHTML = `
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid #e2e8f0;">
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">To</th>
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Subject</th>
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Type</th>
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Status</th>
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Sent At</th>
-                                    <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${data.emails.map(email => {
-                                    const statusColor = email.status === 'sent' ? '#10b981' : '#ef4444';
-                                    const statusBg = email.status === 'sent' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
-                                    const sentDate = new Date(email.sentAt).toLocaleString();
-                                    return `
-                                        <tr style="border-bottom: 1px solid #e2e8f0; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.02)'" onmouseout="this.style.background='transparent'">
-                                            <td style="padding: 12px; color: #1e293b; font-size: 14px;">${email.to}</td>
-                                            <td style="padding: 12px; color: #1e293b; font-size: 14px;">${email.subject}</td>
-                                            <td style="padding: 12px; color: #64748b; font-size: 13px; text-transform: capitalize;">${email.type}</td>
-                                            <td style="padding: 12px;">
-                                                <span style="padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; background: ${statusBg}; color: ${statusColor};">
-                                                    ${email.status}
-                                                </span>
-                                            </td>
-                                            <td style="padding: 12px; color: #64748b; font-size: 13px;">${sentDate}</td>
-                                            <td style="padding: 12px;">
-                                                <button onclick="viewEmailDetails('${email.id}')" style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #3b82f6; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
-                                                    View
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                        <div style="margin-top: 20px; padding: 16px; background: rgba(255, 255, 255, 0.8); border-radius: 10px; border: 1px solid #e2e8f0; color: #64748b; font-size: 14px;">
-                            Showing ${data.emails.length} of ${data.total} emails
-                        </div>
-                    `;
-                } else {
-                    emailHistoryEl.innerHTML = `
-                        <div style="padding: 40px; text-align: center; color: #64748b;">
-                            <p style="font-size: 16px; margin-bottom: 8px;">No emails found</p>
-                            <p style="font-size: 14px;">${data.message || 'Start sending emails to see them here'}</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading email history:', error);
-                document.getElementById('emailHistoryList').innerHTML = `
-                    <div style="padding: 40px; text-align: center; color: #ef4444;">
-                        <p>Error loading email history. Please try again.</p>
-                    </div>
-                `;
-            }
-        }
-
-        function viewEmailDetails(emailId) {
-            // TODO: Implement email detail view modal
-            alert('Email details view coming soon!');
-        }
-
         function switchTab(tabName) {
-            // Update nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
             });
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
-                // Find the nav item by tab name
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabName)) {
-                        item.classList.add('active');
-                    }
-                });
-            }
+            event.target.classList.add('active');
 
             // Update content
             document.querySelectorAll('.content').forEach(content => {
@@ -1820,18 +1312,10 @@ Visit us at https://myora.co</textarea>
                 loadSubmissions();
             } else if (tabName === 'waitlist') {
                 loadWaitlist();
-            } else if (tabName === 'welcome-emails') {
-                loadWelcomeEmailSettings();
-            } else if (tabName === 'bulk-email') {
-                loadBulkEmailUsers();
             } else if (tabName === 'analytics') {
                 loadAnalytics();
             } else if (tabName === 'errors') {
                 loadErrors();
-            } else if (tabName === 'email-history') {
-                loadEmailHistory();
-            } else if (tabName === 'send-email') {
-                // No data to load, just show the form
             }
         }
 
@@ -1962,7 +1446,7 @@ Visit us at https://myora.co</textarea>
                                     <td>${user.displayName}</td>
                                     <td class="email-clickable" data-email="${user.email}">${user.email}</td>
                                     <td>
-                                        ${user.isSubscribed ? '<span class="badge rate">Subscribed</span>' : '<span class="badge" style="background: rgba(0, 0, 0, 0.05); color: #64748b;">Free</span>'}
+                                        ${user.isSubscribed ? '<span class="badge rate">Subscribed</span>' : '<span class="badge" style="background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6);">Free</span>'}
                                         ${user.isActive ? '<span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; margin-left: 8px;">Active</span>' : ''}
                                     </td>
                                     <td>${new Date(user.createdAt).toLocaleDateString()}</td>
@@ -2030,7 +1514,7 @@ Visit us at https://myora.co</textarea>
                     document.getElementById('dealsList').innerHTML = `
                         <div class="empty-state">
                             <p style="margin-bottom: 12px;">No deals tracked yet.</p>
-                            <p style="color: #64748b; font-size: 13px;">Deals are created by users in the Deal Manager to track their projects, collaborations, and payments with brands.</p>
+                            <p style="color: rgba(255, 255, 255, 0.6); font-size: 13px;">Deals are created by users in the Deal Manager to track their projects, collaborations, and payments with brands.</p>
                         </div>
                     `;
                     return;
@@ -2063,7 +1547,7 @@ Visit us at https://myora.co</textarea>
                                                 deal.status === 'active' ? 'rgba(16, 185, 129, 0.2); color: #10b981' :
                                                 deal.status === 'completed' ? 'rgba(59, 130, 246, 0.2); color: #3b82f6' :
                                                 deal.status === 'pending' ? 'rgba(245, 158, 11, 0.2); color: #f59e0b' :
-                                                'rgba(0, 0, 0, 0.05); color: #64748b'
+                                                'rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6)'
                                             }">
                                                 ${deal.status || 'N/A'}
                                             </span>
@@ -2146,7 +1630,7 @@ Visit us at https://myora.co</textarea>
                                                 quote.status === 'accepted' ? 'rgba(16, 185, 129, 0.2); color: #10b981' :
                                                 quote.status === 'sent' ? 'rgba(59, 130, 246, 0.2); color: #3b82f6' :
                                                 quote.status === 'rejected' ? 'rgba(255, 59, 48, 0.2); color: #ff3b30' :
-                                                quote.status === 'expired' ? 'rgba(0, 0, 0, 0.05); color: #64748b' :
+                                                quote.status === 'expired' ? 'rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6)' :
                                                 'rgba(245, 158, 11, 0.2); color: #f59e0b'
                                             }">
                                                 ${quote.status || 'draft'}
@@ -2242,7 +1726,7 @@ Visit us at https://myora.co</textarea>
                                             <td>${count}</td>
                                             <td>
                                                 <span class="badge" style="background: ${
-                                                    plan === 'free' ? 'rgba(0, 0, 0, 0.05); color: #64748b' :
+                                                    plan === 'free' ? 'rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6)' :
                                                     'rgba(16, 185, 129, 0.2); color: #10b981'
                                                 }">
                                                     ${plan === 'free' ? 'Free' : 'Paid'}
@@ -2269,13 +1753,13 @@ Visit us at https://myora.co</textarea>
                                 const percentage = maxRevenue > 0 ? (month.revenue / maxRevenue) * 100 : 0;
                                 return `
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="flex: 0 0 100px; font-size: 14px; color: #1e293b;">${month.month}</div>
-                                        <div style="flex: 1; height: 32px; background: rgba(0, 0, 0, 0.05); border-radius: 16px; overflow: hidden; position: relative;">
-                                            <div style="height: 100%; width: ${percentage}%; background: rgba(249, 115, 22, 0.3); border-radius: 16px; transition: width 0.3s; display: flex; align-items: center; padding: 0 12px;">
-                                                <span style="color: #1e293b; font-size: 12px; font-weight: 600;">$${month.revenue.toFixed(2)}</span>
+                                        <div style="flex: 0 0 100px; font-size: 14px; color: rgba(255, 255, 255, 0.8);">${month.month}</div>
+                                        <div style="flex: 1; height: 32px; background: rgba(255, 255, 255, 0.05); border-radius: 16px; overflow: hidden; position: relative;">
+                                            <div style="height: 100%; width: ${percentage}%; background: rgba(249, 115, 22, 0.4); border-radius: 16px; transition: width 0.3s; display: flex; align-items: center; padding: 0 12px;">
+                                                <span style="color: #ffffff; font-size: 12px; font-weight: 600;">$${month.revenue.toFixed(2)}</span>
                                             </div>
                                         </div>
-                                        <div style="flex: 0 0 80px; text-align: right; font-size: 14px; color: #64748b;">${month.subscribers} users</div>
+                                        <div style="flex: 0 0 80px; text-align: right; font-size: 14px; color: rgba(255, 255, 255, 0.6);">${month.subscribers} users</div>
                                     </div>
                                 `;
                             }).join('')}
@@ -2326,17 +1810,17 @@ Visit us at https://myora.co</textarea>
                 const revenueBreakdownEl = document.getElementById('revenueBreakdown');
                 revenueBreakdownEl.innerHTML = `
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 12px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Subscriptions</div>
-                            <div style="font-size: 24px; font-weight: 600; color: #1e293b;">$${(data.revenue?.fromSubscriptions || 0).toFixed(2)}</div>
+                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px;">Subscriptions</div>
+                            <div style="font-size: 24px; font-weight: 600; color: #ffffff;">$${(data.revenue?.fromSubscriptions || 0).toFixed(2)}</div>
                         </div>
-                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 12px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Deals</div>
-                            <div style="font-size: 24px; font-weight: 600; color: #1e293b;">$${(data.revenue?.fromDeals || 0).toFixed(2)}</div>
+                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px;">Deals</div>
+                            <div style="font-size: 24px; font-weight: 600; color: #ffffff;">$${(data.revenue?.fromDeals || 0).toFixed(2)}</div>
                         </div>
-                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 12px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Quotes</div>
-                            <div style="font-size: 24px; font-weight: 600; color: #1e293b;">$${(data.revenue?.fromQuotes || 0).toFixed(2)}</div>
+                        <div style="padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px;">Quotes</div>
+                            <div style="font-size: 24px; font-weight: 600; color: #ffffff;">$${(data.revenue?.fromQuotes || 0).toFixed(2)}</div>
                         </div>
                     </div>
                 `;
@@ -2345,21 +1829,21 @@ Visit us at https://myora.co</textarea>
                 const productMetricsEl = document.getElementById('productMetrics');
                 productMetricsEl.innerHTML = `
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
-                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.8); border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 32px; font-weight: 600; color: #1e293b;">${data.product?.quotesGenerated || 0}</div>
-                            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Quotes Generated</div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                            <div style="font-size: 32px; font-weight: 600; color: #ffffff;">${data.product?.quotesGenerated || 0}</div>
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 4px;">Quotes Generated</div>
                         </div>
-                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.8); border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 32px; font-weight: 600; color: #1e293b;">${data.product?.dealsTracked || 0}</div>
-                            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Deals Tracked</div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                            <div style="font-size: 32px; font-weight: 600; color: #ffffff;">${data.product?.dealsTracked || 0}</div>
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 4px;">Deals Tracked</div>
                         </div>
-                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.8); border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 32px; font-weight: 600; color: #1e293b;">${data.product?.contractsAnalyzed || 0}</div>
-                            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Contracts Analyzed</div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                            <div style="font-size: 32px; font-weight: 600; color: #ffffff;">${data.product?.contractsAnalyzed || 0}</div>
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 4px;">Contracts Analyzed</div>
                         </div>
-                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.8); border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <div style="font-size: 32px; font-weight: 600; color: #1e293b;">${data.product?.mediaKitsCreated || 0}</div>
-                            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Media Kits Created</div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                            <div style="font-size: 32px; font-weight: 600; color: #ffffff;">${data.product?.mediaKitsCreated || 0}</div>
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 4px;">Media Kits Created</div>
                         </div>
                     </div>
                 `;
@@ -2374,10 +1858,10 @@ Visit us at https://myora.co</textarea>
                                 const percentage = maxUsers > 0 ? (month.users / maxUsers) * 100 : 0;
                                 return `
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="flex: 0 0 100px; font-size: 14px; color: #1e293b;">${month.month}</div>
-                                        <div style="flex: 1; height: 28px; background: rgba(0, 0, 0, 0.05); border-radius: 14px; overflow: hidden; position: relative;">
-                                            <div style="height: 100%; width: ${percentage}%; background: rgba(59, 130, 246, 0.3); border-radius: 14px; transition: width 0.3s; display: flex; align-items: center; padding: 0 12px;">
-                                                <span style="color: #1e293b; font-size: 12px; font-weight: 600;">${month.users}</span>
+                                        <div style="flex: 0 0 100px; font-size: 14px; color: rgba(255, 255, 255, 0.8);">${month.month}</div>
+                                        <div style="flex: 1; height: 28px; background: rgba(255, 255, 255, 0.05); border-radius: 14px; overflow: hidden; position: relative;">
+                                            <div style="height: 100%; width: ${percentage}%; background: rgba(59, 130, 246, 0.4); border-radius: 14px; transition: width 0.3s; display: flex; align-items: center; padding: 0 12px;">
+                                                <span style="color: #ffffff; font-size: 12px; font-weight: 600;">${month.users}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -2393,19 +1877,19 @@ Visit us at https://myora.co</textarea>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
                         <div style="padding: 16px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px;">
                             <div style="font-size: 14px; color: #10b981; font-weight: 600; margin-bottom: 8px;">GDPR Compliant</div>
-                            <div style="font-size: 12px; color: #64748b;">${data.compliance?.dataRetention?.gdprCompliant ? '✓ Yes' : '✗ No'}</div>
+                            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.6);">${data.compliance?.dataRetention?.gdprCompliant ? '✓ Yes' : '✗ No'}</div>
                         </div>
-                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px;">
-                            <div style="font-size: 14px; color: #1e293b; font-weight: 600; margin-bottom: 8px;">Total Records</div>
-                            <div style="font-size: 24px; color: #1e293b; font-weight: 600;">${(data.compliance?.dataRetention?.totalRecords || 0).toLocaleString()}</div>
+                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.8); font-weight: 600; margin-bottom: 8px;">Total Records</div>
+                            <div style="font-size: 24px; color: #ffffff; font-weight: 600;">${(data.compliance?.dataRetention?.totalRecords || 0).toLocaleString()}</div>
                         </div>
-                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px;">
-                            <div style="font-size: 14px; color: #1e293b; font-weight: 600; margin-bottom: 8px;">Data Exports</div>
-                            <div style="font-size: 24px; color: #1e293b; font-weight: 600;">${data.compliance?.dataExports || 0}</div>
+                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.8); font-weight: 600; margin-bottom: 8px;">Data Exports</div>
+                            <div style="font-size: 24px; color: #ffffff; font-weight: 600;">${data.compliance?.dataExports || 0}</div>
                         </div>
-                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px;">
-                            <div style="font-size: 14px; color: #1e293b; font-weight: 600; margin-bottom: 8px;">Data Deletions</div>
-                            <div style="font-size: 24px; color: #1e293b; font-weight: 600;">${data.compliance?.dataDeletions || 0}</div>
+                        <div style="padding: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.8); font-weight: 600; margin-bottom: 8px;">Data Deletions</div>
+                            <div style="font-size: 24px; color: #ffffff; font-weight: 600;">${data.compliance?.dataDeletions || 0}</div>
                         </div>
                     </div>
                 `;
@@ -2453,10 +1937,10 @@ Visit us at https://myora.co</textarea>
                             : 'rgba(59, 130, 246, 0.2); color: #3b82f6';
                         
                         return `
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; margin-bottom: 8px;">
                                 <span class="badge" style="background: ${badgeColor}">${item.type === 'rate_submission' ? 'Rate' : item.type === 'bug_report' ? 'Bug' : 'Feedback'}</span>
-                                <span style="flex: 1; color: #1e293b; font-size: 14px;">${item.details || 'N/A'}</span>
-                                <span style="color: #64748b; font-size: 12px;">${new Date(item.date).toLocaleDateString()}</span>
+                                <span style="flex: 1; color: rgba(255, 255, 255, 0.8); font-size: 14px;">${item.details || 'N/A'}</span>
+                                <span style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">${new Date(item.date).toLocaleDateString()}</span>
                             </div>
                         `;
                     }).join('');
@@ -2503,42 +1987,42 @@ Visit us at https://myora.co</textarea>
                                     : 'User Feedback';
                                 
                                 return `
-                                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; transition: all 0.3s;" 
-                                         onmouseover="this.style.background='rgba(255, 255, 255, 0.95)'; this.style.borderColor='#cbd5e1'"
-                                         onmouseout="this.style.background='rgba(255, 255, 255, 0.8)'; this.style.borderColor='#e2e8f0'">
+                                    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px; transition: all 0.3s;" 
+                                         onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'"
+                                         onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">
                                         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
                                             <div style="flex: 1;">
                                                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
                                                     <span class="badge" style="background: ${badgeColor}">${typeLabel}</span>
-                                                    <span style="color: #64748b; font-size: 12px;">${new Date(sub.submittedAt).toLocaleString()}</span>
+                                                    <span style="color: rgba(255, 255, 255, 0.6); font-size: 12px;">${new Date(sub.submittedAt).toLocaleString()}</span>
                                                 </div>
-                                                ${sub.title ? `<h4 style="color: #1e293b; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">${sub.title}</h4>` : ''}
-                                                ${sub.brandName ? `<p style="color: #334155; margin: 0 0 4px 0;"><strong>Brand:</strong> ${sub.brandName}</p>` : ''}
-                                                ${sub.rate ? `<p style="color: #334155; margin: 0 0 4px 0;"><strong>Rate:</strong> $${sub.rate}</p>` : ''}
-                                                ${sub.platform ? `<p style="color: #334155; margin: 0 0 4px 0;"><strong>Platform:</strong> ${sub.platform}</p>` : ''}
+                                                ${sub.title ? `<h4 style="color: #ffffff; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">${sub.title}</h4>` : ''}
+                                                ${sub.brandName ? `<p style="color: rgba(255, 255, 255, 0.8); margin: 0 0 4px 0;"><strong>Brand:</strong> ${sub.brandName}</p>` : ''}
+                                                ${sub.rate ? `<p style="color: rgba(255, 255, 255, 0.8); margin: 0 0 4px 0;"><strong>Rate:</strong> $${sub.rate}</p>` : ''}
+                                                ${sub.platform ? `<p style="color: rgba(255, 255, 255, 0.8); margin: 0 0 4px 0;"><strong>Platform:</strong> ${sub.platform}</p>` : ''}
                                                 ${sub.description || sub.message ? `
-                                                    <div style="background: rgba(0, 0, 0, 0.03); padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0;">
-                                                        <p style="color: #1e293b; margin: 0; line-height: 1.6; white-space: pre-wrap;">${sub.description || sub.message}</p>
+                                                    <div style="background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 8px; margin-top: 12px;">
+                                                        <p style="color: rgba(255, 255, 255, 0.9); margin: 0; line-height: 1.6; white-space: pre-wrap;">${sub.description || sub.message}</p>
                                                     </div>
                                                 ` : ''}
                                                 ${sub.steps ? `
                                                     <div style="margin-top: 12px;">
-                                                        <p style="color: #64748b; font-size: 12px; margin: 0 0 4px 0;"><strong>Steps to reproduce:</strong></p>
-                                                        <p style="color: #334155; margin: 0; white-space: pre-wrap;">${sub.steps}</p>
+                                                        <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 4px 0;"><strong>Steps to reproduce:</strong></p>
+                                                        <p style="color: rgba(255, 255, 255, 0.8); margin: 0; white-space: pre-wrap;">${sub.steps}</p>
                                                     </div>
                                                 ` : ''}
                                             </div>
                                         </div>
-                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
-                                            <div style="color: #64748b; font-size: 14px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
                                                 <strong>From:</strong> ${sub.userEmail || 'Anonymous'}
                                             </div>
                                             ${sub.userEmail ? `
                                                 <button 
                                                     onclick="openReplyModal('${sub.userEmail.replace(/'/g, "\\'")}', '${sub.id}', '${typeLabel}', ${JSON.stringify(sub).replace(/'/g, "\\'").replace(/"/g, '&quot;')})"
-                                                    style="padding: 8px 16px; background: #3b82f6; border: 1px solid #3b82f6; border-radius: 8px; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                                                    onmouseover="this.style.background='#2563eb'"
-                                                    onmouseout="this.style.background='#3b82f6'"
+                                                    style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                                    onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'"
+                                                    onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'"
                                                 >
                                                     Reply
                                                 </button>
@@ -2694,8 +2178,8 @@ Visit us at https://myora.co</textarea>
                                     return `
                                         <div style="display: flex; align-items: center; gap: 12px;">
                                             <div style="flex: 0 0 120px; font-size: 14px; color: rgba(255, 255, 255, 0.8);">${platform}</div>
-                                            <div style="flex: 1; height: 24px; background: rgba(0, 0, 0, 0.05); border-radius: 12px; overflow: hidden; position: relative;">
-                                                <div style="height: 100%; width: ${percentage}%; background: rgba(255, 255, 255, 0.3); border-radius: 12px; transition: width 0.3s;"></div>
+                                            <div style="flex: 1; height: 24px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; overflow: hidden; position: relative;">
+                                                <div style="height: 100%; width: ${percentage}%; background: rgba(249, 115, 22, 0.3); border-radius: 12px; transition: width 0.3s;"></div>
                                             </div>
                                             <div style="flex: 0 0 60px; text-align: right; font-size: 14px; font-weight: 600; color: #ffffff;">${count}</div>
                                         </div>
@@ -2749,7 +2233,7 @@ Visit us at https://myora.co</textarea>
                                     : 'rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6)';
                                 
                                 return `
-                                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; transition: all 0.3s;" 
+                                    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px; transition: all 0.3s;" 
                                          onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'"
                                          onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">
                                         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
@@ -2834,11 +2318,11 @@ ${err.stack}
                 const historyEl = document.getElementById('marketingHistory');
                 if (data.notifications && data.notifications.length > 0) {
                     historyEl.innerHTML = data.notifications.map(notif => `
-                        <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
                                 <div style="flex: 1;">
                                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: #ffffff;">${notif.type || 'update'}</span>
+                                        <span class="badge" style="background: rgba(249, 115, 22, 0.2); color: #f97316;">${notif.type || 'update'}</span>
                                         <span style="color: rgba(255, 255, 255, 0.6); font-size: 12px;">${new Date(notif.sent_at).toLocaleString()}</span>
                                     </div>
                                     <h4 style="color: #ffffff; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">${notif.title || 'No title'}</h4>
@@ -2959,7 +2443,6 @@ Message: ${message}
             }
 
             try {
-                const useHtmlTemplate = document.getElementById('emailUseHtml').checked;
                 const adminToken = localStorage.getItem('admin_token') || '';
                 const response = await fetch('/api/admin?type=send-email', {
                     method: 'POST',
@@ -2971,8 +2454,7 @@ Message: ${message}
                         to: to,
                         subject: subject,
                         message: message,
-                        isHtml: false,
-                        useHtmlTemplate: useHtmlTemplate
+                        isHtml: false
                     })
                 });
 
@@ -2980,20 +2462,13 @@ Message: ${message}
 
                 if (data.success) {
                     successEl.textContent = 'Email sent successfully!';
-                    successEl.style.display = 'block';
                     successEl.classList.add('show');
                     document.getElementById('emailForm').reset();
                     
-                    // Reload email history if on that tab
-                    if (document.getElementById('email-history')?.classList.contains('active')) {
-                        loadEmailHistory();
-                    }
-                    
-                    // Hide success message after 3 seconds
+                    // Close modal after 2 seconds
                     setTimeout(() => {
-                        successEl.style.display = 'none';
-                        successEl.classList.remove('show');
-                    }, 3000);
+                        closeEmailModal();
+                    }, 2000);
                 } else {
                     alert('Failed to send email: ' + (data.error || 'Unknown error'));
                 }
@@ -3010,357 +2485,6 @@ Message: ${message}
                 closeEmailModal();
             }
         });
-
-        // Welcome Email Functions
-        async function loadWelcomeEmailSettings() {
-            try {
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const response = await fetch(`/api/admin?type=welcome-email-settings&token=${adminToken}`);
-                const data = await response.json();
-
-                if (data.success && data.settings) {
-                    document.getElementById('welcomeEmailSubject').value = data.settings.subject || 'Welcome to ORA!';
-                    document.getElementById('welcomeEmailMessage').value = data.settings.message || '';
-                    document.getElementById('welcomeEmailAutoSend').checked = data.settings.auto_send !== false;
-                }
-            } catch (error) {
-                console.error('Error loading welcome email settings:', error);
-            }
-        }
-
-        async function saveWelcomeEmailTemplate() {
-            const subject = document.getElementById('welcomeEmailSubject').value.trim();
-            const message = document.getElementById('welcomeEmailMessage').value.trim();
-            const autoSend = document.getElementById('welcomeEmailAutoSend').checked;
-
-            if (!subject || !message) {
-                alert('Please fill in subject and message');
-                return;
-            }
-
-            try {
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const response = await fetch('/api/admin?type=welcome-email-settings', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        token: adminToken,
-                        subject: subject,
-                        message: message,
-                        auto_send: autoSend
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('Welcome email template saved successfully!');
-                } else {
-                    alert('Failed to save template: ' + (data.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Error saving welcome email template:', error);
-                alert('Failed to save template. Please try again.');
-            }
-        }
-
-        function previewWelcomeEmail() {
-            const subject = document.getElementById('welcomeEmailSubject').value;
-            const message = document.getElementById('welcomeEmailMessage').value;
-            const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
-            alert(`Subject: ${subject}\n\nMessage:\n${preview}`);
-        }
-
-        async function sendWelcomeEmailToUser() {
-            const to = document.getElementById('welcomeEmailTo').value.trim();
-            const subject = document.getElementById('welcomeEmailSubject').value.trim();
-            const message = document.getElementById('welcomeEmailMessage').value.trim();
-
-            if (!to || !subject || !message) {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            // Get user's display name from Supabase if possible
-            let displayName = 'Creator';
-            try {
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const usersResponse = await fetch(`/api/admin?type=users&token=${adminToken}`);
-                const usersData = await usersResponse.json();
-                if (usersData.users) {
-                    const user = usersData.users.find(u => u.email === to);
-                    if (user && user.displayName) {
-                        displayName = user.displayName;
-                    }
-                }
-            } catch (e) {
-                console.log('Could not fetch user name, using default');
-            }
-
-            // Replace {{displayName}} with actual name
-            const personalizedMessage = message.replace(/\{\{displayName\}\}/g, displayName);
-
-            try {
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const response = await fetch('/api/admin?type=send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        token: adminToken,
-                        to: to,
-                        subject: subject,
-                        message: personalizedMessage,
-                        isHtml: false,
-                        useHtmlTemplate: document.getElementById('welcomeEmailUseHtml').checked
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('Welcome email sent successfully!');
-                    document.getElementById('welcomeEmailTo').value = '';
-                } else {
-                    alert('Failed to send welcome email: ' + (data.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Error sending welcome email:', error);
-                alert('Failed to send welcome email. Please try again.');
-            }
-        }
-
-        // Bulk Email Functions
-        let allBulkEmailUsers = [];
-
-        async function loadBulkEmailUsers() {
-            try {
-                const adminToken = localStorage.getItem('admin_token') || '';
-                const response = await fetch(`/api/admin?type=users&token=${adminToken}`);
-                const data = await response.json();
-
-                if (data.users) {
-                    allBulkEmailUsers = data.users;
-                    
-                    // Update counts
-                    const allCount = data.users.length;
-                    const subscribedCount = data.users.filter(u => u.isSubscribed).length;
-                    const freeCount = data.users.filter(u => !u.isSubscribed).length;
-                    
-                    document.getElementById('allUsersCount').textContent = allCount;
-                    document.getElementById('subscribedUsersCount').textContent = subscribedCount;
-                    document.getElementById('freeUsersCount').textContent = freeCount;
-
-                    // Load user list for custom selection
-                    const userListEl = document.getElementById('bulkEmailUserList');
-                    userListEl.innerHTML = data.users.map(user => `
-                        <label style="display: flex; align-items: center; gap: 12px; padding: 8px; cursor: pointer; border-radius: 6px; transition: background 0.2s;" 
-                               onmouseover="this.style.background='rgba(0,0,0,0.03)'" 
-                               onmouseout="this.style.background='transparent'">
-                            <input type="checkbox" class="bulk-email-user-checkbox" value="${user.email}" data-name="${user.displayName || user.email}" style="width: 18px; height: 18px; cursor: pointer;">
-                            <span style="color: #1e293b; font-size: 14px; flex: 1;">${user.displayName || 'No name'} (${user.email})</span>
-                            ${user.isSubscribed ? '<span style="color: #10b981; font-size: 12px;">Subscribed</span>' : ''}
-                        </label>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading users for bulk email:', error);
-            }
-        }
-
-        // Handle recipient type change
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'bulkEmailRecipients') {
-                const customSection = document.getElementById('customRecipientsSection');
-                const manualSection = document.getElementById('manualRecipientsSection');
-                
-                if (e.target.value === 'custom') {
-                    customSection.style.display = 'block';
-                    manualSection.style.display = 'none';
-                } else if (e.target.value === 'manual') {
-                    customSection.style.display = 'none';
-                    manualSection.style.display = 'block';
-                } else {
-                    customSection.style.display = 'none';
-                    manualSection.style.display = 'none';
-                }
-            }
-        });
-
-        function previewBulkEmail() {
-            const subject = document.getElementById('bulkEmailSubject').value;
-            const message = document.getElementById('bulkEmailMessage').value;
-            const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
-            alert(`Subject: ${subject}\n\nMessage:\n${preview}`);
-        }
-
-        async function sendBulkEmail() {
-            const subject = document.getElementById('bulkEmailSubject').value.trim();
-            const message = document.getElementById('bulkEmailMessage').value.trim();
-            const recipientType = document.querySelector('input[name="bulkEmailRecipients"]:checked').value;
-
-            if (!subject || !message) {
-                alert('Please fill in subject and message');
-                return;
-            }
-
-            // Get recipient list based on selection
-            let recipients = [];
-            if (recipientType === 'all') {
-                recipients = allBulkEmailUsers.map(u => ({ email: u.email, displayName: u.displayName || u.email.split('@')[0] }));
-            } else if (recipientType === 'subscribed') {
-                recipients = allBulkEmailUsers
-                    .filter(u => u.isSubscribed)
-                    .map(u => ({ email: u.email, displayName: u.displayName || u.email.split('@')[0] }));
-            } else if (recipientType === 'free') {
-                recipients = allBulkEmailUsers
-                    .filter(u => !u.isSubscribed)
-                    .map(u => ({ email: u.email, displayName: u.displayName || u.email.split('@')[0] }));
-            } else if (recipientType === 'custom') {
-                const checked = document.querySelectorAll('.bulk-email-user-checkbox:checked');
-                recipients = Array.from(checked).map(cb => ({
-                    email: cb.value,
-                    displayName: cb.dataset.name || cb.value.split('@')[0]
-                }));
-            } else if (recipientType === 'manual') {
-                const emailInputs = document.querySelectorAll('.bulk-email-manual-input');
-                const emailList = Array.from(emailInputs)
-                    .map(input => input.value.trim())
-                    .filter(email => email.length > 0);
-                
-                if (emailList.length === 0) {
-                    alert('Please add at least one email address');
-                    return;
-                }
-                
-                // Validate email format
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const validEmails = emailList.filter(email => emailRegex.test(email));
-                const invalidEmails = emailList.filter(email => !emailRegex.test(email));
-                
-                if (invalidEmails.length > 0) {
-                    if (!confirm(`${invalidEmails.length} invalid email address(es) found:\n${invalidEmails.join(', ')}\n\nContinue with only valid emails?`)) {
-                        return;
-                    }
-                }
-                
-                if (validEmails.length === 0) {
-                    alert('No valid email addresses found');
-                    return;
-                }
-                
-                recipients = validEmails.map(email => ({
-                    email: email,
-                    displayName: email.split('@')[0]
-                }));
-            }
-
-            if (recipients.length === 0) {
-                alert('No recipients selected');
-                return;
-            }
-
-            if (!confirm(`Send this email to ${recipients.length} users? Each email will be sent individually so recipients won't see each other's addresses.`)) {
-                return;
-            }
-
-            // Show progress
-            const sendBtn = event.target;
-            const originalText = sendBtn.textContent;
-            sendBtn.disabled = true;
-            sendBtn.textContent = `Sending... (0/${recipients.length})`;
-
-            let successCount = 0;
-            let failCount = 0;
-
-            // Send emails individually in batches to avoid rate limiting
-            const batchSize = 5;
-            for (let i = 0; i < recipients.length; i += batchSize) {
-                const batch = recipients.slice(i, i + batchSize);
-                
-                await Promise.all(batch.map(async (recipient) => {
-                    try {
-                        const adminToken = localStorage.getItem('admin_token') || '';
-                        const personalizedMessage = message.replace(/\{\{displayName\}\}/g, recipient.displayName);
-                        
-                        const response = await fetch('/api/admin?type=send-email', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                token: adminToken,
-                                to: recipient.email,
-                                subject: subject,
-                                message: personalizedMessage,
-                                isHtml: false,
-                                useHtmlTemplate: document.getElementById('bulkEmailUseHtml')?.checked ?? true,
-                                useHelloEmail: true // Use hello email for bulk emails
-                            })
-                        });
-
-                        const data = await response.json();
-                        if (data.success) {
-                            successCount++;
-                        } else {
-                            failCount++;
-                            console.error(`Failed to send to ${recipient.email}:`, data.error);
-                        }
-                    } catch (error) {
-                        failCount++;
-                        console.error(`Error sending to ${recipient.email}:`, error);
-                    }
-                }));
-
-                // Update progress
-                sendBtn.textContent = `Sending... (${Math.min(i + batchSize, recipients.length)}/${recipients.length})`;
-                
-                // Small delay between batches to avoid overwhelming the server
-                if (i + batchSize < recipients.length) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
-
-            sendBtn.disabled = false;
-            sendBtn.textContent = originalText;
-
-                alert(`Bulk email completed!\n\nSuccessfully sent: ${successCount}\nFailed: ${failCount}\n\nEach email was sent individually, so recipients cannot see each other's addresses.`);
-        }
-
-        function addEmailInput() {
-            const container = document.getElementById('bulkEmailManualInputs');
-            const newInput = document.createElement('div');
-            newInput.style.cssText = 'display: flex; gap: 8px; align-items: center;';
-            newInput.innerHTML = `
-                <input type="email" class="bulk-email-manual-input" placeholder="email@example.com"
-                    style="flex: 1; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif;">
-                <button type="button" onclick="removeEmailInput(this)" 
-                    style="padding: 10px 14px; background: #ef4444; border: 1px solid #ef4444; border-radius: 8px; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
-                    onmouseover="this.style.background='#dc2626'"
-                    onmouseout="this.style.background='#ef4444'">Remove</button>
-            `;
-            container.appendChild(newInput);
-            
-            // Focus on the new input
-            const input = newInput.querySelector('input');
-            input.focus();
-        }
-
-        function removeEmailInput(button) {
-            const container = document.getElementById('bulkEmailManualInputs');
-            const inputs = container.querySelectorAll('.bulk-email-manual-input');
-            
-            // Don't allow removing if it's the last one
-            if (inputs.length <= 1) {
-                alert('You need at least one email input. Clear it instead of removing.');
-                return;
-            }
-            
-            button.parentElement.remove();
-        }
     </script>
 
     <!-- Vercel Analytics -->

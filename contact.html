@@ -1,319 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white antialiased">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - ORA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Comprehensive CSS Reset and Base Styles - Same as index.html */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0A0B14;
-            color: #ffffff;
-            line-height: 1.5;
-            width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; margin: 0; }
-        p { margin: 0 0 1rem 0; }
-        a { color: inherit; text-decoration: none; }
-        img { max-width: 100%; height: auto; display: block; }
-        nav img { width: 48px !important; height: 48px !important; max-width: 48px !important; max-height: 48px !important; object-fit: cover; }
-        svg { display: inline-block; vertical-align: middle; width: 1em; height: 1em; max-width: 100%; max-height: 100%; }
-        
-        /* Layout Utilities */
-        .min-h-screen { min-height: 100vh !important; }
-        .fixed { position: fixed !important; }
-        .relative { position: relative !important; }
-        .absolute { position: absolute !important; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .top-0 { top: 0; }
-        .right-0 { right: 0; }
-        .left-0 { left: 0; }
-        .z-10 { z-index: 10; }
-        .z-50 { z-index: 50; }
-        .-z-10 { z-index: -10; }
-        
-        /* Flexbox */
-        .flex { display: flex !important; }
-        .items-center { align-items: center !important; }
-        .justify-between { justify-content: space-between !important; }
-        .justify-center { justify-content: center !important; }
-        .flex-col { flex-direction: column !important; }
-        .gap-3 { gap: 0.75rem; }
-        .gap-4 { gap: 1rem; }
-        .gap-6 { gap: 1.5rem; }
-        .gap-8 { gap: 2rem; }
-        
-        /* Spacing */
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-        .pt-32 { padding-top: 8rem; }
-        .pb-20 { padding-bottom: 5rem; }
-        .p-8 { padding: 2rem; }
-        .p-12 { padding: 3rem; }
-        .ml-3 { margin-left: 0.75rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        
-        /* Sizing */
-        .w-12 { width: 3rem; max-width: 3rem; }
-        .h-12 { height: 3rem; max-height: 3rem; }
-        .max-w-4xl { max-width: 56rem; }
-        .max-w-2xl { max-width: 42rem; }
-        
-        /* Borders */
-        .border { border-width: 1px; }
-        .rounded-full { border-radius: 9999px; }
-        .rounded-xl { border-radius: 0.75rem; }
-        .rounded-2xl { border-radius: 1rem; }
-        .rounded-lg { border-radius: 0.5rem; }
-        
-        /* Text */
-        .text-sm { font-size: 0.875rem; }
-        .text-lg { font-size: 1.125rem; }
-        .text-xl { font-size: 1.25rem; }
-        .text-2xl { font-size: 1.5rem; }
-        .text-3xl { font-size: 1.875rem; }
-        .text-4xl { font-size: 2.25rem; }
-        .font-medium { font-weight: 500; }
-        .font-semibold { font-weight: 600; }
-        .font-bold { font-weight: 700; }
-        .text-white { color: #ffffff; }
-        .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
-        .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
-        .text-orange-400 { color: #fb923c; }
-        .text-center { text-align: center; }
-        .tracking-tight { letter-spacing: -0.025em; }
-        
-        /* Background */
-        .bg-black { background: linear-gradient(135deg, #101429 0%, #1c2140 100%); }
-        .bg-gray-800 { background: rgba(255, 255, 255, 0.12); }
-        .opacity-20 { opacity: 0.2; }
-        
-        /* Glass effect */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .highlight {
-            background: rgba(249, 115, 22, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #F97316;
-            margin: 20px 0;
-        }
-        
-        /* Form styles */
-        input, textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 0.5rem;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #fb923c;
-            background: rgba(255, 255, 255, 0.25);
-        }
-        input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        button {
-            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-            color: #ffffff;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
-        }
-        button:active {
-            transform: translateY(0);
-        }
-        
-        /* Hover states */
-        .hover\:opacity-80:hover { opacity: 0.8; }
-        .hover\:text-white:hover { color: #ffffff; }
-        
-        /* Transitions */
-        .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-        .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-        
-        /* Antialiased */
-        .antialiased {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Font family */
-        .font-sans { font-family: 'Inter', sans-serif; }
-        
-        /* Grid */
-        .grid { display: grid !important; }
-        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        
-        @media (min-width: 768px) {
-            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - ORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Protos Font -->
+  <style>
+    @font-face {
+      font-family: 'Protos';
+      src: url('Protos.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
 </head>
-<body class="min-h-screen antialiased text-white bg-black">
-    <!-- Background Grid -->
-    <div class="fixed inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 24px 24px;"></div>
-
-    <!-- Main Container -->
-    <div class="relative z-10 min-h-screen">
-        
-        <!-- Nav -->
-        <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-6">
-            <div class="max-w-4xl mx-auto glass-effect rounded-full px-6 py-3">
-                <div class="flex items-center justify-between">
-                    <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
-                            <img src="Adobe Express - file-2.png" alt="ORA Logo" class="w-12 h-12 object-cover rounded-xl">
-                        </div>
-                        <span class="ml-3 text-lg font-semibold tracking-tight text-white font-sans">ORA</span>
-                    </a>
-                    <a href="/" class="text-sm font-medium hover:text-white transition-colors">← Back to Home</a>
-                </div>
-            </div>
+<body class="h-full text-slate-900 [font-family:Inter,sans-serif]">
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <span class="text-lg font-semibold tracking-tight" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm">
+          <a href="/#features" class="text-slate-600 hover:text-slate-900 transition">Features</a>
+          <a href="/#pricing" class="text-slate-600 hover:text-slate-900 transition">Pricing</a>
+          <a href="/#product" class="text-slate-600 hover:text-slate-900 transition">Product</a>
+          <a href="/#analytics" class="text-slate-600 hover:text-slate-900 transition">Analytics</a>
+          <a href="/contact" class="text-slate-600 hover:text-slate-900 transition">Contact</a>
         </nav>
-
-        <!-- Content -->
-        <section class="pt-32 pb-20">
-            <div class="max-w-4xl mx-auto px-6">
-                <div class="glass-effect rounded-2xl p-12">
-                    <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
-                    <p class="text-white/60 mb-8 text-lg">Get in touch with our support team. We're here to help!</p>
-                    
-                    <div class="highlight mb-8">
-                        <strong>Need Help?</strong> Our support team typically responds within 24-48 hours. For urgent issues, please include "URGENT" in your subject line.
-                    </div>
-                    
-                    <!-- Contact Information -->
-                    <div class="grid md:grid-cols-2 gap-6 mb-8">
-                        <div class="bg-gray-800 rounded-lg p-6">
-                            <h3 class="text-xl font-semibold mb-3 text-orange-400">Email Support</h3>
-                            <p class="text-white/80 mb-4">For general inquiries, support requests, or feedback:</p>
-                            <a href="mailto:support@myora.co" class="text-orange-400 hover:text-white transition-colors font-medium">
-                                support@myora.co
-                            </a>
-                        </div>
-                        <div class="bg-gray-800 rounded-lg p-6">
-                            <h3 class="text-xl font-semibold mb-3 text-orange-400">Business Inquiries</h3>
-                            <p class="text-white/80 mb-4">For partnerships, collaborations, or business opportunities:</p>
-                            <a href="mailto:team@myora.co" class="text-orange-400 hover:text-white transition-colors font-medium">
-                                team@myora.co
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Contact Form -->
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-semibold mb-6">Send us a Message</h2>
-                        <form id="contactForm" class="space-y-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium mb-2">Your Name</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium mb-2">Your Email</label>
-                                <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
-                            </div>
-                            <div>
-                                <label for="subject" class="block text-sm font-medium mb-2">Subject</label>
-                                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
-                            </div>
-                            <div>
-                                <label for="message" class="block text-sm font-medium mb-2">Message</label>
-                                <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help..." required></textarea>
-                            </div>
-                            <button type="submit" class="w-full">Send Message</button>
-                        </form>
-                        <div id="formMessage" class="mt-4 text-center hidden"></div>
-                    </div>
-                    
-                    <!-- Additional Information -->
-                    <div class="border-t border-white/10 pt-8">
-                        <h2 class="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
-                        <div class="space-y-4">
-                            <div class="bg-gray-800 rounded-lg p-4">
-                                <h3 class="text-lg font-semibold mb-2 text-orange-400">How quickly will I receive a response?</h3>
-                                <p class="text-white/80 text-sm">We aim to respond to all inquiries within 24-48 hours during business days.</p>
-                            </div>
-                            <div class="bg-gray-800 rounded-lg p-4">
-                                <h3 class="text-lg font-semibold mb-2 text-orange-400">What information should I include?</h3>
-                                <p class="text-white/80 text-sm">Please include your account email (if applicable), a clear description of your issue or question, and any relevant screenshots or details.</p>
-                            </div>
-                            <div class="bg-gray-800 rounded-lg p-4">
-                                <h3 class="text-lg font-semibold mb-2 text-orange-400">Can I get help with the app?</h3>
-                                <p class="text-white/80 text-sm">Yes! We provide support for all ORA app features, including account setup, subscription management, and troubleshooting.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      </div>
     </div>
-    
-    <script>
-        // Simple form handling - opens email client
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+  </header>
+
+  <!-- Contact Section -->
+  <section class="relative overflow-hidden sm:pt-28 pt-24 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl border border-white/10 bg-white/80 backdrop-blur-sm p-8 sm:p-12 shadow-[0_2px_0_rgba(0,0,0,0.03),0_24px_48px_-24px_rgba(0,0,0,0.25)]">
+        <h1 class="text-4xl sm:text-5xl tracking-tight mb-4" style="font-family: Inter, sans-serif; font-weight: 600; color: #1e293b;">Contact Us</h1>
+        <p class="text-slate-600 mb-8">Have a question? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+        
+        <form id="contactForm" class="space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-slate-900 mb-2">Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required
+              class="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70"
+              placeholder="Your name"
+            >
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-900 mb-2">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              class="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70"
+              placeholder="your@email.com"
+            >
+          </div>
+          
+          <div>
+            <label for="subject" class="block text-sm font-medium text-slate-900 mb-2">Subject</label>
+            <input 
+              type="text" 
+              id="subject" 
+              name="subject" 
+              required
+              class="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70"
+              placeholder="What's this about?"
+            >
+          </div>
+          
+          <div>
+            <label for="message" class="block text-sm font-medium text-slate-900 mb-2">Message</label>
+            <textarea 
+              id="message" 
+              name="message" 
+              rows="6" 
+              required
+              class="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70 resize-none"
+              placeholder="Your message..."
+            ></textarea>
+          </div>
+          
+          <button 
+            type="submit"
+            class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-semibold px-4 py-3 shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 transition"
+          >
+            <span>Send Message</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" class="lucide lucide-send h-4 w-4"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+          </button>
+          
+          <p id="contactMessage" class="text-sm text-center hidden"></p>
+        </form>
+
+        <div class="mt-12 pt-8 border-t border-slate-200">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="rounded-xl ring-1 ring-slate-200 bg-white/50 backdrop-blur-sm p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-slate-900 text-white grid place-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail h-5 w-5"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">Email</h3>
+              </div>
+              <p class="text-sm text-slate-600">hello@myora.co</p>
+            </div>
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            // Create mailto link
-            const mailtoLink = `mailto:support@myora.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Show success message
-            const formMessage = document.getElementById('formMessage');
-            formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at support@myora.co';
-            formMessage.classList.remove('hidden');
-            formMessage.style.color = '#fb923c';
-            
-            // Reset form after a moment
-            setTimeout(() => {
-                document.getElementById('contactForm').reset();
-                formMessage.classList.add('hidden');
-            }, 5000);
+            <div class="rounded-xl ring-1 ring-slate-200 bg-white/50 backdrop-blur-sm p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-slate-900 text-white grid place-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock h-5 w-5"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900">Response Time</h3>
+              </div>
+              <p class="text-sm text-slate-600">We typically respond within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 py-8">
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold tracking-tight" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
+        </div>
+        <p class="text-xs text-slate-500">© <span id="year">2025</span> ORA. All rights reserved.</p>
+        <div class="flex items-center gap-4 text-slate-600">
+          <a href="/privacy-policy" class="text-sm hover:text-slate-900 transition">Privacy</a>
+          <a href="/terms-of-service" class="text-sm hover:text-slate-900 transition">Terms</a>
+          <a href="/contact" class="text-sm hover:text-slate-900 transition">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Contact Form Handler
+    document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      const messageEl = document.getElementById('contactMessage');
+      const button = e.target.querySelector('button[type="submit"]');
+      
+      button.disabled = true;
+      button.innerHTML = '<span>Sending...</span>';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-    </script>
+
+        if (response.ok) {
+          messageEl.textContent = 'Thanks! We\'ll get back to you soon.';
+          messageEl.className = 'text-sm text-center text-green-600';
+          messageEl.classList.remove('hidden');
+          e.target.reset();
+        } else {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        messageEl.textContent = 'Something went wrong. Please try again or email us directly.';
+        messageEl.className = 'text-sm text-center text-red-600';
+        messageEl.classList.remove('hidden');
+      } finally {
+        button.disabled = false;
+        button.innerHTML = '<span>Send Message</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" class="lucide lucide-send h-4 w-4"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>';
+      }
+    });
+  </script>
 </body>
 </html>
-

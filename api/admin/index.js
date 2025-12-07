@@ -72,6 +72,8 @@ module.exports = async (req, res) => {
         return await handleMarketing(req, res);
       case 'waitlist':
         return await handleWaitlist(req, res);
+      case 'auth':
+        return await handleAuth(req, res);
       default:
         return res.status(400).json({ error: 'Invalid type parameter' });
     }
@@ -136,15 +138,18 @@ async function handleSendEmail(req, res) {
 
 async function handleMarketing(req, res) {
   const marketing = require('../../lib/admin/marketing.js');
-  if (req.method === 'POST') {
-    return await marketing.sendMarketingNotification(req, res);
-  } else {
-    return await marketing.getMarketingHistory(req, res);
-  }
+  // marketing.js exports an object with default handler
+  const handler = marketing.default || marketing;
+  return handler(req, res);
 }
 
 async function handleWaitlist(req, res) {
   const handler = require('../../lib/admin/waitlist.js');
+  return handler(req, res);
+}
+
+async function handleAuth(req, res) {
+  const handler = require('../../lib/admin/auth.js');
   return handler(req, res);
 }
 

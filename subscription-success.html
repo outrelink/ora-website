@@ -1,59 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white antialiased">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription Successful - ORA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Preload Protos font for faster loading -->
+    <link rel="preload" href="Protos.otf" as="font" type="font/otf" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        @font-face {
+            font-family: 'Protos';
+            src: url('Protos.otf') format('opentype');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
         }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen antialiased text-white bg-black">
-    <!-- Background Grid -->
-    <div class="fixed inset-0 opacity-20" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 24px 24px;"></div>
+<body class="min-h-screen antialiased text-slate-900 bg-white">
+    <!-- Nav -->
+    <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200/60">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <span class="text-lg font-semibold tracking-tight" style="font-family: 'Protos', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
+                </a>
+                <a href="/" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">← Back to Home</a>
+            </div>
+        </div>
+    </header>
 
     <!-- Main Container -->
-    <div class="relative z-10 min-h-screen flex items-center justify-center px-6">
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-6 py-20">
         <div class="max-w-2xl w-full">
-            <div class="glass-effect rounded-3xl p-12 text-center">
+            <div class="rounded-3xl border border-slate-200 p-12 text-center" style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);">
                 <div class="mb-8">
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500">
                             <path d="m9 12 2 2 4-4"></path>
                             <circle cx="12" cy="12" r="10"></circle>
                         </svg>
                     </div>
-                    <h1 class="text-3xl lg:text-4xl text-white tracking-tight mb-4 font-manrope font-medium">Payment Successful!</h1>
-                    <p class="text-lg text-white/60 font-sans mb-6">Your subscription is now active.</p>
+                    <h1 class="text-3xl lg:text-4xl text-slate-900 tracking-tight mb-4 font-manrope font-semibold">Payment Successful!</h1>
+                    <p class="text-lg text-slate-600 mb-6">Your subscription is now active.</p>
                     
                     <!-- Countdown Timer -->
                     <div id="countdownContainer" class="mb-6">
-                        <p class="text-base text-white/70 font-sans mb-3">Returning to app automatically in:</p>
+                        <p class="text-base text-slate-600 mb-3">Returning to app automatically in:</p>
                         <div class="flex items-center justify-center gap-2 mb-4">
-                            <div id="countdownNumber" class="text-5xl font-bold text-orange-400 font-manrope" style="min-width: 80px; text-align: center;">3</div>
-                            <span class="text-xl text-white/50 font-sans">seconds</span>
+                            <div id="countdownNumber" class="text-5xl font-bold text-orange-500 font-manrope" style="min-width: 80px; text-align: center;">3</div>
+                            <span class="text-xl text-slate-500">seconds</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <button id="returnToAppBtn" onclick="openApp()" class="w-full py-4 px-6 rounded-xl text-base font-semibold text-white border border-orange-500/30 hover:border-orange-500/50 transition-all duration-300 font-sans flex items-center justify-center gap-2" style="background: rgba(249, 115, 22, 0.15);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                    <button id="returnToAppBtn" onclick="openApp()" class="w-full py-4 px-6 rounded-xl text-base font-semibold text-white border border-orange-500 hover:border-orange-600 transition-all duration-300 flex items-center justify-center gap-2" style="background: #f97316;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                             <polyline points="10 17 15 12 10 7"></polyline>
                             <line x1="15" x2="3" y1="12" y2="12"></line>
                         </svg>
                         <span>Return to App Now</span>
                     </button>
-                    <a href="index.html" class="block w-full py-4 px-6 rounded-xl text-sm font-medium text-white border border-white/20 hover:border-white/30 transition-all duration-300 hover:bg-white/5 font-sans text-center" style="background: rgba(255, 255, 255, 0.03);">
+                    <a href="/" class="block w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-700 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50 text-center" style="background: rgba(255, 255, 255, 0.8);">
                         Go to Website
                     </a>
                 </div>
@@ -132,13 +145,13 @@
                 // If still on page after 2 seconds, app didn't open
                 if (document.visibilityState === 'visible') {
                     if (returnBtn) {
-                        returnBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg><span class="ml-2">Return to App Now</span>';
+                        returnBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg><span class="ml-2">Return to App Now</span>';
                         returnBtn.disabled = false;
                     }
                     
                     // Show helpful message
                     const message = document.createElement('div');
-                    message.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(249, 115, 22, 0.9); color: white; padding: 16px 24px; border-radius: 12px; z-index: 1000; font-family: Inter, sans-serif; max-width: 90%; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);';
+                    message.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #f97316; color: white; padding: 16px 24px; border-radius: 12px; z-index: 1000; font-family: Inter, sans-serif; max-width: 90%; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);';
                     message.innerHTML = '<div class="font-semibold mb-1">App didn\'t open automatically?</div><div class="text-sm">Please return to the ORA app manually. Your subscription is active!</div>';
                     document.body.appendChild(message);
                     setTimeout(() => message.remove(), 6000);
@@ -165,4 +178,3 @@
     </script>
 </body>
 </html>
-

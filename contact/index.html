@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-white antialiased">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - ORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @font-face {
+      font-family: 'Protos';
+      src: url('../Protos.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-900 [font-family:Inter,sans-serif]">
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <span class="text-lg font-semibold tracking-tight" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm">
+          <a href="/#features" class="text-slate-600 hover:text-slate-900 transition">Features</a>
+          <a href="/#pricing" class="text-slate-600 hover:text-slate-900 transition">Pricing</a>
+          <a href="/#product" class="text-slate-600 hover:text-slate-900 transition">Product</a>
+          <a href="/#analytics" class="text-slate-600 hover:text-slate-900 transition">Analytics</a>
+          <a href="/contact" class="text-slate-600 hover:text-slate-900 transition">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <section class="relative overflow-hidden sm:pt-28 pt-24 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl border border-white/10 bg-white/80 backdrop-blur-sm p-8 sm:p-12 shadow-[0_2px_0_rgba(0,0,0,0.03),0_24px_48px_-24px_rgba(0,0,0,0.25)]">
+        <h1 class="text-4xl sm:text-5xl tracking-tight mb-4" style="font-family: Inter, sans-serif; font-weight: 600; color: #1e293b;">Contact Us</h1>
+        <p class="text-slate-600 mb-8 text-lg">Get in touch with our support team. We're here to help!</p>
+        
+        <!-- Contact Information -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <h3 class="text-xl font-semibold mb-3 text-slate-900">Email Support</h3>
+            <p class="text-slate-600 mb-4">For general inquiries, support requests, or feedback:</p>
+            <a href="mailto:support@myora.co" class="text-slate-700 hover:text-slate-900 transition-colors font-medium">
+              support@myora.co
+            </a>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <h3 class="text-xl font-semibold mb-3 text-slate-900">Business Inquiries</h3>
+            <p class="text-slate-600 mb-4">For partnerships, collaborations, or business opportunities:</p>
+            <a href="mailto:team@myora.co" class="text-slate-700 hover:text-slate-900 transition-colors font-medium">
+              team@myora.co
+            </a>
+          </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold mb-6" style="font-family: Inter, sans-serif; font-weight: 600; color: #1e293b;">Send us a Message</h2>
+          <form id="contactForm" class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium mb-2 text-slate-900">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Enter your name" required class="w-full px-4 py-3 rounded-xl border-0 bg-white text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70 transition-colors">
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium mb-2 text-slate-900">Your Email</label>
+              <input type="email" id="email" name="email" placeholder="your.email@example.com" required class="w-full px-4 py-3 rounded-xl border-0 bg-white text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70 transition-colors">
+            </div>
+            <div>
+              <label for="subject" class="block text-sm font-medium mb-2 text-slate-900">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required class="w-full px-4 py-3 rounded-xl border-0 bg-white text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70 transition-colors">
+            </div>
+            <div>
+              <label for="message" class="block text-sm font-medium mb-2 text-slate-900">Message</label>
+              <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help..." required class="w-full px-4 py-3 rounded-xl border-0 bg-white text-slate-900 shadow-sm ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/70 transition-colors resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-semibold px-4 py-3 shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 transition">Send Message</button>
+          </form>
+          <div id="formMessage" class="mt-4 text-center text-slate-600 hidden"></div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="border-t border-slate-200 pt-8">
+          <h2 class="text-2xl font-semibold mb-4" style="font-family: Inter, sans-serif; font-weight: 600; color: #1e293b;">Frequently Asked Questions</h2>
+          <div class="space-y-4">
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-slate-900">How quickly will I receive a response?</h3>
+              <p class="text-slate-600 text-sm">We aim to respond to all inquiries within 24-48 hours during business days.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-slate-900">What information should I include?</h3>
+              <p class="text-slate-600 text-sm">Please include your account email (if applicable), a clear description of your issue or question, and any relevant screenshots or details.</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h3 class="text-lg font-semibold mb-2 text-slate-900">Can I get help with the app?</h3>
+              <p class="text-slate-600 text-sm">Yes! We provide support for all ORA app features, including account setup, subscription management, and troubleshooting.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 py-8">
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold tracking-tight" style="font-family: 'Protos', sans-serif; letter-spacing: 1.5px; font-weight: 800;">ORA</span>
+        </div>
+        <p class="text-xs text-slate-500">© <span id="year">2025</span> ORA. All rights reserved.</p>
+        <div class="flex items-center gap-4 text-slate-600">
+          <a href="/privacy-policy" class="text-sm hover:text-slate-900 transition">Privacy</a>
+          <a href="/terms-of-service" class="text-sm hover:text-slate-900 transition">Terms</a>
+          <a href="/contact" class="text-sm hover:text-slate-900 transition">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Contact form handling
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+      
+      // Create mailto link
+      const mailtoLink = `mailto:support@myora.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      const formMessage = document.getElementById('formMessage');
+      formMessage.textContent = 'Opening your email client... If it doesn\'t open, please email us directly at support@myora.co';
+      formMessage.classList.remove('hidden');
+      
+      // Reset form after a moment
+      setTimeout(() => {
+        document.getElementById('contactForm').reset();
+        formMessage.classList.add('hidden');
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
+
