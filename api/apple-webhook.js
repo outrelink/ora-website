@@ -49,14 +49,17 @@ async function handleSubscriptionEvent(event) {
     const originalTransactionId = latestReceiptInfo.original_transaction_id;
     const userId = unified_receipt?.latest_receipt_info?.[0]?.original_transaction_id; // You'll need to map this to your user ID
 
-    // Map product ID to plan
+    // Map product ID to plan (Updated December 2025)
     const productIdToPlan = {
-      'com.myora.creator.monthly': 'creator',
-      'com.myora.creator.annual': 'creator',
+      // New product IDs
+      'com.myora.essentials.monthly': 'essentials',
+      'com.myora.creator.pro.monthly': 'pro',
+      'com.myora.creator.elite.monthly': 'elite',
+      
+      // Old product IDs (for backward compatibility)
+      'com.myora.creator.monthly': 'essentials',
       'com.myora.pro.monthly': 'pro',
-      'com.myora.pro.annual': 'pro',
-      'com.myora.premium.monthly': 'premium',
-      'com.myora.premium.annual': 'premium',
+      'com.myora.premium.monthly': 'elite',
     };
 
     const plan = productIdToPlan[productId];

@@ -16,21 +16,24 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const APPLE_SANDBOX_URL = 'https://sandbox.itunes.apple.com/verifyReceipt';
 const APPLE_PRODUCTION_URL = 'https://buy.itunes.apple.com/verifyReceipt';
 
-// Map product IDs to plans
+// Map product IDs to plans (Updated December 2025)
 const PRODUCT_ID_TO_PLAN = {
-  'com.myora.creator.monthly': 'creator',
-  'com.myora.creator.annual': 'creator',
+  // New product IDs
+  'com.myora.essentials.monthly': 'essentials',
+  'com.myora.creator.pro.monthly': 'pro',
+  'com.myora.creator.elite.monthly': 'elite',
+  
+  // Old product IDs (for backward compatibility)
+  'com.myora.creator.monthly': 'essentials',
   'com.myora.pro.monthly': 'pro',
-  'com.myora.pro.annual': 'pro',
-  'com.myora.premium.monthly': 'premium',
-  'com.myora.premium.annual': 'premium',
+  'com.myora.premium.monthly': 'elite',
 };
 
 // Map plans to Stripe price IDs (if you want to sync with Stripe)
 const PLAN_TO_STRIPE_PRICE = {
-  creator: process.env.STRIPE_PRICE_CREATOR || null,
+  essentials: process.env.STRIPE_PRICE_ESSENTIALS || process.env.STRIPE_PRICE_CREATOR || null,
   pro: process.env.STRIPE_PRICE_PRO || null,
-  premium: process.env.STRIPE_PRICE_PREMIUM || null,
+  elite: process.env.STRIPE_PRICE_ELITE || process.env.STRIPE_PRICE_PREMIUM || null,
 };
 
 /**
