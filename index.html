@@ -482,14 +482,6 @@
           <h3 class="text-3xl lg:text-4xl text-slate-900 tracking-tight mb-6 font-semibold">Choose Your Plan</h3>
           <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-6">Simple, transparent pricing for creators at every stage. Download the app from the App Store to subscribe and access all features.</p>
           
-          <!-- Billing Period Toggle -->
-          <div class="flex items-center justify-center gap-3 mb-10">
-            <span class="text-sm font-medium text-slate-700" id="home-monthlyLabel">Monthly</span>
-            <button id="home-billingToggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer hover:bg-slate-300" onclick="toggleHomeBillingPeriod()">
-              <span id="home-toggleIndicator" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform translate-x-0.5 shadow-sm"></span>
-            </button>
-            <span class="text-sm font-medium text-slate-700" id="home-annualLabel">Annual <span class="text-orange-500 font-semibold">Save 20%</span></span>
-          </div>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -501,9 +493,6 @@
               <div class="flex items-baseline gap-2">
                 <span class="text-4xl text-slate-900 font-semibold" id="home-creator-price">$12.99</span>
                 <span class="text-sm text-slate-400" id="home-creator-period">/month</span>
-              </div>
-              <div class="text-xs text-slate-500 mt-1" id="home-creator-savings" style="display: none;">
-                Save $48.00 per year
               </div>
             </div>
             
@@ -552,9 +541,6 @@
                 <span class="text-4xl text-slate-900 font-semibold" id="home-pro-price">$24.99</span>
                 <span class="text-sm text-slate-400" id="home-pro-period">/month</span>
               </div>
-              <div class="text-xs text-slate-500 mt-1" id="home-pro-savings" style="display: none;">
-                Save $96.00 per year
-              </div>
             </div>
             
             <ul class="space-y-4 mb-8">
@@ -589,9 +575,6 @@
               <div class="flex items-baseline gap-2">
                 <span class="text-4xl text-slate-900 font-semibold" id="home-premium-price">$49.99</span>
                 <span class="text-sm text-slate-400" id="home-premium-period">/month</span>
-              </div>
-              <div class="text-xs text-slate-500 mt-1" id="home-premium-savings" style="display: none;">
-                Save $192.00 per year
               </div>
             </div>
             
@@ -633,7 +616,7 @@
         </div>
         
         <div class="text-center mt-16 pt-12 border-t border-slate-200">
-          <p class="text-sm text-slate-600 mb-6" id="home-billing-note">All plans include comprehensive features, cloud sync, and regular updates. Subscriptions are billed monthly and automatically renew. Subscribe on the website or through the app. Use the same email address in both places to access your subscription.</p>
+          <p class="text-sm text-slate-600 mb-6">All plans include comprehensive features, cloud sync, and regular updates. Subscriptions are billed monthly and automatically renew. Subscribe on the website or through the app. Use the same email address in both places to access your subscription.</p>
         </div>
       </div>
     </section>
@@ -901,83 +884,6 @@
     window.addEventListener('hashchange', updateActiveNav);
   </script>
 
-  <script>
-    // Homepage billing period toggle
-    let homeBillingPeriod = 'month'; // 'month' or 'year'
-
-    // Pricing data for homepage
-    const homePricing = {
-      creator: { month: 19.99, year: 191.88 },
-      pro: { month: 39.99, year: 383.88 },
-      premium: { month: 79.99, year: 767.88 }
-    };
-
-    // Toggle billing period on homepage
-    function toggleHomeBillingPeriod() {
-      homeBillingPeriod = homeBillingPeriod === 'month' ? 'year' : 'month';
-      updateHomePricingDisplay();
-    }
-
-    // Update pricing display on homepage
-    function updateHomePricingDisplay() {
-      const isAnnual = homeBillingPeriod === 'year';
-      const toggle = document.getElementById('home-billingToggle');
-      const indicator = document.getElementById('home-toggleIndicator');
-      const monthlyLabel = document.getElementById('home-monthlyLabel');
-      const annualLabel = document.getElementById('home-annualLabel');
-      const billingNote = document.getElementById('home-billing-note');
-
-      // Update toggle visual state
-      if (isAnnual) {
-        toggle.classList.remove('bg-slate-200');
-        toggle.classList.add('bg-orange-500');
-        indicator.classList.remove('translate-x-0.5');
-        indicator.classList.add('translate-x-5');
-        monthlyLabel.classList.remove('font-semibold');
-        annualLabel.classList.add('font-semibold');
-      } else {
-        toggle.classList.remove('bg-orange-500');
-        toggle.classList.add('bg-slate-200');
-        indicator.classList.remove('translate-x-5');
-        indicator.classList.add('translate-x-0.5');
-        monthlyLabel.classList.add('font-semibold');
-        annualLabel.classList.remove('font-semibold');
-      }
-
-      // Update pricing for each plan
-      ['creator', 'pro', 'premium'].forEach(plan => {
-        const priceEl = document.getElementById(`home-${plan}-price`);
-        const periodEl = document.getElementById(`home-${plan}-period`);
-        const savingsEl = document.getElementById(`home-${plan}-savings`);
-        const linkEl = document.getElementById(`home-${plan}-link`);
-
-        if (isAnnual) {
-          priceEl.textContent = `$${homePricing[plan].year.toFixed(2)}`;
-          periodEl.textContent = '/year';
-          savingsEl.style.display = 'block';
-          // Update link to include annual plan
-          const currentHref = linkEl.getAttribute('href');
-          const basePlan = currentHref.split('?plan=')[1];
-          linkEl.setAttribute('href', `/subscribe?plan=${basePlan}&billing=annual`);
-        } else {
-          priceEl.textContent = `$${homePricing[plan].month.toFixed(2)}`;
-          periodEl.textContent = '/month';
-          savingsEl.style.display = 'none';
-          // Update link to monthly plan
-          const currentHref = linkEl.getAttribute('href');
-          const basePlan = currentHref.split('?plan=')[1]?.split('&')[0];
-          linkEl.setAttribute('href', `/subscribe?plan=${basePlan}`);
-        }
-      });
-
-      // Update billing note
-      if (billingNote) {
-        billingNote.textContent = isAnnual 
-          ? 'All plans include comprehensive features, cloud sync, and regular updates. Subscriptions are billed annually and automatically renew. Save 20% compared to monthly billing. Subscribe on the website or through the app. Use the same email address in both places to access your subscription.'
-          : 'All plans include comprehensive features, cloud sync, and regular updates. Subscriptions are billed monthly and automatically renew. Subscribe on the website or through the app. Use the same email address in both places to access your subscription.';
-      }
-    }
-  </script>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>

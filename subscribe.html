@@ -52,14 +52,6 @@
                         <h1 class="text-3xl lg:text-4xl text-slate-900 tracking-tight mb-4 font-manrope font-semibold">Choose Your Plan</h1>
                         <p class="text-lg text-slate-600 mb-8">Select a plan to continue with your subscription</p>
                         
-                        <!-- Billing Period Toggle -->
-                        <div class="flex items-center justify-center gap-3 mb-10">
-                            <span class="text-sm font-medium text-slate-700" id="monthlyLabel">Monthly</span>
-                            <button id="billingToggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 cursor-pointer hover:bg-slate-300" onclick="toggleBillingPeriod()">
-                                <span id="toggleIndicator" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform translate-x-0.5 shadow-sm"></span>
-                            </button>
-                            <span class="text-sm font-medium text-slate-700" id="annualLabel">Annual <span class="text-orange-500 font-semibold">Save 20%</span></span>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="pricingGrid">
@@ -71,9 +63,6 @@
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-4xl text-slate-900 font-semibold" id="creator-price">$12.99</span>
                                     <span class="text-sm text-slate-400" id="creator-period">/month</span>
-                                </div>
-                                <div class="text-xs text-slate-500 mt-1" id="creator-savings" style="display: none;">
-                                    Save $48.00 per year
                                 </div>
                             </div>
                             <ul class="space-y-4 mb-8">
@@ -93,7 +82,6 @@
                             <button onclick="selectPlan('creator')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50" style="background: rgba(255, 255, 255, 0.8);">
                                 Subscribe
                             </button>
-                            <input type="hidden" id="creator-billing" value="month">
                         </div>
 
                         <!-- Creator Pro - Featured -->
@@ -107,9 +95,6 @@
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-4xl text-slate-900 font-semibold" id="pro-price">$24.99</span>
                                     <span class="text-sm text-slate-400" id="pro-period">/month</span>
-                                </div>
-                                <div class="text-xs text-slate-500 mt-1" id="pro-savings" style="display: none;">
-                                    Save $96.00 per year
                                 </div>
                             </div>
                             <ul class="space-y-4 mb-8">
@@ -129,7 +114,6 @@
                             <button onclick="selectPlan('pro')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-orange-300 hover:border-orange-400 transition-all duration-300" style="background: rgba(249, 115, 22, 0.15);">
                                 Subscribe
                             </button>
-                            <input type="hidden" id="pro-billing" value="month">
                         </div>
 
                         <!-- Creator Elite -->
@@ -140,9 +124,6 @@
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-4xl text-slate-900 font-semibold" id="premium-price">$49.99</span>
                                     <span class="text-sm text-slate-400" id="premium-period">/month</span>
-                                </div>
-                                <div class="text-xs text-slate-500 mt-1" id="premium-savings" style="display: none;">
-                                    Save $192.00 per year
                                 </div>
                             </div>
                             <ul class="space-y-4 mb-8">
@@ -162,7 +143,6 @@
                             <button onclick="selectPlan('premium')" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50" style="background: rgba(255, 255, 255, 0.8);">
                                 Subscribe
                             </button>
-                            <input type="hidden" id="premium-billing" value="month">
                         </div>
                     </div>
 
@@ -244,81 +224,12 @@
             }
         }
 
-        // Billing period state - check URL parameter first
-        const urlBilling = urlParams.get('billing');
-        let billingPeriod = urlBilling === 'annual' ? 'year' : 'month'; // 'month' or 'year'
-        
-        // Initialize display based on URL parameter
-        if (urlBilling === 'annual') {
-            setTimeout(() => {
-                toggleBillingPeriod();
-            }, 100);
-        }
-
-        // Pricing data
+        // Pricing data - Monthly only
         const pricing = {
-            creator: { month: 19.99, year: 191.88 }, // $15.99/month × 12
-            pro: { month: 39.99, year: 383.88 },     // $31.99/month × 12
-            premium: { month: 79.99, year: 767.88 }   // $63.99/month × 12
+            creator: 12.99,
+            pro: 24.99,
+            premium: 49.99
         };
-
-        // Toggle billing period
-        function toggleBillingPeriod() {
-            billingPeriod = billingPeriod === 'month' ? 'year' : 'month';
-            updatePricingDisplay();
-        }
-
-        // Update pricing display based on billing period
-        function updatePricingDisplay() {
-            const isAnnual = billingPeriod === 'year';
-            const toggle = document.getElementById('billingToggle');
-            const indicator = document.getElementById('toggleIndicator');
-            const monthlyLabel = document.getElementById('monthlyLabel');
-            const annualLabel = document.getElementById('annualLabel');
-            const billingNote = document.getElementById('billing-note');
-
-            // Update toggle visual state
-            if (isAnnual) {
-                toggle.classList.remove('bg-slate-200');
-                toggle.classList.add('bg-orange-500');
-                indicator.classList.remove('translate-x-0.5');
-                indicator.classList.add('translate-x-5');
-                monthlyLabel.classList.remove('font-semibold');
-                annualLabel.classList.add('font-semibold');
-            } else {
-                toggle.classList.remove('bg-orange-500');
-                toggle.classList.add('bg-slate-200');
-                indicator.classList.remove('translate-x-5');
-                indicator.classList.add('translate-x-0.5');
-                monthlyLabel.classList.add('font-semibold');
-                annualLabel.classList.remove('font-semibold');
-            }
-
-            // Update pricing for each plan
-            ['creator', 'pro', 'premium'].forEach(plan => {
-                const priceEl = document.getElementById(`${plan}-price`);
-                const periodEl = document.getElementById(`${plan}-period`);
-                const savingsEl = document.getElementById(`${plan}-savings`);
-                const billingInput = document.getElementById(`${plan}-billing`);
-
-                if (isAnnual) {
-                    priceEl.textContent = `$${pricing[plan].year.toFixed(2)}`;
-                    periodEl.textContent = '/year';
-                    savingsEl.style.display = 'block';
-                    billingInput.value = 'year';
-                } else {
-                    priceEl.textContent = `$${pricing[plan].month.toFixed(2)}`;
-                    periodEl.textContent = '/month';
-                    savingsEl.style.display = 'none';
-                    billingInput.value = 'month';
-                }
-            });
-
-            // Update billing note
-            billingNote.textContent = isAnnual 
-                ? 'Subscriptions are billed annually and automatically renew. Save 20% compared to monthly billing.'
-                : 'Subscriptions are billed monthly and automatically renew.';
-        }
 
         // Select plan function
         async function selectPlan(plan) {
@@ -358,8 +269,8 @@
                 return;
             }
 
-            // Determine plan ID based on billing period
-            const planId = billingPeriod === 'year' ? `${plan}-annual` : plan;
+            // Plan ID (monthly only)
+            const planId = plan;
 
             // Create checkout session
             createCheckoutSession(planId, currentUserId, currentEmail.trim().toLowerCase());
