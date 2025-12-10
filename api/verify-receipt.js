@@ -87,6 +87,18 @@ function calculatePeriodEnd(purchaseDateMs, billingPeriod = 'month') {
 }
 
 module.exports = async (req, res) => {
+  const startTime = Date.now();
+  const { transactionId, rawReceipt, productId, userId } = req.body;
+  
+  // Log verification start
+  console.log('[VERIFY-RECEIPT] Starting verification', {
+    transactionId,
+    productId,
+    userId,
+    hasReceipt: !!rawReceipt,
+    receiptLength: rawReceipt?.length,
+    timestamp: new Date().toISOString()
+  });
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -157,6 +169,15 @@ module.exports = async (req, res) => {
     }
 
     // If verified, update subscriptions table
+    // Log Apple verification result
+    console.log('[VERIFY-RECEIPT] Apple verification result', {
+      transactionId,
+      productId,
+      appleStatus: appleResp?.status,
+      isVerified: appleResp?.status === 0,
+      timestamp: new Date().toISOString()
+    });
+
     if (appleResp?.status === 0) {
       // Extract subscription info from Apple response
       const latestReceiptInfo = appleResp.latest_receipt_info?.[0] || appleResp.receipt?.in_app?.[0];

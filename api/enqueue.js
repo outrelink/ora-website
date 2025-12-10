@@ -49,6 +49,14 @@ module.exports = async (req, res) => {
       enqueuedAt: new Date().toISOString()
     };
 
+    // Log enqueue attempt
+    console.log('[ENQUEUE] Attempting to enqueue transaction', {
+      transactionId,
+      productId,
+      userId,
+      timestamp: new Date().toISOString()
+    });
+
     // Insert into queue (idempotent - unique constraint on transaction_id)
     const { data, error } = await supabase
       .from('post_purchase_queue')
@@ -62,6 +70,23 @@ module.exports = async (req, res) => {
         onConflict: 'transaction_id'
       })
       .select();
+    
+    // Log result
+    if (error) {
+      console.error('[ENQUEUE] Failed to enqueue transaction', {
+        transactionId,
+        error: error.message,
+        errorCode: error.code,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      console.log('[ENQUEUE] Successfully enqueued transaction', {
+        transactionId,
+        productId,
+        queueId: data?.[0]?.id,
+        timestamp: new Date().toISOString()
+      });
+    }
 
     if (error) {
       // If it's a unique constraint violation, that's okay (idempotency)

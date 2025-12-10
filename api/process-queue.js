@@ -149,6 +149,14 @@ module.exports = async (req, res) => {
     for (const item of pendingItems) {
       try {
         results.processed++;
+        
+        console.log('[PROCESS-QUEUE] Processing item', {
+          queueId: item.id,
+          transactionId: item.transaction_id,
+          attempts: item.attempts,
+          payload: item.payload,
+          timestamp: new Date().toISOString()
+        });
 
         // Call verify-receipt endpoint
         const verifyResult = await verifyReceipt(item.payload);
@@ -161,7 +169,12 @@ module.exports = async (req, res) => {
             .eq('id', item.id);
 
           results.succeeded++;
-          console.log(`✓ Processed transaction ${item.transaction_id} successfully`);
+          console.log('[PROCESS-QUEUE] ✓ Transaction processed successfully', {
+            queueId: item.id,
+            transactionId: item.transaction_id,
+            attempts: item.attempts,
+            timestamp: new Date().toISOString()
+          });
         } else {
           // Verification failed - retry with backoff
           const newAttempts = item.attempts + 1;
@@ -177,7 +190,14 @@ module.exports = async (req, res) => {
             .eq('id', item.id);
 
           results.retried++;
-          console.log(`⚠ Retrying transaction ${item.transaction_id} (attempt ${newAttempts}/${MAX_ATTEMPTS})`);
+          console.log('[PROCESS-QUEUE] ⚠ Retrying transaction', {
+            queueId: item.id,
+            transactionId: item.transaction_id,
+            attempt: newAttempts,
+            maxAttempts: MAX_ATTEMPTS,
+            nextAttemptAt: nextAttempt,
+            timestamp: new Date().toISOString()
+          });
         }
 
       } catch (error) {
@@ -195,7 +215,15 @@ module.exports = async (req, res) => {
           .eq('id', item.id);
 
         results.failed++;
-        console.error(`✗ Error processing transaction ${item.transaction_id}:`, error.message);
+        console.error('[PROCESS-QUEUE] ✗ Error processing transaction', {
+          queueId: item.id,
+          transactionId: item.transaction_id,
+          error: error.message,
+          errorStack: error.stack,
+          attempt: newAttempts,
+          nextAttemptAt: nextAttempt,
+          timestamp: new Date().toISOString()
+        });
       }
     }
 
