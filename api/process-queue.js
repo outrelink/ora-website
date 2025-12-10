@@ -57,14 +57,42 @@ module.exports = async (req, res) => {
 
   // Security: Check CRON_SECRET for cron job invocations
   // Vercel adds Authorization header with CRON_SECRET for cron jobs
-  const authHeader = req.headers.authorization || req.headers['authorization'];
+  // cron-job.org may send it in query params or headers
+  const authHeader = req.headers.authorization || req.headers['authorization'] || req.headers['Authorization'];
+  const querySecret = req.query?.secret || req.query?.cron_secret;
   const cronSecret = process.env.CRON_SECRET;
   
   // If CRON_SECRET is set, require it for all requests
+  // Allow either Bearer token in header OR secret in query params (for cron-job.org)
   if (cronSecret) {
-    if (authHeader !== `Bearer ${cronSecret}`) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    // Check header - handle both "Bearer TOKEN" and just "TOKEN"
+    const headerToken = authHeader?.replace(/^Bearer\s+/i, '').trim();
+    const headerValid = headerToken === cronSecret || authHeader === `Bearer ${cronSecret}`;
+    const queryValid = querySecret === cronSecret;
+    
+    if (!headerValid && !queryValid) {
+      console.error('Unauthorized cron job attempt', { 
+        hasAuthHeader: !!authHeader,
+        authHeaderValue: authHeader ? (authHeader.substring(0, 20) + '...') : null,
+        hasQuerySecret: !!querySecret,
+        headerMatch: headerValid,
+        queryMatch: queryValid,
+        cronSecretSet: !!cronSecret,
+        cronSecretLength: cronSecret?.length
+      });
+      return res.status(401).json({ 
+        error: 'Unauthorized',
+        message: 'Missing or invalid CRON_SECRET'
+      });
     }
+    
+    console.log('Cron job authenticated successfully', {
+      method: 'header',
+      hasHeader: !!authHeader,
+      hasQuery: !!querySecret
+    });
+  } else {
+    console.warn('CRON_SECRET not set - allowing unauthenticated requests (not recommended for production)');
   }
 
   // Accept both GET (from cron) and POST (manual) requests
