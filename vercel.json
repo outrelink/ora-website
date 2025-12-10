@@ -1,4 +1,10 @@
 {
+  "crons": [
+    {
+      "path": "/api/process-queue",
+      "schedule": "*/5 * * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/privacy-policy",
@@ -71,6 +77,18 @@
     {
       "source": "/api/apple-webhook",
       "destination": "/api/apple-webhook"
+    },
+    {
+      "source": "/api/verify-receipt",
+      "destination": "/api/verify-receipt"
+    },
+    {
+      "source": "/api/enqueue",
+      "destination": "/api/enqueue"
+    },
+    {
+      "source": "/api/process-queue",
+      "destination": "/api/process-queue"
     },
     {
       "source": "/dashboard",
