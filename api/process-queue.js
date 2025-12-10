@@ -1,6 +1,6 @@
 /**
  * Process Post-Purchase Queue
- * POST /api/process-queue (or run as cron job)
+ * GET/POST /api/process-queue (or run as cron job)
  * 
  * Background worker that processes pending items in post_purchase_queue
  * Calls /verify-receipt for each pending transaction
