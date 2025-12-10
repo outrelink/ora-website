@@ -59,8 +59,26 @@ module.exports = async (req, res) => {
   // Vercel adds Authorization header with CRON_SECRET for cron jobs
   // cron-job.org may send it in query params or headers
   const authHeader = req.headers.authorization || req.headers['authorization'] || req.headers['Authorization'];
-  const querySecret = req.query?.secret || req.query?.cron_secret;
   const cronSecret = process.env.CRON_SECRET;
+  
+  // Parse query parameters manually from URL (more reliable than req.query)
+  let querySecret = null;
+  if (req.url) {
+    try {
+      const url = new URL(req.url, `https://${req.headers.host || 'myora.co'}`);
+      querySecret = url.searchParams.get('secret') || url.searchParams.get('cron_secret');
+    } catch (e) {
+      // Fallback: parse manually from URL string
+      const secretMatch = req.url.match(/[?&](?:secret|cron_secret)=([^&]+)/);
+      if (secretMatch) {
+        querySecret = decodeURIComponent(secretMatch[1]);
+      }
+    }
+  }
+  // Also try req.query as fallback
+  if (!querySecret) {
+    querySecret = req.query?.secret || req.query?.cron_secret;
+  }
   
   // Log what we received for debugging
   console.log('[PROCESS-QUEUE] Authentication check', {
@@ -72,7 +90,7 @@ module.exports = async (req, res) => {
     querySecretValue: querySecret ? (querySecret.substring(0, 10) + '...') : null,
     cronSecretSet: !!cronSecret,
     cronSecretLength: cronSecret?.length,
-    allQueryParams: Object.keys(req.query || {}),
+    reqQueryKeys: Object.keys(req.query || {}),
     timestamp: new Date().toISOString()
   });
   
@@ -84,7 +102,7 @@ module.exports = async (req, res) => {
     const headerValid = headerToken === cronSecret || authHeader === `Bearer ${cronSecret}`;
     const queryValid = querySecret === cronSecret;
     
-    // For cron-job.org, also check if secret is in the URL path
+    // For cron-job.org, also check if secret is in the URL path (double check)
     const urlSecret = req.url?.includes(`secret=${cronSecret}`) || req.url?.includes(`cron_secret=${cronSecret}`);
     
     if (!headerValid && !queryValid && !urlSecret) {
