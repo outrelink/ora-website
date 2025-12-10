@@ -62,6 +62,20 @@ module.exports = async (req, res) => {
   const querySecret = req.query?.secret || req.query?.cron_secret;
   const cronSecret = process.env.CRON_SECRET;
   
+  // Log what we received for debugging
+  console.log('[PROCESS-QUEUE] Authentication check', {
+    method: req.method,
+    url: req.url,
+    hasAuthHeader: !!authHeader,
+    authHeaderValue: authHeader ? (authHeader.substring(0, 30) + '...') : null,
+    hasQuerySecret: !!querySecret,
+    querySecretValue: querySecret ? (querySecret.substring(0, 10) + '...') : null,
+    cronSecretSet: !!cronSecret,
+    cronSecretLength: cronSecret?.length,
+    allQueryParams: Object.keys(req.query || {}),
+    timestamp: new Date().toISOString()
+  });
+  
   // If CRON_SECRET is set, require it for all requests
   // Allow either Bearer token in header OR secret in query params (for cron-job.org)
   if (cronSecret) {
@@ -70,38 +84,41 @@ module.exports = async (req, res) => {
     const headerValid = headerToken === cronSecret || authHeader === `Bearer ${cronSecret}`;
     const queryValid = querySecret === cronSecret;
     
-    // For cron-job.org, also check if secret is in the URL path or as a basic auth
+    // For cron-job.org, also check if secret is in the URL path
     const urlSecret = req.url?.includes(`secret=${cronSecret}`) || req.url?.includes(`cron_secret=${cronSecret}`);
     
     if (!headerValid && !queryValid && !urlSecret) {
       // Log detailed info for debugging (but don't expose the secret)
-      console.error('[PROCESS-QUEUE] Unauthorized request', { 
+      console.error('[PROCESS-QUEUE] Unauthorized request - authentication failed', { 
         hasAuthHeader: !!authHeader,
-        authHeaderPrefix: authHeader ? authHeader.substring(0, 10) : null,
+        authHeaderPrefix: authHeader ? authHeader.substring(0, 20) : null,
         hasQuerySecret: !!querySecret,
         querySecretLength: querySecret?.length,
-        url: req.url?.substring(0, 100),
+        querySecretPrefix: querySecret ? querySecret.substring(0, 10) : null,
+        url: req.url?.substring(0, 200),
         headerMatch: headerValid,
         queryMatch: queryValid,
         urlMatch: urlSecret,
         cronSecretSet: !!cronSecret,
         cronSecretLength: cronSecret?.length,
-        allHeaders: Object.keys(req.headers || {})
+        allHeaders: Object.keys(req.headers || {}),
+        allQueryParams: Object.keys(req.query || {})
       });
       return res.status(401).json({ 
         error: 'Unauthorized',
-        message: 'Missing or invalid CRON_SECRET. Check Authorization header or ?secret= query parameter.'
+        message: 'Missing or invalid CRON_SECRET. Check Authorization header or ?secret= query parameter.',
+        hint: 'Use: ?secret=YOUR_CRON_SECRET or Authorization: Bearer YOUR_CRON_SECRET'
       });
     }
     
-    console.log('[PROCESS-QUEUE] Cron job authenticated successfully', {
+    console.log('[PROCESS-QUEUE] ✓ Cron job authenticated successfully', {
       method: headerValid ? 'header' : queryValid ? 'query' : 'url',
       hasHeader: !!authHeader,
       hasQuery: !!querySecret,
       timestamp: new Date().toISOString()
     });
   } else {
-    console.warn('[PROCESS-QUEUE] CRON_SECRET not set - allowing unauthenticated requests (not recommended for production)');
+    console.warn('[PROCESS-QUEUE] ⚠ CRON_SECRET not set - allowing unauthenticated requests (not recommended for production)');
   }
 
   // Accept both GET (from cron) and POST (manual) requests
