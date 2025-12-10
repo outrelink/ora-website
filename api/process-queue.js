@@ -70,29 +70,38 @@ module.exports = async (req, res) => {
     const headerValid = headerToken === cronSecret || authHeader === `Bearer ${cronSecret}`;
     const queryValid = querySecret === cronSecret;
     
-    if (!headerValid && !queryValid) {
-      console.error('Unauthorized cron job attempt', { 
+    // For cron-job.org, also check if secret is in the URL path or as a basic auth
+    const urlSecret = req.url?.includes(`secret=${cronSecret}`) || req.url?.includes(`cron_secret=${cronSecret}`);
+    
+    if (!headerValid && !queryValid && !urlSecret) {
+      // Log detailed info for debugging (but don't expose the secret)
+      console.error('[PROCESS-QUEUE] Unauthorized request', { 
         hasAuthHeader: !!authHeader,
-        authHeaderValue: authHeader ? (authHeader.substring(0, 20) + '...') : null,
+        authHeaderPrefix: authHeader ? authHeader.substring(0, 10) : null,
         hasQuerySecret: !!querySecret,
+        querySecretLength: querySecret?.length,
+        url: req.url?.substring(0, 100),
         headerMatch: headerValid,
         queryMatch: queryValid,
+        urlMatch: urlSecret,
         cronSecretSet: !!cronSecret,
-        cronSecretLength: cronSecret?.length
+        cronSecretLength: cronSecret?.length,
+        allHeaders: Object.keys(req.headers || {})
       });
       return res.status(401).json({ 
         error: 'Unauthorized',
-        message: 'Missing or invalid CRON_SECRET'
+        message: 'Missing or invalid CRON_SECRET. Check Authorization header or ?secret= query parameter.'
       });
     }
     
-    console.log('Cron job authenticated successfully', {
-      method: 'header',
+    console.log('[PROCESS-QUEUE] Cron job authenticated successfully', {
+      method: headerValid ? 'header' : queryValid ? 'query' : 'url',
       hasHeader: !!authHeader,
-      hasQuery: !!querySecret
+      hasQuery: !!querySecret,
+      timestamp: new Date().toISOString()
     });
   } else {
-    console.warn('CRON_SECRET not set - allowing unauthenticated requests (not recommended for production)');
+    console.warn('[PROCESS-QUEUE] CRON_SECRET not set - allowing unauthenticated requests (not recommended for production)');
   }
 
   // Accept both GET (from cron) and POST (manual) requests
