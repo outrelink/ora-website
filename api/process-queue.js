@@ -57,8 +57,7 @@ module.exports = async (req, res) => {
 
   // Security: Check CRON_SECRET for cron job invocations
   // Vercel adds Authorization header with CRON_SECRET for cron jobs
-  // For manual POST requests, you can skip this check or use the same secret
-  const authHeader = req.headers.authorization || req.headers.get?.('authorization');
+  const authHeader = req.headers.authorization || req.headers['authorization'];
   const cronSecret = process.env.CRON_SECRET;
   
   // If CRON_SECRET is set, require it for all requests
