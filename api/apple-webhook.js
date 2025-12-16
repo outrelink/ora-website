@@ -8,7 +8,7 @@ const https = require('https');
 const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase
-const supabaseUrl = process.env.SUPABASE_URL || 'https://uljciarseazzcqptwuly.supabase.co';
+const supabaseUrl = process.env.SUPABASE_URL || 'https://mhremnqxmbwuxlmmuagw.supabase.co';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -47,7 +47,6 @@ async function handleSubscriptionEvent(event) {
     const productId = latestReceiptInfo.product_id;
     const transactionId = latestReceiptInfo.transaction_id;
     const originalTransactionId = latestReceiptInfo.original_transaction_id;
-    const userId = unified_receipt?.latest_receipt_info?.[0]?.original_transaction_id; // You'll need to map this to your user ID
 
     // Map product ID to plan (Updated December 2025)
     const productIdToPlan = {
@@ -69,25 +68,58 @@ async function handleSubscriptionEvent(event) {
     }
 
     // Calculate subscription dates
-    const purchaseDate = new Date(parseInt(latestReceiptInfo.purchase_date_ms));
-    const expiresDate = latestReceiptInfo.expires_date_ms 
-      ? new Date(parseInt(latestReceiptInfo.expires_date_ms))
+    // Safely parse timestamps - handle invalid values
+    const purchaseDateMs = latestReceiptInfo.purchase_date_ms 
+      ? parseInt(latestReceiptInfo.purchase_date_ms, 10) 
+      : Date.now();
+    const purchaseDate = isNaN(purchaseDateMs) ? new Date() : new Date(purchaseDateMs);
+    
+    const expiresDateMs = latestReceiptInfo.expires_date_ms 
+      ? parseInt(latestReceiptInfo.expires_date_ms, 10) 
+      : null;
+    const expiresDate = expiresDateMs && !isNaN(expiresDateMs)
+      ? new Date(expiresDateMs)
       : new Date(purchaseDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-    // Find user by original_transaction_id or email
-    // You'll need to store this mapping when user first purchases
-    let dbUserId = userId;
+    // CRITICAL: Find user by looking up subscription with original_transaction_id
+    // Apple webhooks don't provide user_id directly - we must look it up
+    let dbUserId = null;
     
-    // Try to find user by transaction ID if userId not available
-    if (!dbUserId) {
-      const { data: existingSub } = await supabase
-        .from('subscriptions')
-        .select('user_id')
-        .eq('iap_original_transaction_id', originalTransactionId)
-        .single();
+    // Look up existing subscription by original_transaction_id to get user_id
+    const { data: existingSub, error: lookupError } = await supabase
+      .from('subscriptions')
+      .select('user_id')
+      .eq('iap_original_transaction_id', originalTransactionId)
+      .single();
+    
+    if (existingSub && existingSub.user_id && existingSub.user_id !== 'unknown' && existingSub.user_id !== 'guest') {
+      dbUserId = existingSub.user_id;
+      console.log('✅ Found user by transaction ID:', { 
+        userId: dbUserId, 
+        originalTransactionId,
+        notificationType: notification_type
+      });
+    } else {
+      // If subscription doesn't exist yet (first purchase), we can't determine user
+      // This should be rare - usually the app saves subscription first
+      console.warn('⚠️ Could not find user for transaction:', {
+        originalTransactionId,
+        transactionId,
+        productId,
+        notificationType: notification_type,
+        existingSubUserId: existingSub?.user_id,
+        lookupError: lookupError?.message
+      });
       
-      if (existingSub) {
-        dbUserId = existingSub.user_id;
+      // For INITIAL_BUY, we'll save with 'unknown' and it can be updated later when app verifies receipt
+      // For other events (renewal, cancellation), we need user_id - skip if not found
+      if (notification_type !== 'INITIAL_BUY') {
+        console.error('❌ Cannot process webhook event without user_id:', {
+          notificationType: notification_type,
+          originalTransactionId,
+          note: 'Subscription may not exist yet - app will create it on next receipt verification'
+        });
+        return;
       }
     }
 
@@ -116,39 +148,59 @@ async function handleSubscriptionEvent(event) {
         // Subscription renewed
         console.log('Subscription renewed:', { userId: dbUserId, plan, transactionId });
         
-        await supabase.from('subscriptions')
-          .update({
-            status: 'active',
-            iap_transaction_id: transactionId,
-            current_period_start: purchaseDate.toISOString(),
-            current_period_end: expiresDate.toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .eq('iap_original_transaction_id', originalTransactionId);
+        if (dbUserId) {
+          await supabase.from('subscriptions')
+            .update({
+              status: 'active',
+              iap_transaction_id: transactionId,
+              current_period_start: purchaseDate.toISOString(),
+              current_period_end: expiresDate.toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .eq('iap_original_transaction_id', originalTransactionId);
+        } else {
+          console.warn('Cannot renew subscription - user not found:', { originalTransactionId });
+        }
         break;
 
       case 'DID_FAIL_TO_RENEW':
         // Subscription failed to renew (payment issue)
         console.log('Subscription failed to renew:', { userId: dbUserId, plan, transactionId });
         
-        await supabase.from('subscriptions')
-          .update({
-            status: 'past_due',
-            updated_at: new Date().toISOString(),
-          })
-          .eq('iap_original_transaction_id', originalTransactionId);
+        if (dbUserId) {
+          await supabase.from('subscriptions')
+            .update({
+              status: 'past_due',
+              updated_at: new Date().toISOString(),
+            })
+            .eq('iap_original_transaction_id', originalTransactionId);
+        } else {
+          console.warn('Cannot update failed renewal - user not found:', { originalTransactionId });
+        }
         break;
 
       case 'DID_CANCEL':
         // User cancelled subscription (still active until period ends)
         console.log('Subscription cancelled:', { userId: dbUserId, plan, transactionId });
         
-        await supabase.from('subscriptions')
-          .update({
-            status: 'cancelled',
-            updated_at: new Date().toISOString(),
-          })
-          .eq('iap_original_transaction_id', originalTransactionId);
+        if (dbUserId) {
+          await supabase.from('subscriptions')
+            .update({
+              status: 'cancelled',
+              cancel_at_period_end: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('iap_original_transaction_id', originalTransactionId);
+        } else {
+          // Fallback: update by transaction ID only
+          await supabase.from('subscriptions')
+            .update({
+              status: 'cancelled',
+              cancel_at_period_end: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('iap_original_transaction_id', originalTransactionId);
+        }
         break;
 
       case 'REFUND':
