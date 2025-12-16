@@ -486,7 +486,7 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Creator Essentials -->
-          <div class="relative rounded-2xl border border-slate-200 p-8" style="background: rgba(255, 255, 255, 0.5);">
+          <div class="relative rounded-2xl border border-slate-200 p-8 flex flex-col" style="background: rgba(255, 255, 255, 0.5);">
             <div class="mb-8">
               <h4 class="text-xl font-semibold text-slate-900 mb-2">Creator Essentials</h4>
               <p class="text-sm text-slate-600 mb-6">Full workflow tools for managing your creator business.</p>
@@ -496,7 +496,7 @@
               </div>
             </div>
             
-            <ul class="space-y-4 mb-8">
+            <ul class="space-y-4 mb-8 flex-grow">
               <li class="flex items-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
                 <span class="text-sm text-slate-600">Brand Vault Access</span>
@@ -523,13 +523,13 @@
               </li>
             </ul>
             
-            <a href="/subscribe?plan=creator" id="home-creator-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50 block text-center" style="background: rgba(255, 255, 255, 0.8);">
+            <a href="/subscribe?plan=creator" id="home-creator-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50 block text-center mt-auto" style="background: rgba(255, 255, 255, 0.8);">
               Subscribe
             </a>
           </div>
           
           <!-- Creator Pro - Featured -->
-          <div class="relative rounded-2xl border border-orange-300 p-8" style="background: rgba(249, 115, 22, 0.05);">
+          <div class="relative rounded-2xl border border-orange-300 p-8 flex flex-col" style="background: rgba(249, 115, 22, 0.05);">
             <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
               <span class="px-4 py-1 text-xs font-medium text-slate-900 rounded-full border border-orange-300" style="background: rgba(249, 115, 22, 0.9);">Most Popular</span>
             </div>
@@ -543,7 +543,7 @@
               </div>
             </div>
             
-            <ul class="space-y-4 mb-8">
+            <ul class="space-y-4 mb-8 flex-grow">
               <li class="flex items-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
                 <span class="text-sm text-slate-600">Everything in Essentials</span>
@@ -562,13 +562,13 @@
               </li>
             </ul>
             
-            <a href="/subscribe?plan=pro" id="home-pro-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-orange-300 hover:border-orange-400 transition-all duration-300 block text-center" style="background: rgba(249, 115, 22, 0.15);">
+            <a href="/subscribe?plan=pro" id="home-pro-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-orange-300 hover:border-orange-400 transition-all duration-300 block text-center mt-auto" style="background: rgba(249, 115, 22, 0.15);">
               Subscribe
             </a>
           </div>
           
           <!-- Creator Elite -->
-          <div class="relative rounded-2xl border border-slate-200 p-8" style="background: rgba(255, 255, 255, 0.5);">
+          <div class="relative rounded-2xl border border-slate-200 p-8 flex flex-col" style="background: rgba(255, 255, 255, 0.5);">
             <div class="mb-8">
               <h4 class="text-xl font-semibold text-slate-900 mb-2">Creator Elite</h4>
               <p class="text-sm text-slate-600 mb-6">Full business intelligence for professional creators.</p>
@@ -578,7 +578,7 @@
               </div>
             </div>
             
-            <ul class="space-y-4 mb-8">
+            <ul class="space-y-4 mb-8 flex-grow">
               <li class="flex items-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 flex-shrink-0"><path d="m9 12 2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
                 <span class="text-sm text-slate-600">Everything in Pro</span>
@@ -609,7 +609,7 @@
               </li>
             </ul>
             
-            <a href="/subscribe?plan=premium" id="home-premium-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50 block text-center" style="background: rgba(255, 255, 255, 0.8);">
+            <a href="/subscribe?plan=premium" id="home-premium-link" class="w-full py-4 px-6 rounded-xl text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-300 transition-all duration-300 hover:bg-slate-50 block text-center mt-auto" style="background: rgba(255, 255, 255, 0.8);">
               Subscribe
             </a>
           </div>
@@ -787,6 +787,7 @@
             <span>© 2025 ORA. All rights reserved.</span>
             <a href="/privacy-policy" class="hover:text-slate-600 transition-colors duration-300">Privacy Policy</a>
             <a href="/terms-of-service" class="hover:text-slate-600 transition-colors duration-300">Terms of Service</a>
+            <a href="/subscription-info" class="hover:text-slate-600 transition-colors duration-300">Subscriptions</a>
             <a href="/contact" class="hover:text-slate-600 transition-colors duration-300">Contact</a>
           </div>
         </div>
