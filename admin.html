@@ -1342,10 +1342,24 @@ Visit us at https://myora.co</textarea>
                     <p>Send emails to multiple users individually (recipients won't see each other's emails)</p>
                 </div>
 
-                <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
-                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Compose Bulk Email</h3>
-                    
-                    <form id="bulkEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Two Column Layout: Form + Live Preview -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+                    <!-- Left Column: Email Form -->
+                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
+                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Compose Bulk Email</h3>
+                        
+                        <!-- Quick Templates -->
+                        <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                            <p style="color: #1e293b; font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Quick Templates:</p>
+                            <button type="button" onclick="loadAppStoreLaunchEmail()" 
+                                    style="padding: 10px 20px; background: #f97316; border: 1px solid #f97316; border-radius: 8px; color: #ffffff; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                    onmouseover="this.style.background='#ea580c'"
+                                    onmouseout="this.style.background='#f97316'">
+                                📱 Load App Store Launch Email
+                            </button>
+                        </div>
+                        
+                        <form id="bulkEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
                         <div>
                             <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Subject *</label>
                             <input type="text" id="bulkEmailSubject" placeholder="e.g., Early Access Invitation" required
@@ -1364,6 +1378,13 @@ Visit us at https://myora.co</textarea>
                             <label for="bulkEmailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
                                 Use branded HTML template (includes ORA logo and styling)
                             </label>
+                        </div>
+
+                        <div>
+                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">App Store URL (optional - for App Store launch emails)</label>
+                            <input type="url" id="appStoreUrl" placeholder="https://apps.apple.com/us/app/my-ora/id6755090210" value="https://apps.apple.com/us/app/my-ora/id6755090210"
+                                style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                            <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Your App Store link is pre-filled. Use [App Store] in your message to create the official download badge.</p>
                         </div>
 
                         <div>
@@ -1434,6 +1455,18 @@ Visit us at https://myora.co</textarea>
                             </button>
                         </div>
                     </form>
+                    </div>
+
+                    <!-- Right Column: Live Email Preview -->
+                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; position: sticky; top: 20px; max-height: calc(100vh - 40px); overflow-y: auto;">
+                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">📧 Live Preview</h3>
+                        <p style="color: #64748b; font-size: 12px; margin-bottom: 16px;">Preview updates as you type</p>
+                        <div id="emailLivePreview" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f5f5f7; min-height: 400px;">
+                            <div style="padding: 40px; text-align: center; color: #94a3b8;">
+                                <p>Start typing to see preview...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; margin-top: 32px;">
@@ -3190,11 +3223,149 @@ Message: ${message}
             }
         });
 
+        // Live Email Preview Function
+        function updateEmailPreview() {
+            const subject = document.getElementById('bulkEmailSubject')?.value || '';
+            const message = document.getElementById('bulkEmailMessage')?.value || '';
+            const useHtml = document.getElementById('bulkEmailUseHtml')?.checked ?? true;
+            const appStoreUrl = document.getElementById('appStoreUrl')?.value || null;
+            const previewDiv = document.getElementById('emailLivePreview');
+            
+            if (!previewDiv) return;
+            
+            if (!message.trim()) {
+                previewDiv.innerHTML = '<div style="padding: 40px; text-align: center; color: #94a3b8;"><p>Start typing to see preview...</p></div>';
+                return;
+            }
+            
+            if (useHtml) {
+                // Generate HTML preview using the same template logic
+                const personalizedMessage = message.replace(/\{\{displayName\}\}/g, 'John Doe');
+                const primaryColor = '#f97316';
+                const backgroundColor = '#ffffff';
+                const textColor = '#1e293b';
+                const logoUrl = 'https://myora.co/adaptive-icon.png';
+                
+                // Convert message to HTML with proper bullet point handling
+                const lines = personalizedMessage.split('\n');
+                let htmlMessage = '';
+                let inBulletList = false;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const trimmedLine = line.trim();
+                    
+                    if (trimmedLine === '') {
+                        if (inBulletList) {
+                            htmlMessage += '</ul>';
+                            inBulletList = false;
+                        }
+                        htmlMessage += '<br>';
+                    } else if (trimmedLine.startsWith('•')) {
+                        if (!inBulletList) {
+                            htmlMessage += '<ul style="margin: 12px 0; padding-left: 24px; list-style-type: disc;">';
+                            inBulletList = true;
+                        }
+                        const bulletText = trimmedLine.substring(1).trim();
+                        const formattedText = bulletText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        htmlMessage += `<li style="margin-bottom: 8px; line-height: 1.6;">${formattedText}</li>`;
+                    } else {
+                        if (inBulletList) {
+                            htmlMessage += '</ul>';
+                            inBulletList = false;
+                        }
+                        // Handle bold text first
+                        let processedLine = trimmedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        
+                        if (trimmedLine.includes('[App Store]') || trimmedLine.includes('[Download on App Store]')) {
+                            // Skip this line, will add badge at end
+                            htmlMessage += '';
+                        } else {
+                            htmlMessage += `<p style="margin: 0 0 12px 0; line-height: 1.6;">${processedLine}</p>`;
+                        }
+                    }
+                }
+                
+                if (inBulletList) {
+                    htmlMessage += '</ul>';
+                }
+                
+                // Add App Store badge at the end if found
+                const hasAppStore = personalizedMessage.includes('[App Store]') || personalizedMessage.includes('[Download on App Store]');
+                if (hasAppStore) {
+                    const url = appStoreUrl || 'https://apps.apple.com/us/app/my-ora/id6755090210';
+                    const appIdMatch = url.match(/\/id(\d+)/);
+                    const appId = appIdMatch ? appIdMatch[1] : null;
+                    
+                    if (appId) {
+                        htmlMessage += `<p style="margin: 30px 0 20px 0; text-align: center;">
+                            <a href="${url}" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none;">
+                                <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=2024-01-01" 
+                                     alt="Download on the App Store" 
+                                     style="height: 60px; width: auto; max-width: 200px; display: block; margin: 0 auto; border: none;" 
+                                     border="0">
+                            </a>
+                        </p>`;
+                    } else {
+                        htmlMessage += `<p style="margin: 20px 0; text-align: center;">
+                            <a href="${url}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, ${primaryColor} 0%, #ea580c 100%); color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);">
+                                Download on App Store
+                            </a>
+                        </p>`;
+                    }
+                }
+                
+                const emailHtml = `
+                    <div style="max-width: 600px; margin: 0 auto; background: #f5f5f7; padding: 20px;">
+                        <div style="background: ${backgroundColor}; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <!-- Header with Logo -->
+                            <div style="background: linear-gradient(180deg, ${primaryColor} 0%, #ea580c 30%, #ffffff 100%); padding: 50px 40px 40px 40px; text-align: center;">
+                                <div style="display: inline-block; width: 90px; height: 90px; background-color: #ffffff; border-radius: 20px; padding: 1px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden;">
+                                    <img src="${logoUrl}" alt="ORA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 19px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 36px; color: ${primaryColor};\\'>ORA</div>';" />
+                                </div>
+                            </div>
+                            <!-- Content -->
+                            <div style="padding: 45px 40px; color: ${textColor}; font-size: 16px; line-height: 1.6;">
+                                ${htmlMessage}
+                            </div>
+                            <!-- Footer -->
+                            <div style="background: #f8fafc; padding: 30px 40px; text-align: center; border-top: 1px solid #e2e8f0;">
+                                <p style="color: #64748b; font-size: 12px; margin: 0 0 10px 0;">
+                                    <a href="https://myora.co" style="color: ${primaryColor}; text-decoration: none; font-weight: 500;">Visit ORA</a> | 
+                                    <a href="https://myora.co/privacy-policy" style="color: #64748b; text-decoration: none;">Privacy Policy</a>
+                                </p>
+                                <p style="color: #94a3b8; font-size: 11px; margin: 10px 0 0 0;">© 2025 ORA. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                previewDiv.innerHTML = emailHtml;
+            } else {
+                // Plain text preview
+                const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
+                previewDiv.innerHTML = `<div style="padding: 20px; white-space: pre-wrap; font-family: monospace; color: #1e293b; background: #ffffff; border-radius: 8px;">${preview}</div>`;
+            }
+        }
+        
+        // Set up live preview listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const subjectInput = document.getElementById('bulkEmailSubject');
+            const messageInput = document.getElementById('bulkEmailMessage');
+            const htmlCheckbox = document.getElementById('bulkEmailUseHtml');
+            const appStoreInput = document.getElementById('appStoreUrl');
+            
+            if (subjectInput) subjectInput.addEventListener('input', updateEmailPreview);
+            if (messageInput) messageInput.addEventListener('input', updateEmailPreview);
+            if (htmlCheckbox) htmlCheckbox.addEventListener('change', updateEmailPreview);
+            if (appStoreInput) appStoreInput.addEventListener('input', updateEmailPreview);
+            
+            // Initial preview update
+            setTimeout(updateEmailPreview, 500);
+        });
+        
         function previewBulkEmail() {
-            const subject = document.getElementById('bulkEmailSubject').value;
-            const message = document.getElementById('bulkEmailMessage').value;
-            const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
-            alert(`Subject: ${subject}\n\nMessage:\n${preview}`);
+            updateEmailPreview();
+            alert('Preview updated! Check the Live Preview panel on the right.');
         }
 
         async function sendBulkEmail() {
@@ -3298,7 +3469,8 @@ Message: ${message}
                                 message: personalizedMessage,
                                 isHtml: false,
                                 useHtmlTemplate: document.getElementById('bulkEmailUseHtml')?.checked ?? true,
-                                useHelloEmail: true // Use hello email for bulk emails
+                                useHelloEmail: true, // Use hello email for bulk emails
+                                appStoreUrl: document.getElementById('appStoreUrl')?.value || null // App Store URL if set
                             })
                         });
 
@@ -3360,6 +3532,82 @@ Message: ${message}
             }
             
             button.parentElement.remove();
+        }
+
+        // Load App Store Launch Email Template
+        async function loadAppStoreLaunchEmail() {
+            try {
+                // Load the template from the server
+                const response = await fetch('/lib/admin/app-store-launch-email.js');
+                const text = await response.text();
+                
+                // Extract the email content (simple parsing)
+                const subjectMatch = text.match(/subject:\s*["']([^"']+)["']/i);
+                const messageMatch = text.match(/message:\s*`([^`]+)`/s);
+                const urlMatch = text.match(/appStoreUrl:\s*['"]([^'"]+)['"]/);
+                
+                if (subjectMatch && messageMatch) {
+                    document.getElementById('bulkEmailSubject').value = subjectMatch[1];
+                    document.getElementById('bulkEmailMessage').value = messageMatch[1].trim();
+                    
+                    if (urlMatch) {
+                        document.getElementById('appStoreUrl').value = urlMatch[1];
+                    }
+                    
+                    // Ensure HTML template is checked
+                    document.getElementById('bulkEmailUseHtml').checked = true;
+                    
+                    alert('App Store launch email template loaded! Don\'t forget to:\n\n1. Update the App Store URL with your actual App ID\n2. Review and customize the message\n3. Select your recipients');
+                } else {
+                    // Fallback to hardcoded template
+                    loadAppStoreLaunchEmailFallback();
+                }
+            } catch (error) {
+                console.error('Error loading template:', error);
+                // Fallback to hardcoded template
+                loadAppStoreLaunchEmailFallback();
+            }
+        }
+
+        function loadAppStoreLaunchEmailFallback() {
+            const template = {
+                subject: "🎉 ORA is Now on the App Store!",
+                message: `Hi {{displayName}},
+
+We're thrilled to announce that ORA is now available on the App Store! 🎊
+
+ORA is the all-in-one platform designed specifically for content creators to manage their brand collaborations, track deals, and grow their business professionally.
+
+**What ORA Does:**
+
+• Calculate fair rates for your work with our smart rate calculator
+• Track and manage all your brand deals in one place
+• Generate professional quotes and media kits to send to brands
+• Analyze contracts before you sign to protect your rights
+• Build and maintain your brand partnerships with our brand vault
+• Track your revenue across all platforms and collaborations
+
+[App Store]
+
+Download ORA today and take control of your creator business. The app is free to download with premium features available.
+
+We built ORA because we know how challenging it can be to manage multiple brand deals, contracts, and payments. ORA makes it all simple, organized, and professional.
+
+If you have any questions or feedback, just reply to this email - we'd love to hear from you!
+
+Best regards,
+The ORA Team
+
+P.S. Share ORA with other creators who might find it helpful!`,
+                appStoreUrl: 'https://apps.apple.com/us/app/my-ora/id6755090210'
+            };
+            
+            document.getElementById('bulkEmailSubject').value = template.subject;
+            document.getElementById('bulkEmailMessage').value = template.message;
+            document.getElementById('appStoreUrl').value = template.appStoreUrl;
+            document.getElementById('bulkEmailUseHtml').checked = true;
+            
+            alert('App Store launch email template loaded! Don\'t forget to:\n\n1. Update the App Store URL with your actual App ID\n2. Review and customize the message\n3. Select your recipients');
         }
     </script>
 

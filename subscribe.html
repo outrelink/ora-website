@@ -146,9 +146,81 @@
                         </div>
                     </div>
 
-                    <div class="text-center mt-16 pt-12 border-t border-slate-200">
-                        <p class="text-sm text-slate-600 mb-4">All plans include comprehensive features, cloud sync, and regular updates.</p>
-                        <p class="text-sm text-slate-600" id="billing-note">Subscriptions are billed monthly and automatically renew.</p>
+                    <!-- Important Subscription Information -->
+                    <div class="mt-16 pt-12 border-t border-slate-200">
+                        <div class="max-w-3xl mx-auto space-y-6">
+                            <!-- Auto-Renewal Disclosure (Required by Apple) -->
+                            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                                <h3 class="text-lg font-semibold text-slate-900 mb-3">Subscription Details</h3>
+                                <ul class="space-y-2 text-sm text-slate-600">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-orange-500 mt-0.5">•</span>
+                                        <span><strong>Auto-Renewal:</strong> Your subscription will automatically renew unless cancelled at least 24 hours before the end of the current billing period.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-orange-500 mt-0.5">•</span>
+                                        <span><strong>Billing:</strong> Payment will be charged to your Apple ID account at the confirmation of purchase.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-orange-500 mt-0.5">•</span>
+                                        <span><strong>Price Changes:</strong> We reserve the right to change subscription prices with 30 days advance notice.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-orange-500 mt-0.5">•</span>
+                                        <span><strong>Access:</strong> Subscription unlocks premium features in the ORA app. You must download the app from the App Store to use your subscription.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Cancellation Instructions (Required by Apple) -->
+                            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                                <h3 class="text-lg font-semibold text-slate-900 mb-3">How to Cancel</h3>
+                                <p class="text-sm text-slate-600 mb-3">You can cancel your subscription at any time:</p>
+                                <ol class="space-y-2 text-sm text-slate-600 list-decimal list-inside">
+                                    <li>Open <strong>Settings</strong> on your iPhone or iPad</li>
+                                    <li>Tap your <strong>Apple ID</strong> (your name at the top)</li>
+                                    <li>Tap <strong>Subscriptions</strong></li>
+                                    <li>Select <strong>ORA</strong></li>
+                                    <li>Tap <strong>Cancel Subscription</strong></li>
+                                </ol>
+                                <p class="text-sm text-slate-600 mt-3">Or manage your subscriptions online at: <a href="https://apps.apple.com/account/subscriptions" target="_blank" rel="noopener noreferrer" class="text-orange-500 underline">apps.apple.com/account/subscriptions</a></p>
+                                <p class="text-xs text-slate-500 mt-3"><strong>Note:</strong> Cancellation takes effect at the end of your current billing period. You'll retain access until the period ends.</p>
+                            </div>
+
+                            <!-- Refund Policy -->
+                            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                                <h3 class="text-lg font-semibold text-slate-900 mb-3">Refunds</h3>
+                                <p class="text-sm text-slate-600 mb-2">All subscription purchases are processed through Apple. Refunds are subject to Apple's refund policy and terms.</p>
+                                <p class="text-sm text-slate-600">To request a refund, contact <a href="https://support.apple.com/contact" target="_blank" rel="noopener noreferrer" class="text-orange-500 underline">Apple Support</a> or visit <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer" class="text-orange-500 underline">reportaproblem.apple.com</a>.</p>
+                            </div>
+
+                            <!-- App Store Links -->
+                            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 text-center">
+                                <h3 class="text-lg font-semibold text-slate-900 mb-4">Download the ORA App</h3>
+                                <p class="text-sm text-slate-600 mb-4">To use your subscription, download the ORA app from the App Store:</p>
+                                <a href="https://apps.apple.com/app/ora" target="_blank" rel="noopener noreferrer" class="inline-block mb-4 hover:opacity-80 transition-opacity">
+                                    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=2024-01-01" alt="Download on the App Store" class="h-12 mx-auto" style="max-width: 180px;">
+                                </a>
+                                <p class="text-xs text-slate-500 mt-2">
+                                    <a href="https://apps.apple.com/account/subscriptions" target="_blank" rel="noopener noreferrer" class="text-orange-500 underline">Manage your subscriptions</a> in App Store settings
+                                </p>
+                                <p class="text-xs text-slate-500">Your subscription will be activated once you sign in to the app with the same email address used for purchase.</p>
+                            </div>
+
+                            <!-- Legal Links -->
+                            <div class="text-center space-y-2 pt-4">
+                                <p class="text-xs text-slate-500">
+                                    By subscribing, you agree to our 
+                                    <a href="/terms-of-service" target="_blank" class="text-orange-500 underline">Terms of Service</a> 
+                                    and 
+                                    <a href="/privacy-policy" target="_blank" class="text-orange-500 underline">Privacy Policy</a>.
+                                </p>
+                                <p class="text-xs text-slate-500">
+                                    For subscription questions, contact us at 
+                                    <a href="mailto:support@my.ora.co" class="text-orange-500 underline">support@my.ora.co</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

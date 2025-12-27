@@ -91,7 +91,14 @@ async function sendWelcomeEmail(userEmail, displayName) {
       subject: settings.subject || 'Welcome to ORA!',
       text: emailText,
       html: emailHtml,
-      replyTo: zohoFromEmail
+      replyTo: zohoFromEmail,
+      // Email headers for better sender recognition
+      headers: {
+        'X-Sender': 'ORA',
+        'X-Sender-Avatar': 'https://myora.co/adaptive-icon.png', // Some email clients may use this
+        'List-Unsubscribe': `<mailto:${zohoFromEmail}?subject=unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+      }
     };
 
     const info = await transporter.sendMail(mailOptions);
