@@ -185,6 +185,9 @@ const mainHandler = async (req, res) => {
         case 'welcome-email-settings':
           result = await Promise.resolve().then(() => handleWelcomeEmailSettings(req, res));
           break;
+        case 'creator-pool':
+          result = await Promise.resolve().then(() => handleCreatorPool(req, res));
+          break;
         default:
           return res.status(400).json({ error: 'Invalid type parameter', type: type });
       }
@@ -419,6 +422,35 @@ async function handleWelcomeEmailSettings(req, res) {
       return res.status(500).json({ 
         error: 'Handler error',
         message: handlerError.message || String(handlerError)
+      });
+    }
+  }
+}
+
+async function handleCreatorPool(req, res) {
+  // creator-pool.js exports { default: handler, getCreatorPool, addCreatorToPool, ... }
+  // Pass the shared Supabase client to avoid env var issues
+  let handler;
+  try {
+    const creatorPool = require('../../lib/admin/creator-pool.js');
+    handler = creatorPool.default || creatorPool.handler || creatorPool;
+    
+    if (typeof handler !== 'function') {
+      console.error('Creator pool handler is not a function. Exports:', Object.keys(creatorPool));
+      if (!res.headersSent) {
+        return res.status(500).json({ error: 'Creator pool handler is not a function' });
+      }
+      return;
+    }
+    
+    // Always pass supabase client - handlers with default params will use it if needed
+    return await handler(req, res, supabase);
+  } catch (error) {
+    console.error('Error in handleCreatorPool:', error);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Handler error',
+        message: error.message || String(error)
       });
     }
   }

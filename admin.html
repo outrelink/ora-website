@@ -638,6 +638,7 @@
                         <div class="nav-item" onclick="switchTab('send-email')">Send Email</div>
                         <div class="nav-item" onclick="switchTab('welcome-emails')">Welcome Emails</div>
                         <div class="nav-item" onclick="switchTab('bulk-email')">Bulk Email</div>
+                        <div class="nav-item" onclick="switchTab('creator-pool')">Creator Pool</div>
                         <div class="nav-item" onclick="switchTab('marketing')">Marketing</div>
                     </div>
                     <div class="nav-section">
@@ -1479,6 +1480,93 @@ Visit us at https://myora.co</textarea>
                 </div>
             </div>
 
+            <!-- Creator Pool Tab -->
+            <div id="creator-pool" class="content">
+                <div class="content-header">
+                    <h2>Creator Email Pool</h2>
+                    <p>Organize and manage creator email addresses for easy access when sending emails</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
+                    <!-- Left: Add/Edit Form -->
+                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
+                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;" id="creatorPoolFormTitle">Add Creator to Pool</h3>
+                        
+                        <form id="creatorPoolForm" style="display: flex; flex-direction: column; gap: 20px;">
+                            <input type="hidden" id="creatorPoolId" value="">
+                            
+                            <div>
+                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Email Address *</label>
+                                <input type="email" id="creatorPoolEmail" placeholder="creator@example.com" required
+                                    style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                            </div>
+
+                            <div>
+                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Display Name</label>
+                                <input type="text" id="creatorPoolName" placeholder="Creator Name (optional)"
+                                    style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                            </div>
+
+                            <div>
+                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Category/Tag</label>
+                                <input type="text" id="creatorPoolCategory" placeholder="e.g., Fashion, Tech, Lifestyle (optional)"
+                                    style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                                <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Use categories to organize creators (e.g., Fashion, Tech, Lifestyle)</p>
+                            </div>
+
+                            <div>
+                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Notes</label>
+                                <textarea id="creatorPoolNotes" placeholder="Any additional notes about this creator (optional)" rows="4"
+                                    style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                            </div>
+
+                            <div style="display: flex; gap: 12px;">
+                                <button type="submit"
+                                    style="flex: 1; padding: 14px; background: #f97316; border: 1px solid #f97316; border-radius: 10px; color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;"
+                                    onmouseover="this.style.background='#ea580c'"
+                                    onmouseout="this.style.background='#f97316'">
+                                    <span id="creatorPoolSubmitText">Add to Pool</span>
+                                </button>
+                                <button type="button" onclick="resetCreatorPoolForm()" id="creatorPoolCancelBtn" style="display: none; padding: 14px 24px; background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right: Pool List -->
+                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin: 0;">Creator Pool</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="creatorPoolSearch" placeholder="Search..." 
+                                    style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif; width: 200px;"
+                                    oninput="filterCreatorPool()">
+                                <select id="creatorPoolCategoryFilter" onchange="filterCreatorPool()"
+                                    style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; color: #1e293b; font-size: 14px; font-family: 'Inter', sans-serif;">
+                                    <option value="">All Categories</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="creatorPoolList" style="max-height: 600px; overflow-y: auto;">
+                            <div class="loading">Loading creator pool...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; margin-top: 32px;">
+                    <h4 style="font-family: 'Manrope', sans-serif; font-size: 18px; color: #1e293b; margin-bottom: 12px;">How to Use Creator Pool</h4>
+                    <ul style="color: #1e293b; font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                        <li><strong>Add Creators:</strong> Add email addresses of creators you find that you might want to contact</li>
+                        <li><strong>Organize:</strong> Use categories/tags to organize creators by niche, industry, or any other criteria</li>
+                        <li><strong>Notes:</strong> Add notes about each creator to remember important details</li>
+                        <li><strong>Bulk Email:</strong> Select creators from the pool when sending bulk emails</li>
+                        <li><strong>Search & Filter:</strong> Use the search and category filter to quickly find creators</li>
+                    </ul>
+                </div>
+            </div>
+
             <!-- Marketing Tab -->
             <div id="marketing" class="content">
                 <div class="content-header">
@@ -1868,6 +1956,8 @@ Visit us at https://myora.co</textarea>
                 loadWelcomeEmailSettings();
             } else if (tabName === 'bulk-email') {
                 loadBulkEmailUsers();
+            } else if (tabName === 'creator-pool') {
+                loadCreatorPool();
             } else if (tabName === 'analytics') {
                 loadAnalytics();
             } else if (tabName === 'errors') {
@@ -3821,8 +3911,8 @@ Message: ${message}
                 // Clear draft after successful send
                 clearBulkEmailDraft();
             }
-            
-            alert(`Bulk email completed!\n\nSuccessfully sent: ${successCount}\nFailed: ${failCount}\n\nEach email was sent individually, so recipients cannot see each other's addresses.`);
+
+                alert(`Bulk email completed!\n\nSuccessfully sent: ${successCount}\nFailed: ${failCount}\n\nEach email was sent individually, so recipients cannot see each other's addresses.`);
         }
 
         function addEmailInput() {
@@ -3948,6 +4038,206 @@ P.S. Share ORA with other creators who might find it helpful!`,
             
             alert('App Store launch email template loaded! Don\'t forget to:\n\n1. Update the App Store URL with your actual App ID\n2. Review and customize the message\n3. Select your recipients');
         }
+    </script>
+
+        // Creator Pool Functions
+        let allCreatorPoolEntries = [];
+        let editingCreatorPoolId = null;
+
+        async function loadCreatorPool() {
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const response = await fetch(`/api/admin?type=creator-pool&token=${adminToken}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allCreatorPoolEntries = data.creators || [];
+                    renderCreatorPool();
+                    updateCategoryFilter();
+                } else {
+                    document.getElementById('creatorPoolList').innerHTML = '<div class="error">Failed to load creator pool</div>';
+                }
+            } catch (error) {
+                console.error('Error loading creator pool:', error);
+                document.getElementById('creatorPoolList').innerHTML = '<div class="error">Error loading creator pool</div>';
+            }
+        }
+
+        function renderCreatorPool(entries = null) {
+            const entriesToRender = entries || allCreatorPoolEntries;
+            const listEl = document.getElementById('creatorPoolList');
+
+            if (entriesToRender.length === 0) {
+                listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #94a3b8;"><p>No creators in pool yet. Add your first creator above!</p></div>';
+                return;
+            }
+
+            listEl.innerHTML = entriesToRender.map(creator => {
+                const categoryBadge = creator.category ? `<span style="padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 6px; font-size: 11px; color: #8b5cf6; font-weight: 500;">${creator.category}</span>` : '';
+                const notesPreview = creator.notes ? `<p style="color: #64748b; font-size: 12px; margin: 8px 0 0 0; line-height: 1.4;">${creator.notes.substring(0, 100)}${creator.notes.length > 100 ? '...' : ''}</p>` : '';
+                
+                return `
+                    <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: all 0.3s;" 
+                         onmouseover="this.style.borderColor='#cbd5e1'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'"
+                         onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <strong style="color: #1e293b; font-size: 15px;">${creator.display_name || creator.email}</strong>
+                                    ${categoryBadge}
+                                </div>
+                                <p style="color: #64748b; font-size: 13px; margin: 0;">${creator.email}</p>
+                                ${notesPreview}
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="editCreatorPool('${creator.id}')" 
+                                    style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #3b82f6; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
+                                    Edit
+                                </button>
+                                <button onclick="deleteCreatorPool('${creator.id}')" 
+                                    style="padding: 6px 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #ef4444; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateCategoryFilter() {
+            const categories = [...new Set(allCreatorPoolEntries.map(c => c.category).filter(Boolean))];
+            const filterEl = document.getElementById('creatorPoolCategoryFilter');
+            const currentValue = filterEl.value;
+            
+            filterEl.innerHTML = '<option value="">All Categories</option>' + 
+                categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            
+            if (currentValue && categories.includes(currentValue)) {
+                filterEl.value = currentValue;
+            }
+        }
+
+        function filterCreatorPool() {
+            const searchTerm = document.getElementById('creatorPoolSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('creatorPoolCategoryFilter').value;
+
+            const filtered = allCreatorPoolEntries.filter(creator => {
+                const matchesSearch = !searchTerm || 
+                    creator.email.toLowerCase().includes(searchTerm) ||
+                    (creator.display_name && creator.display_name.toLowerCase().includes(searchTerm)) ||
+                    (creator.notes && creator.notes.toLowerCase().includes(searchTerm));
+                
+                const matchesCategory = !categoryFilter || creator.category === categoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            renderCreatorPool(filtered);
+        }
+
+        document.getElementById('creatorPoolForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const id = document.getElementById('creatorPoolId').value;
+            const email = document.getElementById('creatorPoolEmail').value.trim();
+            const displayName = document.getElementById('creatorPoolName').value.trim();
+            const category = document.getElementById('creatorPoolCategory').value.trim();
+            const notes = document.getElementById('creatorPoolNotes').value.trim();
+
+            if (!email) {
+                alert('Email address is required');
+                return;
+            }
+
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const url = `/api/admin?type=creator-pool&token=${adminToken}`;
+                const method = id ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: id || undefined,
+                        email: email,
+                        display_name: displayName || null,
+                        category: category || null,
+                        notes: notes || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    resetCreatorPoolForm();
+                    loadCreatorPool();
+                    alert(id ? 'Creator updated successfully!' : 'Creator added to pool!');
+                } else {
+                    alert('Failed to save creator: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error saving creator:', error);
+                alert('Failed to save creator. Please try again.');
+            }
+        });
+
+        function editCreatorPool(id) {
+            const creator = allCreatorPoolEntries.find(c => c.id === id);
+            if (!creator) return;
+
+            editingCreatorPoolId = id;
+            document.getElementById('creatorPoolId').value = creator.id;
+            document.getElementById('creatorPoolEmail').value = creator.email;
+            document.getElementById('creatorPoolName').value = creator.display_name || '';
+            document.getElementById('creatorPoolCategory').value = creator.category || '';
+            document.getElementById('creatorPoolNotes').value = creator.notes || '';
+            
+            document.getElementById('creatorPoolFormTitle').textContent = 'Edit Creator';
+            document.getElementById('creatorPoolSubmitText').textContent = 'Update Creator';
+            document.getElementById('creatorPoolCancelBtn').style.display = 'block';
+        }
+
+        function resetCreatorPoolForm() {
+            editingCreatorPoolId = null;
+            document.getElementById('creatorPoolForm').reset();
+            document.getElementById('creatorPoolId').value = '';
+            document.getElementById('creatorPoolFormTitle').textContent = 'Add Creator to Pool';
+            document.getElementById('creatorPoolSubmitText').textContent = 'Add to Pool';
+            document.getElementById('creatorPoolCancelBtn').style.display = 'none';
+        }
+
+        async function deleteCreatorPool(id) {
+            if (!confirm('Are you sure you want to remove this creator from the pool?')) {
+                return;
+            }
+
+            try {
+                const adminToken = localStorage.getItem('admin_token') || '';
+                const response = await fetch(`/api/admin?type=creator-pool&token=${adminToken}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: id })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    loadCreatorPool();
+                    alert('Creator removed from pool');
+                } else {
+                    alert('Failed to remove creator: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error deleting creator:', error);
+                alert('Failed to remove creator. Please try again.');
+            }
+        }
+
     </script>
 
     <!-- Vercel Analytics -->
