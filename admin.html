@@ -3163,8 +3163,95 @@ Message: ${message}
         function previewWelcomeEmail() {
             const subject = document.getElementById('welcomeEmailSubject').value;
             const message = document.getElementById('welcomeEmailMessage').value;
-            const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
-            alert(`Subject: ${subject}\n\nMessage:\n${preview}`);
+            
+            if (!subject || !message) {
+                alert('Please fill in subject and message to preview');
+                return;
+            }
+            
+            // Generate HTML preview using inline template function (same as email-template.js)
+            const personalizedMessage = message.replace(/\{\{displayName\}\}/g, 'John Doe');
+            const lines = personalizedMessage.split('\n');
+            let htmlMessage = '';
+            let inBulletList = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const trimmedLine = line.trim();
+                
+                if (trimmedLine === '') {
+                    if (inBulletList) {
+                        htmlMessage += '</ul>';
+                        inBulletList = false;
+                    }
+                    htmlMessage += '<br>';
+                } else if (trimmedLine.startsWith('•')) {
+                    if (!inBulletList) {
+                        htmlMessage += '<ul style="margin: 12px 0; padding-left: 24px; list-style-type: disc;">';
+                        inBulletList = true;
+                    }
+                    const bulletText = trimmedLine.substring(1).trim();
+                    const formattedText = bulletText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    htmlMessage += `<li style="margin-bottom: 8px; line-height: 1.6;">${formattedText}</li>`;
+                } else {
+                    if (inBulletList) {
+                        htmlMessage += '</ul>';
+                        inBulletList = false;
+                    }
+                    let processedLine = trimmedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    htmlMessage += `<p style="margin: 0 0 12px 0; line-height: 1.6;">${processedLine}</p>`;
+                }
+            }
+            
+            if (inBulletList) {
+                htmlMessage += '</ul>';
+            }
+            
+            // Generate full email HTML
+            const emailHtml = generateWelcomeEmailHTML(subject, htmlMessage);
+            
+            // Open preview in new window
+            const previewWindow = window.open('', '_blank', 'width=800,height=600');
+            previewWindow.document.write(emailHtml);
+            previewWindow.document.close();
+        }
+        
+        function generateWelcomeEmailHTML(subject, htmlMessage) {
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${subject}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f7;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f7; padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="background: linear-gradient(180deg, #f97316 0%, #ea580c 30%, #ffffff 100%); padding: 40px; text-align: center;">
+                            <div style="width: 80px; height: 80px; margin: 0 auto 20px; padding: 12px; background: rgba(255, 255, 255, 0.2); border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center;">
+                                <img src="https://myora.co/adaptive-icon.png" alt="ORA Logo" style="width: 100%; height: 100%; object-fit: contain; transform: scale(2.2);" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 45px 40px;">
+                            ${htmlMessage}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: #F5F5F7; padding: 30px; text-align: center; border-top: 1px solid #E5E5E7;">
+                            <p style="color: #8E8E93; font-size: 12px; margin: 0;">© 2025 ORA. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
         }
 
         async function sendWelcomeEmailToUser() {
