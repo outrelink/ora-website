@@ -1627,36 +1627,36 @@ Visit us at https://myora.co</textarea>
                 <h2>Send Email to User</h2>
                 <button class="email-modal-close" onclick="closeEmailModal()">×</button>
             </div>
-            <div id="emailSuccess" class="email-success"></div>
-            <form id="emailForm" onsubmit="sendEmail(event)">
+            <div id="emailModalSuccess" class="email-success"></div>
+            <form id="emailModalForm" onsubmit="sendEmail(event)">
                 <div class="email-form-group">
-                    <label for="emailTo">To (Email Address)</label>
+                    <label for="emailModalTo">To (Email Address)</label>
                     <input 
                         type="email" 
-                        id="emailTo" 
+                        id="emailModalTo" 
                         required
                         placeholder="user@example.com"
                     />
                 </div>
                 <div class="email-form-group">
-                    <label for="emailSubject">Subject</label>
+                    <label for="emailModalSubject">Subject</label>
                     <input 
                         type="text" 
-                        id="emailSubject" 
+                        id="emailModalSubject" 
                         required
                         placeholder="Email subject"
                     />
                 </div>
                 <div class="email-form-group">
-                    <label for="emailMessage">Message</label>
+                    <label for="emailModalMessage">Message</label>
                     <textarea 
-                        id="emailMessage" 
+                        id="emailModalMessage" 
                         required
                         placeholder="Enter your message here..."
                     ></textarea>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 10px; margin-bottom: 20px;">
-                    <input type="checkbox" id="emailUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
+                    <input type="checkbox" id="emailModalUseHtml" checked style="width: 20px; height: 20px; cursor: pointer;">
                     <label for="emailUseHtml" style="color: #1e293b; font-size: 14px; font-weight: 500; cursor: pointer; flex: 1;">
                         Use branded HTML template (includes ORA logo and styling)
                     </label>
@@ -1941,26 +1941,48 @@ Visit us at https://myora.co</textarea>
         let allWaitlistData = [];
 
         async function loadAllData() {
-            await Promise.all([
-                loadOverview(),
-                loadUsers(),
-                loadSubscriptions(),
-                loadDeals(),
-                loadQuotes(),
-                loadBusinessIntelligence(),
-                loadSubmissions(),
-                loadWaitlist(),
-                loadAnalytics(),
-                loadErrors(),
-                loadMarketing()
-            ]);
+            try {
+                // Use Promise.allSettled so one failure doesn't stop all loading
+                const results = await Promise.allSettled([
+                    loadOverview().catch(err => { console.error('Error loading overview:', err); return null; }),
+                    loadUsers().catch(err => { console.error('Error loading users:', err); return null; }),
+                    loadSubscriptions().catch(err => { console.error('Error loading subscriptions:', err); return null; }),
+                    loadDeals().catch(err => { console.error('Error loading deals:', err); return null; }),
+                    loadQuotes().catch(err => { console.error('Error loading quotes:', err); return null; }),
+                    loadBusinessIntelligence().catch(err => { console.error('Error loading business:', err); return null; }),
+                    loadSubmissions().catch(err => { console.error('Error loading submissions:', err); return null; }),
+                    loadWaitlist().catch(err => { console.error('Error loading waitlist:', err); return null; }),
+                    loadAnalytics().catch(err => { console.error('Error loading analytics:', err); return null; }),
+                    loadErrors().catch(err => { console.error('Error loading errors:', err); return null; }),
+                    loadMarketing().catch(err => { console.error('Error loading marketing:', err); return null; }),
+                    loadEmailHistory().catch(err => { console.error('Error loading email history:', err); return null; })
+                ]);
+                
+                // Log any failures
+                results.forEach((result, index) => {
+                    if (result.status === 'rejected') {
+                        console.error(`Failed to load data item ${index}:`, result.reason);
+                    }
+                });
+            } catch (error) {
+                console.error('Error in loadAllData:', error);
+            }
         }
 
         async function loadUsers() {
             try {
                 const adminToken = localStorage.getItem('admin_token') || '';
                 const response = await fetch(`/api/admin?type=users&token=${adminToken}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
+                
+                if (!data || data.error) {
+                    throw new Error(data.error || 'Failed to load users');
+                }
 
                 document.getElementById('usersTotalCount').textContent = data.totalUsers || 0;
                 document.getElementById('usersActiveCount').textContent = data.activeUsers || 0;
@@ -2965,26 +2987,39 @@ Message: ${message}
         // Email Modal Functions
         function openEmailModal(userEmail = '') {
             const modal = document.getElementById('emailModal');
-            const emailTo = document.getElementById('emailTo');
-            emailTo.value = userEmail;
+            const emailTo = document.getElementById('emailModalTo') || document.getElementById('emailTo');
+            if (emailTo) emailTo.value = userEmail;
             modal.classList.add('active');
         }
 
         function closeEmailModal() {
             const modal = document.getElementById('emailModal');
             modal.classList.remove('active');
-            document.getElementById('emailForm').reset();
-            document.getElementById('emailSuccess').classList.remove('show');
-            document.getElementById('emailSuccess').textContent = '';
+            const form = document.getElementById('emailModalForm') || document.getElementById('emailForm');
+            if (form) form.reset();
+            const successEl = document.getElementById('emailModalSuccess') || document.getElementById('emailSuccess');
+            if (successEl) {
+                successEl.classList.remove('show');
+                successEl.textContent = '';
+            }
         }
 
         async function sendEmail(event) {
             event.preventDefault();
             
-            const to = document.getElementById('emailTo').value.trim();
-            const subject = document.getElementById('emailSubject').value.trim();
-            const message = document.getElementById('emailMessage').value.trim();
-            const successEl = document.getElementById('emailSuccess');
+            // Check which form was submitted (modal or tab form)
+            const isModal = event.target.id === 'emailModalForm';
+            const toEl = isModal ? document.getElementById('emailModalTo') : document.getElementById('emailTo');
+            const subjectEl = isModal ? document.getElementById('emailModalSubject') : document.getElementById('emailSubject');
+            const messageEl = isModal ? document.getElementById('emailModalMessage') : document.getElementById('emailMessage');
+            const useHtmlEl = isModal ? document.getElementById('emailModalUseHtml') : document.getElementById('emailUseHtml');
+            const successEl = isModal ? document.getElementById('emailModalSuccess') : document.getElementById('emailSuccess');
+            const formEl = isModal ? document.getElementById('emailModalForm') : document.getElementById('emailForm');
+            
+            const to = toEl?.value.trim() || '';
+            const subject = subjectEl?.value.trim() || '';
+            const message = messageEl?.value.trim() || '';
+            const useHtmlTemplate = useHtmlEl?.checked || false;
 
             if (!to || !subject || !message) {
                 alert('Please fill in all fields');
@@ -2992,7 +3027,6 @@ Message: ${message}
             }
 
             try {
-                const useHtmlTemplate = document.getElementById('emailUseHtml').checked;
                 const adminToken = localStorage.getItem('admin_token') || '';
                 const response = await fetch('/api/admin?type=send-email', {
                     method: 'POST',
@@ -3009,13 +3043,25 @@ Message: ${message}
                     })
                 });
 
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
-                    successEl.textContent = 'Email sent successfully!';
-                    successEl.style.display = 'block';
-                    successEl.classList.add('show');
-                    document.getElementById('emailForm').reset();
+                    if (successEl) {
+                        successEl.textContent = 'Email sent successfully!';
+                        successEl.style.display = 'block';
+                        successEl.classList.add('show');
+                    }
+                    if (formEl) formEl.reset();
+                    
+                    // Close modal if it was the modal form
+                    if (isModal) {
+                        setTimeout(() => closeEmailModal(), 2000);
+                    }
                     
                     // Reload email history if on that tab
                     if (document.getElementById('email-history')?.classList.contains('active')) {
@@ -3023,16 +3069,18 @@ Message: ${message}
                     }
                     
                     // Hide success message after 3 seconds
-                    setTimeout(() => {
-                        successEl.style.display = 'none';
-                        successEl.classList.remove('show');
-                    }, 3000);
+                    if (successEl) {
+                        setTimeout(() => {
+                            successEl.style.display = 'none';
+                            successEl.classList.remove('show');
+                        }, 3000);
+                    }
                 } else {
                     alert('Failed to send email: ' + (data.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error sending email:', error);
-                alert('Failed to send email. Please try again.');
+                alert('Failed to send email: ' + error.message);
             }
         }
 
@@ -3320,8 +3368,8 @@ Message: ${message}
                         <div style="background: ${backgroundColor}; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                             <!-- Header with Logo -->
                             <div style="background: linear-gradient(180deg, ${primaryColor} 0%, #ea580c 30%, #ffffff 100%); padding: 50px 40px 40px 40px; text-align: center;">
-                                <div style="display: inline-block; width: 90px; height: 90px; background-color: #ffffff; border-radius: 20px; padding: 1px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden;">
-                                    <img src="${logoUrl}" alt="ORA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 19px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 36px; color: ${primaryColor};\\'>ORA</div>';" />
+                                <div style="display: inline-block; width: 110px; height: 110px; background-color: #ffffff; border-radius: 22px; padding: 0; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; position: relative;">
+                                    <img src="${logoUrl}" alt="ORA" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 22px; transform: scale(1.5);" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 36px; color: ${primaryColor};\\'>ORA</div>';" />
                                 </div>
                             </div>
                             <!-- Content -->
