@@ -1346,7 +1346,7 @@ Visit us at https://myora.co</textarea>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
                     <!-- Left Column: Email Form -->
                     <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px;">
-                        <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Compose Bulk Email</h3>
+                    <h3 style="font-family: 'Manrope', sans-serif; font-size: 20px; color: #1e293b; margin-bottom: 20px;">Compose Bulk Email</h3>
                         
                         <!-- Quick Templates -->
                         <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
@@ -1358,8 +1358,8 @@ Visit us at https://myora.co</textarea>
                                 📱 Load App Store Launch Email
                             </button>
                         </div>
-                        
-                        <form id="bulkEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <form id="bulkEmailForm" style="display: flex; flex-direction: column; gap: 20px;">
                         <div>
                             <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Subject *</label>
                             <input type="text" id="bulkEmailSubject" placeholder="e.g., Early Access Invitation" required
@@ -1746,7 +1746,9 @@ Visit us at https://myora.co</textarea>
                     ...(search && { search })
                 });
                 
-                const response = await fetch(`/api/admin?type=email-history&token=${adminToken}&${params}`);
+                // Remove 'type' from params to avoid duplicate parameter
+                const cleanParams = params.replace(/[&?]type=[^&]*/g, '').replace(/^&/, '');
+                const response = await fetch(`/api/admin?type=email-history&token=${adminToken}${cleanParams ? '&' + cleanParams : ''}`);
                 const data = await response.json();
 
                 const emailHistoryEl = document.getElementById('emailHistoryList');
@@ -3052,9 +3054,9 @@ Message: ${message}
 
                 if (data.success) {
                     if (successEl) {
-                        successEl.textContent = 'Email sent successfully!';
-                        successEl.style.display = 'block';
-                        successEl.classList.add('show');
+                    successEl.textContent = 'Email sent successfully!';
+                    successEl.style.display = 'block';
+                    successEl.classList.add('show');
                     }
                     if (formEl) formEl.reset();
                     
@@ -3070,10 +3072,10 @@ Message: ${message}
                     
                     // Hide success message after 3 seconds
                     if (successEl) {
-                        setTimeout(() => {
-                            successEl.style.display = 'none';
-                            successEl.classList.remove('show');
-                        }, 3000);
+                    setTimeout(() => {
+                        successEl.style.display = 'none';
+                        successEl.classList.remove('show');
+                    }, 3000);
                     }
                 } else {
                     alert('Failed to send email: ' + (data.error || 'Unknown error'));
@@ -3390,7 +3392,7 @@ Message: ${message}
                 previewDiv.innerHTML = emailHtml;
             } else {
                 // Plain text preview
-                const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
+            const preview = message.replace(/\{\{displayName\}\}/g, 'John Doe');
                 previewDiv.innerHTML = `<div style="padding: 20px; white-space: pre-wrap; font-family: monospace; color: #1e293b; background: #ffffff; border-radius: 8px;">${preview}</div>`;
             }
         }
