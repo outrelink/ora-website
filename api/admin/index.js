@@ -292,7 +292,41 @@ async function handleSendEmail(req, res) {
 }
 
 async function handleMarketing(req, res) {
-  return safeRequireHandler('../../lib/admin/marketing.js', 'marketing', req, res);
+  // marketing.js exports { default: handler, getMarketingHistory, sendMarketingNotification }
+  let handler;
+  try {
+    const marketing = require('../../lib/admin/marketing.js');
+    handler = marketing.default || marketing.handler || marketing;
+  } catch (requireError) {
+    console.error('Error requiring marketing module:', requireError);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Failed to load marketing module',
+        message: requireError.message || String(requireError)
+      });
+    }
+    return;
+  }
+  
+  if (typeof handler !== 'function') {
+    console.error('Marketing handler is not a function');
+    if (!res.headersSent) {
+      return res.status(500).json({ error: 'Marketing handler is not a function' });
+    }
+    return;
+  }
+  
+  try {
+    return await handler(req, res);
+  } catch (handlerError) {
+    console.error('Handler error in handleMarketing:', handlerError);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Handler error',
+        message: handlerError.message || String(handlerError)
+      });
+    }
+  }
 }
 
 async function handleWaitlist(req, res) {
