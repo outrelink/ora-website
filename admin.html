@@ -4219,20 +4219,12 @@ P.S. Share ORA with other creators who might find it helpful!`,
             }
 
             listEl.innerHTML = `
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid #e2e8f0;">
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px; width: 40px;">
-                                <input type="checkbox" id="selectAllCreators" onchange="toggleAllCreatorsSelected()" style="width: 18px; height: 18px; cursor: pointer;">
-                            </th>
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Name</th>
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Email</th>
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Social Media</th>
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Notes</th>
-                            <th style="padding: 12px; text-align: left; color: #1e293b; font-weight: 600; font-size: 14px;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div style="max-height: 500px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #ffffff;">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; margin-bottom: 8px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px;">
+                        <input type="checkbox" id="selectAllCreators" onchange="toggleAllCreatorsSelected()" style="width: 18px; height: 18px; cursor: pointer;">
+                        <label for="selectAllCreators" style="color: #1e293b; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1;">Select All Creators for Email</label>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
                         ${data.map(creator => {
                             const socialMedia = [];
                             if (creator.instagram) socialMedia.push(`📷 ${creator.instagram}`);
@@ -4245,41 +4237,35 @@ P.S. Share ORA with other creators who might find it helpful!`,
                             const isSelected = creator.selectedForEmail !== false;
                             
                             return `
-                                <tr style="border-bottom: 1px solid #e2e8f0; transition: background 0.2s;" 
-                                    onmouseover="this.style.background='rgba(0,0,0,0.02)'" 
-                                    onmouseout="this.style.background='transparent'">
-                                    <td style="padding: 12px;">
-                                        <input type="checkbox" class="creator-selected-checkbox" data-id="${creator.id}" ${isSelected ? 'checked' : ''} 
-                                            onchange="toggleCreatorSelected('${creator.id}', this.checked)"
-                                            style="width: 18px; height: 18px; cursor: pointer;">
-                                    </td>
-                                    <td style="padding: 12px; color: #1e293b; font-size: 14px; font-weight: 500;">${escapeHtml(creator.name)}</td>
-                                    <td style="padding: 12px; color: #1e293b; font-size: 14px;">
-                                        <a href="mailto:${escapeHtml(creator.email)}" style="color: #3b82f6; text-decoration: none;">${escapeHtml(creator.email)}</a>
-                                    </td>
-                                    <td style="padding: 12px; color: #64748b; font-size: 13px;">
-                                        ${socialMedia.length > 0 ? socialMedia.join('<br>') : '<span style="color: #94a3b8;">-</span>'}
-                                    </td>
-                                    <td style="padding: 12px; color: #64748b; font-size: 13px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                        ${creator.notes ? escapeHtml(creator.notes) : '<span style="color: #94a3b8;">-</span>'}
-                                    </td>
-                                    <td style="padding: 12px;">
-                                        <div style="display: flex; gap: 8px;">
-                                            <button onclick="editCreator('${creator.id}')" 
-                                                style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #3b82f6; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
-                                                Edit
-                                            </button>
-                                            <button onclick="deleteCreator('${creator.id}')" 
-                                                style="padding: 6px 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #ef4444; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
-                                                Delete
-                                            </button>
+                                <label style="display: flex; align-items: start; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: background 0.2s;" 
+                                       onmouseover="this.style.background='rgba(0,0,0,0.03)'" 
+                                       onmouseout="this.style.background='rgba(255, 255, 255, 0.5)'">
+                                    <input type="checkbox" class="creator-selected-checkbox" data-id="${creator.id}" id="creator-${creator.id}" ${isSelected ? 'checked' : ''} 
+                                        onchange="toggleCreatorSelected('${creator.id}', this.checked)"
+                                        style="width: 18px; height: 18px; cursor: pointer; margin-top: 2px; flex-shrink: 0;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #1e293b; font-size: 14px; margin-bottom: 4px;">${escapeHtml(creator.name)}</div>
+                                        <div style="color: #3b82f6; font-size: 13px; margin-bottom: 4px;">
+                                            <a href="mailto:${escapeHtml(creator.email)}" style="color: #3b82f6; text-decoration: none;">${escapeHtml(creator.email)}</a>
                                         </div>
-                                    </td>
-                                </tr>
+                                        ${socialMedia.length > 0 ? `<div style="color: #64748b; font-size: 12px; margin-top: 4px; margin-bottom: 4px;">${socialMedia.join(' • ')}</div>` : ''}
+                                        ${creator.notes ? `<div style="color: #64748b; font-size: 12px; margin-top: 4px; font-style: italic;">${escapeHtml(creator.notes)}</div>` : ''}
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                                        <button onclick="event.stopPropagation(); editCreator('${creator.id}')" 
+                                            style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #3b82f6; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
+                                            Edit
+                                        </button>
+                                        <button onclick="event.stopPropagation(); deleteCreator('${creator.id}')" 
+                                            style="padding: 6px 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #ef4444; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </label>
                             `;
                         }).join('')}
-                    </tbody>
-                </table>
+                    </div>
+                </div>
             `;
             
             // Update select all checkbox state
