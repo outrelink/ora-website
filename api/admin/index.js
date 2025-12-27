@@ -118,7 +118,8 @@ async function safeRequireHandler(modulePath, handlerName, req, res) {
 }
 
 // Main handler function - wrap everything to catch any errors
-module.exports = async (req, res) => {
+// Use a wrapper function to catch any synchronous errors during module load
+const mainHandler = async (req, res) => {
   // Set content type to JSON immediately - this must be first
   try {
     res.setHeader('Content-Type', 'application/json');
@@ -137,48 +138,49 @@ module.exports = async (req, res) => {
 
     try {
       let result;
+      // Wrap each handler call to catch any synchronous errors
       switch (type) {
         case 'overview':
-          result = await handleOverview(req, res);
+          result = await Promise.resolve().then(() => handleOverview(req, res));
           break;
         case 'users':
-          result = await handleUsers(req, res);
+          result = await Promise.resolve().then(() => handleUsers(req, res));
           break;
         case 'subscriptions':
-          result = await handleSubscriptions(req, res);
+          result = await Promise.resolve().then(() => handleSubscriptions(req, res));
           break;
         case 'deals':
-          result = await handleDeals(req, res);
+          result = await Promise.resolve().then(() => handleDeals(req, res));
           break;
         case 'quotes':
-          result = await handleQuotes(req, res);
+          result = await Promise.resolve().then(() => handleQuotes(req, res));
           break;
         case 'business':
-          result = await handleBusinessIntelligence(req, res);
+          result = await Promise.resolve().then(() => handleBusinessIntelligence(req, res));
           break;
         case 'submissions':
-          result = await handleSubmissions(req, res);
+          result = await Promise.resolve().then(() => handleSubmissions(req, res));
           break;
         case 'analytics':
-          result = await handleAnalytics(req, res);
+          result = await Promise.resolve().then(() => handleAnalytics(req, res));
           break;
         case 'errors':
-          result = await handleErrors(req, res);
+          result = await Promise.resolve().then(() => handleErrors(req, res));
           break;
         case 'send-email':
-          result = await handleSendEmail(req, res);
+          result = await Promise.resolve().then(() => handleSendEmail(req, res));
           break;
         case 'marketing':
-          result = await handleMarketing(req, res);
+          result = await Promise.resolve().then(() => handleMarketing(req, res));
           break;
         case 'waitlist':
-          result = await handleWaitlist(req, res);
+          result = await Promise.resolve().then(() => handleWaitlist(req, res));
           break;
         case 'auth':
-          result = await handleAuth(req, res);
+          result = await Promise.resolve().then(() => handleAuth(req, res));
           break;
         case 'email-history':
-          result = await handleEmailHistory(req, res);
+          result = await Promise.resolve().then(() => handleEmailHistory(req, res));
           break;
         default:
           return res.status(400).json({ error: 'Invalid type parameter', type: type });
@@ -220,6 +222,26 @@ module.exports = async (req, res) => {
         } catch (sendError) {
           console.error('Failed to send any response:', sendError);
         }
+      }
+    }
+  }
+};
+
+// Export with error wrapper
+module.exports = async (req, res) => {
+  try {
+    return await mainHandler(req, res);
+  } catch (error) {
+    // Catch any errors that escape the main handler
+    console.error('Unhandled error in module.exports:', error);
+    if (!res.headersSent) {
+      try {
+        return res.status(500).json({
+          error: 'Internal server error',
+          message: error.message || String(error)
+        });
+      } catch (e) {
+        console.error('Failed to send error response:', e);
       }
     }
   }
