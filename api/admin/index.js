@@ -297,6 +297,7 @@ async function handleSendEmail(req, res) {
 async function handleMarketing(req, res) {
   // marketing.js exports { default: handler, getMarketingHistory, sendMarketingNotification }
   // The default export is the handler function that routes GET vs POST
+  // Pass the shared Supabase client to avoid env var issues
   let handler;
   try {
     const marketing = require('../../lib/admin/marketing.js');
@@ -310,7 +311,12 @@ async function handleMarketing(req, res) {
       return;
     }
     
-    return await handler(req, res);
+    // Pass supabase client if handler accepts it, otherwise use default
+    if (handler.length > 2) {
+      return await handler(req, res, supabase);
+    } else {
+      return await handler(req, res);
+    }
   } catch (error) {
     console.error('Error in handleMarketing:', error);
     if (!res.headersSent) {
@@ -324,6 +330,7 @@ async function handleMarketing(req, res) {
 
 async function handleWaitlist(req, res) {
   // waitlist.js exports a default async function
+  // Pass the shared Supabase client to avoid env var issues
   let handler;
   try {
     const waitlist = require('../../lib/admin/waitlist.js');
@@ -337,7 +344,12 @@ async function handleWaitlist(req, res) {
       return;
     }
     
-    return await handler(req, res);
+    // Pass supabase client if handler accepts it, otherwise use default
+    if (handler.length > 2) {
+      return await handler(req, res, supabase);
+    } else {
+      return await handler(req, res);
+    }
   } catch (error) {
     console.error('Error in handleWaitlist:', error);
     if (!res.headersSent) {
@@ -355,7 +367,7 @@ async function handleAuth(req, res) {
 
 async function handleEmailHistory(req, res) {
   // email-history.js exports { default: getEmailHistory, getEmailHistory }
-  // Use default export which is the getEmailHistory function
+  // Pass the shared Supabase client to avoid env var issues
   let handler;
   try {
     const emailHistory = require('../../lib/admin/email-history.js');
@@ -369,7 +381,12 @@ async function handleEmailHistory(req, res) {
       return;
     }
     
-    return await handler(req, res);
+    // Pass supabase client if handler accepts it, otherwise use default
+    if (handler.length > 2) {
+      return await handler(req, res, supabase);
+    } else {
+      return await handler(req, res);
+    }
   } catch (error) {
     console.error('Error in handleEmailHistory:', error);
     if (!res.headersSent) {
