@@ -64,6 +64,7 @@ async function safeRequireHandler(modulePath, handlerName, req, res) {
           exports: Object.keys(module)
         });
       }
+      // Headers already sent, can't return JSON - this shouldn't happen but handle it
       return;
     }
   } catch (requireError) {
@@ -75,12 +76,22 @@ async function safeRequireHandler(modulePath, handlerName, req, res) {
         modulePath: modulePath
       });
     }
+    // Headers already sent - shouldn't happen but handle gracefully
     return;
   }
   
   // Step 2: Safely execute the handler
   try {
-    return await handler(req, res);
+    const result = await handler(req, res);
+    // Ensure handler returned something or sent a response
+    if (result === undefined && !res.headersSent) {
+      console.warn(`Handler ${handlerName} did not return a response or send headers`);
+      return res.status(500).json({ 
+        error: `Handler ${handlerName} did not return a response`,
+        modulePath: modulePath
+      });
+    }
+    return result;
   } catch (handlerError) {
     console.error(`Handler error in ${handlerName}:`, handlerError);
     if (!res.headersSent) {
@@ -90,6 +101,10 @@ async function safeRequireHandler(modulePath, handlerName, req, res) {
         stack: process.env.NODE_ENV === 'development' ? handlerError.stack : undefined
       });
     }
+    // Headers already sent - handler must have sent a response before throwing
+    // This is unusual but we'll log it
+    console.error(`Handler ${handlerName} threw error after sending headers`);
+    return;
   }
 }
 
