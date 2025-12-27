@@ -182,6 +182,9 @@ const mainHandler = async (req, res) => {
         case 'email-history':
           result = await Promise.resolve().then(() => handleEmailHistory(req, res));
           break;
+        case 'welcome-email-settings':
+          result = await Promise.resolve().then(() => handleWelcomeEmailSettings(req, res));
+          break;
         default:
           return res.status(400).json({ error: 'Invalid type parameter', type: type });
       }
