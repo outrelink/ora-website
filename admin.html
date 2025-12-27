@@ -1508,6 +1508,13 @@ Visit us at https://myora.co</textarea>
                             </div>
 
                             <div>
+                                <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Social Media Handles</label>
+                                <input type="text" id="creatorPoolSocial" placeholder="e.g., @username (Instagram), @username (TikTok), @username (YouTube) (optional)"
+                                    style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
+                                <p style="color: #64748b; font-size: 12px; margin-top: 8px;">Add their social media handles (Instagram, TikTok, YouTube, etc.)</p>
+                            </div>
+
+                            <div>
                                 <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Category/Tag</label>
                                 <input type="text" id="creatorPoolCategory" placeholder="e.g., Fashion, Tech, Lifestyle (optional)"
                                     style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; color: #1e293b; font-size: 15px; font-family: 'Inter', sans-serif;">
@@ -4074,6 +4081,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
 
             listEl.innerHTML = entriesToRender.map(creator => {
                 const categoryBadge = creator.category ? `<span style="padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 6px; font-size: 11px; color: #8b5cf6; font-weight: 500;">${creator.category}</span>` : '';
+                const socialMedia = creator.social_media ? `<p style="color: #3b82f6; font-size: 12px; margin: 4px 0 0 0; font-weight: 500;">📱 ${creator.social_media}</p>` : '';
                 const notesPreview = creator.notes ? `<p style="color: #64748b; font-size: 12px; margin: 8px 0 0 0; line-height: 1.4;">${creator.notes.substring(0, 100)}${creator.notes.length > 100 ? '...' : ''}</p>` : '';
                 
                 return `
@@ -4087,6 +4095,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
                                     ${categoryBadge}
                                 </div>
                                 <p style="color: #64748b; font-size: 13px; margin: 0;">${creator.email}</p>
+                                ${socialMedia}
                                 ${notesPreview}
                             </div>
                             <div style="display: flex; gap: 8px;">
@@ -4126,6 +4135,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
                 const matchesSearch = !searchTerm || 
                     creator.email.toLowerCase().includes(searchTerm) ||
                     (creator.display_name && creator.display_name.toLowerCase().includes(searchTerm)) ||
+                    (creator.social_media && creator.social_media.toLowerCase().includes(searchTerm)) ||
                     (creator.notes && creator.notes.toLowerCase().includes(searchTerm));
                 
                 const matchesCategory = !categoryFilter || creator.category === categoryFilter;
@@ -4142,6 +4152,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
             const id = document.getElementById('creatorPoolId').value;
             const email = document.getElementById('creatorPoolEmail').value.trim();
             const displayName = document.getElementById('creatorPoolName').value.trim();
+            const socialMedia = document.getElementById('creatorPoolSocial').value.trim();
             const category = document.getElementById('creatorPoolCategory').value.trim();
             const notes = document.getElementById('creatorPoolNotes').value.trim();
 
@@ -4164,6 +4175,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
                         id: id || undefined,
                         email: email,
                         display_name: displayName || null,
+                        social_media: socialMedia || null,
                         category: category || null,
                         notes: notes || null
                     })
@@ -4192,6 +4204,7 @@ P.S. Share ORA with other creators who might find it helpful!`,
             document.getElementById('creatorPoolId').value = creator.id;
             document.getElementById('creatorPoolEmail').value = creator.email;
             document.getElementById('creatorPoolName').value = creator.display_name || '';
+            document.getElementById('creatorPoolSocial').value = creator.social_media || '';
             document.getElementById('creatorPoolCategory').value = creator.category || '';
             document.getElementById('creatorPoolNotes').value = creator.notes || '';
             
