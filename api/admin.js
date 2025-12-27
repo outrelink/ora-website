@@ -21,6 +21,7 @@ const auth = require('../lib/admin/auth');
 const welcomeEmailSettings = require('../lib/admin/welcome-email-settings');
 const bulkEmail = require('../lib/admin/bulk-email');
 const emailHistory = require('../lib/admin/email-history');
+const marketing = require('../lib/admin/marketing');
 
 module.exports = async (req, res) => {
   const type = req.query.type || (req.body && req.body.type) || 'overview';
@@ -50,19 +51,30 @@ module.exports = async (req, res) => {
       case 'send-email':
         return await sendEmail(req, res);
       case 'welcome-email-settings':
-        return await welcomeEmailSettings(req, res);
+        const welcomeEmailHandler = welcomeEmailSettings.default || welcomeEmailSettings.getWelcomeEmailSettings || welcomeEmailSettings;
+        return await welcomeEmailHandler(req, res);
       case 'bulk-email-users':
         return await bulkEmail(req, res);
       case 'email-history':
-        return await emailHistory(req, res);
+        const emailHistoryHandler = emailHistory.default || emailHistory.getEmailHistory || emailHistory;
+        return await emailHistoryHandler(req, res);
+      case 'marketing':
+        const marketingHandler = marketing.default || marketing.getMarketingHistory || marketing;
+        return await marketingHandler(req, res);
       case 'auth':
         return await auth(req, res);
       default:
-        return res.status(400).json({ error: 'Invalid type parameter. Use: overview, users, subscriptions, deals, quotes, business, submissions, analytics, errors, send-email, welcome-email-settings, bulk-email-users, email-history, or auth' });
+        return res.status(400).json({ error: 'Invalid type parameter. Use: overview, users, subscriptions, deals, quotes, business, submissions, analytics, errors, send-email, welcome-email-settings, bulk-email-users, email-history, marketing, or auth' });
     }
   } catch (error) {
     console.error(`Error in admin API router (${type}):`, error);
-    return res.status(500).json({ error: 'Internal server error' });
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Internal server error',
+        message: error.message || String(error),
+        type: type
+      });
+    }
   }
 };
 
