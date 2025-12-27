@@ -101,90 +101,117 @@ async function handleEmailHistory(req, res) {
 async function handleOverview(req, res) {
   try {
     const handler = require('../../lib/admin/overview.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Overview handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleOverview:', error);
-    return res.status(500).json({ error: 'Failed to load overview', message: error.message });
+    return res.status(500).json({ error: 'Failed to load overview', message: error.message || String(error) });
   }
 }
 
 async function handleUsers(req, res) {
   try {
     const handler = require('../../lib/admin/users.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Users handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleUsers:', error);
-    return res.status(500).json({ error: 'Failed to load users', message: error.message });
+    return res.status(500).json({ error: 'Failed to load users', message: error.message || String(error) });
   }
 }
 
 async function handleSubscriptions(req, res) {
   try {
     const handler = require('../../lib/admin/subscriptions.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Subscriptions handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleSubscriptions:', error);
-    return res.status(500).json({ error: 'Failed to load subscriptions', message: error.message });
+    return res.status(500).json({ error: 'Failed to load subscriptions', message: error.message || String(error) });
   }
 }
 
 async function handleDeals(req, res) {
   try {
     const handler = require('../../lib/admin/deals.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Deals handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleDeals:', error);
-    return res.status(500).json({ error: 'Failed to load deals', message: error.message });
+    return res.status(500).json({ error: 'Failed to load deals', message: error.message || String(error) });
   }
 }
 
 async function handleQuotes(req, res) {
   try {
     const handler = require('../../lib/admin/quotes.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Quotes handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleQuotes:', error);
-    return res.status(500).json({ error: 'Failed to load quotes', message: error.message });
+    return res.status(500).json({ error: 'Failed to load quotes', message: error.message || String(error) });
   }
 }
 
 async function handleBusinessIntelligence(req, res) {
   try {
     const handler = require('../../lib/admin/business-intelligence.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Business intelligence handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleBusinessIntelligence:', error);
-    return res.status(500).json({ error: 'Failed to load business intelligence', message: error.message });
+    return res.status(500).json({ error: 'Failed to load business intelligence', message: error.message || String(error) });
   }
 }
 
 async function handleSubmissions(req, res) {
   try {
     const handler = require('../../lib/admin/submissions.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Submissions handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleSubmissions:', error);
-    return res.status(500).json({ error: 'Failed to load submissions', message: error.message });
+    return res.status(500).json({ error: 'Failed to load submissions', message: error.message || String(error) });
   }
 }
 
 async function handleAnalytics(req, res) {
   try {
     const handler = require('../../lib/admin/analytics.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Analytics handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleAnalytics:', error);
-    return res.status(500).json({ error: 'Failed to load analytics', message: error.message });
+    return res.status(500).json({ error: 'Failed to load analytics', message: error.message || String(error) });
   }
 }
 
 async function handleErrors(req, res) {
   try {
     const handler = require('../../lib/admin/errors.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Errors handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleErrors:', error);
-    return res.status(500).json({ error: 'Failed to load errors', message: error.message });
+    return res.status(500).json({ error: 'Failed to load errors', message: error.message || String(error) });
   }
 }
 
@@ -201,8 +228,13 @@ async function handleSendEmail(req, res) {
 async function handleMarketing(req, res) {
   try {
     const marketing = require('../../lib/admin/marketing.js');
-    const handler = marketing.default || marketing;
-    return await handler(req, res);
+    // marketing.js exports { default: handler, ... }
+    const handler = marketing.default || marketing.handler || marketing;
+    if (typeof handler === 'function') {
+      return await handler(req, res);
+    } else {
+      throw new Error('Marketing handler is not a function');
+    }
   } catch (error) {
     console.error('Error in handleMarketing:', error);
     return res.status(500).json({ error: 'Failed to load marketing', message: error.message });
@@ -212,29 +244,39 @@ async function handleMarketing(req, res) {
 async function handleWaitlist(req, res) {
   try {
     const handler = require('../../lib/admin/waitlist.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Waitlist handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleWaitlist:', error);
-    return res.status(500).json({ error: 'Failed to load waitlist', message: error.message });
+    return res.status(500).json({ error: 'Failed to load waitlist', message: error.message || String(error) });
   }
 }
 
 async function handleAuth(req, res) {
   try {
     const handler = require('../../lib/admin/auth.js');
+    if (typeof handler !== 'function') {
+      throw new Error('Auth handler is not a function');
+    }
     return await handler(req, res);
   } catch (error) {
     console.error('Error in handleAuth:', error);
-    return res.status(500).json({ error: 'Failed to authenticate', message: error.message });
+    return res.status(500).json({ error: 'Failed to authenticate', message: error.message || String(error) });
   }
 }
 
 async function handleEmailHistory(req, res) {
   try {
     const emailHistory = require('../../lib/admin/email-history.js');
-    // email-history.js exports getEmailHistory function
+    // email-history.js exports { default: getEmailHistory, getEmailHistory }
     const handler = emailHistory.getEmailHistory || emailHistory.default || emailHistory;
-    return await handler(req, res);
+    if (typeof handler === 'function') {
+      return await handler(req, res);
+    } else {
+      throw new Error('Email history handler is not a function');
+    }
   } catch (error) {
     console.error('Error in handleEmailHistory:', error);
     return res.status(500).json({ error: 'Failed to load email history', message: error.message });
