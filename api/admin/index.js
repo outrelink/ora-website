@@ -311,12 +311,8 @@ async function handleMarketing(req, res) {
       return;
     }
     
-    // Pass supabase client if handler accepts it, otherwise use default
-    if (handler.length > 2) {
-      return await handler(req, res, supabase);
-    } else {
-      return await handler(req, res);
-    }
+    // Always pass supabase client - handlers with default params will use it if needed
+    return await handler(req, res, supabase);
   } catch (error) {
     console.error('Error in handleMarketing:', error);
     if (!res.headersSent) {
@@ -344,12 +340,8 @@ async function handleWaitlist(req, res) {
       return;
     }
     
-    // Pass supabase client if handler accepts it, otherwise use default
-    if (handler.length > 2) {
-      return await handler(req, res, supabase);
-    } else {
-      return await handler(req, res);
-    }
+    // Always pass supabase client - handlers with default params will use it if needed
+    return await handler(req, res, supabase);
   } catch (error) {
     console.error('Error in handleWaitlist:', error);
     if (!res.headersSent) {
@@ -381,12 +373,8 @@ async function handleEmailHistory(req, res) {
       return;
     }
     
-    // Pass supabase client if handler accepts it, otherwise use default
-    if (handler.length > 2) {
-      return await handler(req, res, supabase);
-    } else {
-      return await handler(req, res);
-    }
+    // Always pass supabase client - handlers with default params will use it if needed
+    return await handler(req, res, supabase);
   } catch (error) {
     console.error('Error in handleEmailHistory:', error);
     if (!res.headersSent) {
