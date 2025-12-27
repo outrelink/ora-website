@@ -296,44 +296,57 @@ async function handleSendEmail(req, res) {
 
 async function handleMarketing(req, res) {
   // marketing.js exports { default: handler, getMarketingHistory, sendMarketingNotification }
+  // The default export is the handler function that routes GET vs POST
   let handler;
   try {
     const marketing = require('../../lib/admin/marketing.js');
     handler = marketing.default || marketing.handler || marketing;
-  } catch (requireError) {
-    console.error('Error requiring marketing module:', requireError);
-    if (!res.headersSent) {
-      return res.status(500).json({ 
-        error: 'Failed to load marketing module',
-        message: requireError.message || String(requireError)
-      });
+    
+    if (typeof handler !== 'function') {
+      console.error('Marketing handler is not a function. Exports:', Object.keys(marketing));
+      if (!res.headersSent) {
+        return res.status(500).json({ error: 'Marketing handler is not a function' });
+      }
+      return;
     }
-    return;
-  }
-  
-  if (typeof handler !== 'function') {
-    console.error('Marketing handler is not a function');
-    if (!res.headersSent) {
-      return res.status(500).json({ error: 'Marketing handler is not a function' });
-    }
-    return;
-  }
-  
-  try {
+    
     return await handler(req, res);
-  } catch (handlerError) {
-    console.error('Handler error in handleMarketing:', handlerError);
+  } catch (error) {
+    console.error('Error in handleMarketing:', error);
     if (!res.headersSent) {
       return res.status(500).json({ 
         error: 'Handler error',
-        message: handlerError.message || String(handlerError)
+        message: error.message || String(error)
       });
     }
   }
 }
 
 async function handleWaitlist(req, res) {
-  return safeRequireHandler('../../lib/admin/waitlist.js', 'waitlist', req, res);
+  // waitlist.js exports a default async function
+  let handler;
+  try {
+    const waitlist = require('../../lib/admin/waitlist.js');
+    handler = waitlist.default || waitlist;
+    
+    if (typeof handler !== 'function') {
+      console.error('Waitlist handler is not a function. Exports:', Object.keys(waitlist));
+      if (!res.headersSent) {
+        return res.status(500).json({ error: 'Waitlist handler is not a function' });
+      }
+      return;
+    }
+    
+    return await handler(req, res);
+  } catch (error) {
+    console.error('Error in handleWaitlist:', error);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Handler error',
+        message: error.message || String(error)
+      });
+    }
+  }
 }
 
 async function handleAuth(req, res) {
@@ -342,37 +355,27 @@ async function handleAuth(req, res) {
 
 async function handleEmailHistory(req, res) {
   // email-history.js exports { default: getEmailHistory, getEmailHistory }
+  // Use default export which is the getEmailHistory function
   let handler;
   try {
     const emailHistory = require('../../lib/admin/email-history.js');
-    handler = emailHistory.getEmailHistory || emailHistory.default || emailHistory;
-  } catch (requireError) {
-    console.error('Error requiring email-history module:', requireError);
-    if (!res.headersSent) {
-      return res.status(500).json({ 
-        error: 'Failed to load email-history module',
-        message: requireError.message || String(requireError)
-      });
+    handler = emailHistory.default || emailHistory.getEmailHistory || emailHistory;
+    
+    if (typeof handler !== 'function') {
+      console.error('Email history handler is not a function. Exports:', Object.keys(emailHistory));
+      if (!res.headersSent) {
+        return res.status(500).json({ error: 'Email history handler is not a function' });
+      }
+      return;
     }
-    return;
-  }
-  
-  if (typeof handler !== 'function') {
-    console.error('Email history handler is not a function');
-    if (!res.headersSent) {
-      return res.status(500).json({ error: 'Email history handler is not a function' });
-    }
-    return;
-  }
-  
-  try {
+    
     return await handler(req, res);
-  } catch (handlerError) {
-    console.error('Handler error in handleEmailHistory:', handlerError);
+  } catch (error) {
+    console.error('Error in handleEmailHistory:', error);
     if (!res.headersSent) {
       return res.status(500).json({ 
         error: 'Handler error',
-        message: handlerError.message || String(handlerError)
+        message: error.message || String(error)
       });
     }
   }
