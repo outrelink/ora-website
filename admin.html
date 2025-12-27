@@ -1503,9 +1503,23 @@ Visit us at https://myora.co</textarea>
                                     <span style="color: #1e293b; font-size: 14px;">Custom selection from users</span>
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
+                                    <input type="radio" name="bulkEmailRecipients" value="creator-pool" style="width: 18px; height: 18px; cursor: pointer;">
+                                    <span style="color: #1e293b; font-size: 14px;">Creator Pool (<span id="creatorPoolRecipientsCount">0</span> creators)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
                                     <input type="radio" name="bulkEmailRecipients" value="manual" style="width: 18px; height: 18px; cursor: pointer;">
                                     <span style="color: #1e293b; font-size: 14px;">Manual email list (paste emails)</span>
                                 </label>
+                            </div>
+                        </div>
+
+                        <div id="creatorPoolRecipientsSection" style="display: none;">
+                            <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Select Creators from Pool</label>
+                            <div style="background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                                <p style="color: #64748b; font-size: 12px; margin: 0;">All creators from your Creator Pool will be included. Use the Creator Pool tab to manage your list.</p>
+                            </div>
+                            <div id="creatorPoolRecipientsList" style="max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #ffffff;">
+                                <div class="loading">Loading creator pool...</div>
                             </div>
                         </div>
 
@@ -3515,6 +3529,18 @@ Message: ${message}
                     document.getElementById('allUsersCount').textContent = allCount;
                     document.getElementById('subscribedUsersCount').textContent = subscribedCount;
                     document.getElementById('freeUsersCount').textContent = freeCount;
+                    
+                    // Load creator pool count
+                    try {
+                        const saved = localStorage.getItem('creatorPool');
+                        const poolData = saved ? JSON.parse(saved) : [];
+                        const creatorPoolCountEl = document.getElementById('creatorPoolRecipientsCount');
+                        if (creatorPoolCountEl) {
+                            creatorPoolCountEl.textContent = poolData.length;
+                        }
+                    } catch (error) {
+                        console.error('Error loading creator pool count:', error);
+                    }
 
                     // Load user list for custom selection
                     const userListEl = document.getElementById('bulkEmailUserList');
@@ -3538,19 +3564,68 @@ Message: ${message}
             if (e.target.name === 'bulkEmailRecipients') {
                 const customSection = document.getElementById('customRecipientsSection');
                 const manualSection = document.getElementById('manualRecipientsSection');
+                const creatorPoolSection = document.getElementById('creatorPoolRecipientsSection');
                 
                 if (e.target.value === 'custom') {
                     customSection.style.display = 'block';
                     manualSection.style.display = 'none';
+                    creatorPoolSection.style.display = 'none';
                 } else if (e.target.value === 'manual') {
                     customSection.style.display = 'none';
                     manualSection.style.display = 'block';
+                    creatorPoolSection.style.display = 'none';
+                } else if (e.target.value === 'creator-pool') {
+                    customSection.style.display = 'none';
+                    manualSection.style.display = 'none';
+                    creatorPoolSection.style.display = 'block';
+                    loadCreatorPoolRecipients();
                 } else {
                     customSection.style.display = 'none';
                     manualSection.style.display = 'none';
+                    creatorPoolSection.style.display = 'none';
                 }
             }
         });
+
+        // Load creator pool recipients for bulk email
+        function loadCreatorPoolRecipients() {
+            try {
+                const saved = localStorage.getItem('creatorPool');
+                const poolData = saved ? JSON.parse(saved) : [];
+                const listEl = document.getElementById('creatorPoolRecipientsList');
+                const countEl = document.getElementById('creatorPoolRecipientsCount');
+                
+                if (countEl) countEl.textContent = poolData.length;
+
+                if (poolData.length === 0) {
+                    listEl.innerHTML = '<div style="text-align: center; padding: 20px; color: #64748b; font-size: 14px;">Your Creator Pool is empty. Go to the Creator Pool tab to add creators.</div>';
+                    return;
+                }
+
+                listEl.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${poolData.map(creator => {
+                            const socialMedia = [];
+                            if (creator.instagram) socialMedia.push(`📷 ${creator.instagram}`);
+                            if (creator.tiktok) socialMedia.push(`🎵 ${creator.tiktok}`);
+                            if (creator.youtube) socialMedia.push(`▶️ ${creator.youtube}`);
+                            if (creator.twitter) socialMedia.push(`🐦 ${creator.twitter}`);
+                            
+                            return `
+                                <div style="padding: 12px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px;">
+                                    <div style="font-weight: 600; color: #1e293b; font-size: 14px; margin-bottom: 4px;">${escapeHtml(creator.name)}</div>
+                                    <div style="color: #3b82f6; font-size: 13px; margin-bottom: 4px;">${escapeHtml(creator.email)}</div>
+                                    ${socialMedia.length > 0 ? `<div style="color: #64748b; font-size: 12px; margin-top: 4px;">${socialMedia.join(' • ')}</div>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading creator pool recipients:', error);
+                document.getElementById('creatorPoolRecipientsList').innerHTML = '<div style="text-align: center; padding: 20px; color: #ef4444; font-size: 14px;">Error loading creator pool. Please try again.</div>';
+            }
+        }
 
         // Live Email Preview Function
         function updateEmailPreview() {
@@ -3814,6 +3889,26 @@ Message: ${message}
                     email: cb.value,
                     displayName: cb.dataset.name || cb.value.split('@')[0]
                 }));
+            } else if (recipientType === 'creator-pool') {
+                // Get creators from localStorage
+                try {
+                    const saved = localStorage.getItem('creatorPool');
+                    const poolData = saved ? JSON.parse(saved) : [];
+                    
+                    if (poolData.length === 0) {
+                        alert('Your Creator Pool is empty. Please add creators to the pool first.');
+                        return;
+                    }
+                    
+                    recipients = poolData.map(creator => ({
+                        email: creator.email,
+                        displayName: creator.name || creator.email.split('@')[0]
+                    }));
+                } catch (error) {
+                    console.error('Error loading creator pool:', error);
+                    alert('Error loading creator pool. Please try again.');
+                    return;
+                }
             } else if (recipientType === 'manual') {
                 const emailInputs = document.querySelectorAll('.bulk-email-manual-input');
                 const emailList = Array.from(emailInputs)
