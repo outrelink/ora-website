@@ -3116,16 +3116,49 @@ Message: ${message}
                     document.getElementById('welcomeEmailSubject').value = data.settings.subject || 'Welcome to ORA!';
                     document.getElementById('welcomeEmailMessage').value = data.settings.message || '';
                     document.getElementById('welcomeEmailAutoSend').checked = data.settings.auto_send !== false;
+                } else {
+                    // If no saved settings, try to restore from localStorage draft
+                    restoreWelcomeEmailDraft();
+                }
+                
+                // Set up auto-save listeners
+                const subjectInput = document.getElementById('welcomeEmailSubject');
+                const messageInput = document.getElementById('welcomeEmailMessage');
+                const htmlCheckbox = document.getElementById('welcomeEmailUseHtml');
+                const autoSendCheckbox = document.getElementById('welcomeEmailAutoSend');
+                
+                if (subjectInput) {
+                    subjectInput.addEventListener('input', saveWelcomeEmailDraft);
+                }
+                if (messageInput) {
+                    messageInput.addEventListener('input', saveWelcomeEmailDraft);
+                }
+                if (htmlCheckbox) {
+                    htmlCheckbox.addEventListener('change', saveWelcomeEmailDraft);
+                }
+                if (autoSendCheckbox) {
+                    autoSendCheckbox.addEventListener('change', saveWelcomeEmailDraft);
                 }
             } catch (error) {
                 console.error('Error loading welcome email settings:', error);
+                // On error, try to restore from localStorage draft
+                restoreWelcomeEmailDraft();
             }
         }
 
         async function saveWelcomeEmailTemplate() {
-            const subject = document.getElementById('welcomeEmailSubject').value.trim();
-            const message = document.getElementById('welcomeEmailMessage').value.trim();
-            const autoSend = document.getElementById('welcomeEmailAutoSend').checked;
+            const subjectInput = document.getElementById('welcomeEmailSubject');
+            const messageInput = document.getElementById('welcomeEmailMessage');
+            const autoSendInput = document.getElementById('welcomeEmailAutoSend');
+
+            if (!subjectInput || !messageInput) {
+                alert('Email form fields not found. Please refresh the page.');
+                return;
+            }
+
+            const subject = subjectInput.value.trim();
+            const message = messageInput.value.trim();
+            const autoSend = autoSendInput ? autoSendInput.checked : true;
 
             if (!subject || !message) {
                 alert('Please fill in subject and message');
@@ -3133,11 +3166,12 @@ Message: ${message}
             }
 
             try {
-                const adminToken = localStorage.getItem('admin_token') || '';
+                const adminToken = localStorage.getItem('admin_token') || 'ora_admin_2025';
                 const response = await fetch('/api/admin?type=welcome-email-settings', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-Admin-Token': adminToken
                     },
                     body: JSON.stringify({
                         token: adminToken,
@@ -3147,16 +3181,65 @@ Message: ${message}
                     })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
                     alert('Welcome email template saved successfully!');
+                    // Also save to localStorage as backup
+                    saveWelcomeEmailDraft();
                 } else {
                     alert('Failed to save template: ' + (data.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error saving welcome email template:', error);
-                alert('Failed to save template. Please try again.');
+                alert('Failed to save template: ' + error.message + '. Please check your connection and try again.');
+            }
+        }
+
+        // Auto-save welcome email form to localStorage
+        function saveWelcomeEmailDraft() {
+            try {
+                const draft = {
+                    subject: document.getElementById('welcomeEmailSubject')?.value || '',
+                    message: document.getElementById('welcomeEmailMessage')?.value || '',
+                    useHtml: document.getElementById('welcomeEmailUseHtml')?.checked ?? true,
+                    autoSend: document.getElementById('welcomeEmailAutoSend')?.checked ?? true,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('welcomeEmailDraft', JSON.stringify(draft));
+            } catch (error) {
+                console.error('Error saving welcome email draft:', error);
+            }
+        }
+
+        // Restore welcome email form from localStorage
+        function restoreWelcomeEmailDraft() {
+            try {
+                const saved = localStorage.getItem('welcomeEmailDraft');
+                if (saved) {
+                    const draft = JSON.parse(saved);
+                    // Only restore if draft is less than 7 days old
+                    if (Date.now() - draft.timestamp < 7 * 24 * 60 * 60 * 1000) {
+                        if (draft.subject && document.getElementById('welcomeEmailSubject')) {
+                            document.getElementById('welcomeEmailSubject').value = draft.subject;
+                        }
+                        if (draft.message && document.getElementById('welcomeEmailMessage')) {
+                            document.getElementById('welcomeEmailMessage').value = draft.message;
+                        }
+                        if (document.getElementById('welcomeEmailUseHtml')) {
+                            document.getElementById('welcomeEmailUseHtml').checked = draft.useHtml !== false;
+                        }
+                        if (document.getElementById('welcomeEmailAutoSend')) {
+                            document.getElementById('welcomeEmailAutoSend').checked = draft.autoSend !== false;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error restoring welcome email draft:', error);
             }
         }
 
@@ -3501,17 +3584,100 @@ Message: ${message}
             }
         }
         
-        // Set up live preview listeners
+        // Auto-save bulk email form to localStorage
+        function saveBulkEmailDraft() {
+            try {
+                const draft = {
+                    subject: document.getElementById('bulkEmailSubject')?.value || '',
+                    message: document.getElementById('bulkEmailMessage')?.value || '',
+                    useHtml: document.getElementById('bulkEmailUseHtml')?.checked ?? true,
+                    appStoreUrl: document.getElementById('appStoreUrl')?.value || '',
+                    recipientType: document.querySelector('input[name="bulkEmailRecipients"]:checked')?.value || 'all',
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('bulkEmailDraft', JSON.stringify(draft));
+            } catch (error) {
+                console.error('Error saving bulk email draft:', error);
+            }
+        }
+
+        // Restore bulk email form from localStorage
+        function restoreBulkEmailDraft() {
+            try {
+                const saved = localStorage.getItem('bulkEmailDraft');
+                if (saved) {
+                    const draft = JSON.parse(saved);
+                    // Only restore if draft is less than 7 days old
+                    if (Date.now() - draft.timestamp < 7 * 24 * 60 * 60 * 1000) {
+                        if (draft.subject && document.getElementById('bulkEmailSubject')) {
+                            document.getElementById('bulkEmailSubject').value = draft.subject;
+                        }
+                        if (draft.message && document.getElementById('bulkEmailMessage')) {
+                            document.getElementById('bulkEmailMessage').value = draft.message;
+                        }
+                        if (document.getElementById('bulkEmailUseHtml')) {
+                            document.getElementById('bulkEmailUseHtml').checked = draft.useHtml !== false;
+                        }
+                        if (draft.appStoreUrl && document.getElementById('appStoreUrl')) {
+                            document.getElementById('appStoreUrl').value = draft.appStoreUrl;
+                        }
+                        if (draft.recipientType) {
+                            const radio = document.querySelector(`input[name="bulkEmailRecipients"][value="${draft.recipientType}"]`);
+                            if (radio) radio.checked = true;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error restoring bulk email draft:', error);
+            }
+        }
+
+        // Clear draft after successful send
+        function clearBulkEmailDraft() {
+            localStorage.removeItem('bulkEmailDraft');
+        }
+
+        // Set up live preview listeners and auto-save
         document.addEventListener('DOMContentLoaded', function() {
             const subjectInput = document.getElementById('bulkEmailSubject');
             const messageInput = document.getElementById('bulkEmailMessage');
             const htmlCheckbox = document.getElementById('bulkEmailUseHtml');
             const appStoreInput = document.getElementById('appStoreUrl');
             
-            if (subjectInput) subjectInput.addEventListener('input', updateEmailPreview);
-            if (messageInput) messageInput.addEventListener('input', updateEmailPreview);
-            if (htmlCheckbox) htmlCheckbox.addEventListener('change', updateEmailPreview);
-            if (appStoreInput) appStoreInput.addEventListener('input', updateEmailPreview);
+            // Restore saved draft first
+            restoreBulkEmailDraft();
+            
+            // Set up auto-save on input
+            if (subjectInput) {
+                subjectInput.addEventListener('input', () => {
+                    updateEmailPreview();
+                    saveBulkEmailDraft();
+                });
+            }
+            if (messageInput) {
+                messageInput.addEventListener('input', () => {
+                    updateEmailPreview();
+                    saveBulkEmailDraft();
+                });
+            }
+            if (htmlCheckbox) {
+                htmlCheckbox.addEventListener('change', () => {
+                    updateEmailPreview();
+                    saveBulkEmailDraft();
+                });
+            }
+            if (appStoreInput) {
+                appStoreInput.addEventListener('input', () => {
+                    updateEmailPreview();
+                    saveBulkEmailDraft();
+                });
+            }
+            
+            // Auto-save on recipient type change
+            const recipientRadios = document.querySelectorAll('input[name="bulkEmailRecipients"]');
+            recipientRadios.forEach(radio => {
+                radio.addEventListener('change', saveBulkEmailDraft);
+            });
             
             // Initial preview update
             setTimeout(updateEmailPreview, 500);
@@ -3653,7 +3819,12 @@ Message: ${message}
             sendBtn.disabled = false;
             sendBtn.textContent = originalText;
 
-                alert(`Bulk email completed!\n\nSuccessfully sent: ${successCount}\nFailed: ${failCount}\n\nEach email was sent individually, so recipients cannot see each other's addresses.`);
+            if (successCount > 0) {
+                // Clear draft after successful send
+                clearBulkEmailDraft();
+            }
+            
+            alert(`Bulk email completed!\n\nSuccessfully sent: ${successCount}\nFailed: ${failCount}\n\nEach email was sent individually, so recipients cannot see each other's addresses.`);
         }
 
         function addEmailInput() {
@@ -3746,12 +3917,16 @@ Contracts can be confusing and full of hidden clauses. ORA's Contract Guard AI a
 **🎯 Opportunity Pipeline - Never Miss a Deal**
 Turn every inquiry into an opportunity. Track potential collaborations from first contact through to signed deals. See which brands are interested, follow up automatically, and never let a good opportunity slip through the cracks. Your entire sales pipeline, organized in one place.
 
-**📊 Complete Business Management**
+**📊 Revenue Tracking & Analytics**
+See the full picture of your creator business. Track revenue across all platforms, collaborations, and brand deals in one place. Monitor your income trends, identify your most profitable partnerships, and get insights into your business growth. Know exactly how much you're earning and from where.
+
+**📈 Complete Business Management**
 • Track all your brand deals, milestones, and deadlines in one organized dashboard
 • Generate professional quotes and media kits that impress brands
-• Monitor your revenue across all platforms and collaborations
 • Build your brand partnerships library for easy reference
 • Stay on top of payments, contracts, and deliverables
+• Calendar integration to never miss a deadline
+• And many more features to streamline your creator business
 
 [App Store]
 
