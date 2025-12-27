@@ -378,3 +378,41 @@ async function handleEmailHistory(req, res) {
   }
 }
 
+async function handleWelcomeEmailSettings(req, res) {
+  // welcome-email-settings.js exports { default: handler, getWelcomeEmailSettings, saveWelcomeEmailSettings }
+  let handler;
+  try {
+    const welcomeEmailSettings = require('../../lib/admin/welcome-email-settings.js');
+    handler = welcomeEmailSettings.default || welcomeEmailSettings.handler || welcomeEmailSettings;
+  } catch (requireError) {
+    console.error('Error requiring welcome-email-settings module:', requireError);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Failed to load welcome-email-settings module',
+        message: requireError.message || String(requireError)
+      });
+    }
+    return;
+  }
+  
+  if (typeof handler !== 'function') {
+    console.error('Welcome email settings handler is not a function');
+    if (!res.headersSent) {
+      return res.status(500).json({ error: 'Welcome email settings handler is not a function' });
+    }
+    return;
+  }
+  
+  try {
+    return await handler(req, res);
+  } catch (handlerError) {
+    console.error('Handler error in handleWelcomeEmailSettings:', handlerError);
+    if (!res.headersSent) {
+      return res.status(500).json({ 
+        error: 'Handler error',
+        message: handlerError.message || String(handlerError)
+      });
+    }
+  }
+}
+
