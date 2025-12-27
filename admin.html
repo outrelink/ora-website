@@ -1747,8 +1747,19 @@ Visit us at https://myora.co</textarea>
                 });
                 
                 // Remove 'type' from params to avoid duplicate parameter
-                const cleanParams = params.replace(/[&?]type=[^&]*/g, '').replace(/^&/, '');
-                const response = await fetch(`/api/admin?type=email-history&token=${adminToken}${cleanParams ? '&' + cleanParams : ''}`);
+                const cleanParams = new URLSearchParams();
+                if (status !== 'all') cleanParams.set('status', status);
+                if (search) cleanParams.set('search', search);
+                cleanParams.set('limit', '50');
+                cleanParams.set('offset', '0');
+                
+                const queryString = cleanParams.toString();
+                const response = await fetch(`/api/admin?type=email-history&token=${adminToken}${queryString ? '&' + queryString : ''}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
 
                 const emailHistoryEl = document.getElementById('emailHistoryList');
@@ -3356,7 +3367,7 @@ Message: ${message}
                                         <table cellpadding="0" cellspacing="0" width="100%" style="border: none;">
                                             <tr>
                                                 <td style="padding-right: 12px; vertical-align: middle; text-align: center; width: 24px;">
-                                                    <img src="https://developer.apple.com/assets/elements/icons/download-on-the-app-store/download-on-the-app-store.svg" alt="Apple Logo" width="18" height="18" style="display: block; width: 18px; height: 18px; border: none; outline: none;" onerror="this.style.display='none';">
+                                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAxOCAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjA1IDIwLjI4Yy0uOTguOTUtMi4wNS44OC0zLjA4LjQtMS4wOS0uNS0yLjA4LS40OC0zLjI0IDAtMS40NC42Mi0yLjIuNDQtMy4wNi0uNEMyLjc5IDE1LjI1IDMuNTEgNy41OSA5LjA1IDcuMzFjMS4zNS4wNyAyLjI5Ljc0IDMuMDguOCAxLjE4LS4yNCAyLjMxLS45MyAzLjU3LS44NCAxLjUxLjEyIDIuNjUuNzIgMy40IDEuOC0zLjEyIDEuODctMi4zOCA1Ljk4LjQ4IDcuMTMtLjU3IDEuNS0xLjMxIDIuOTktMi41NCA0LjA5bC4wMS0uMDF6TTEyLjAzIDcuMjVjLS4xNS0yLjIzIDEuNjYtNC4wNyAzLjc0LTQuMjUuMjkgMi41OC0yLjM0IDQuNS0zLjc0IDQuMjV6IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=" alt="Apple" width="18" height="22" style="display: block; width: 18px; height: 22px; border: none; outline: none; vertical-align: middle;" />
                                                 </td>
                                                 <td style="vertical-align: middle;">
                                                     <span style="color: #ffffff; font-size: 15px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.3px; line-height: 1.4; text-decoration: none;">
