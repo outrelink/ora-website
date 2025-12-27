@@ -7,6 +7,15 @@
  * to stay within Vercel's Hobby plan limit of 12 functions
  */
 
+// Catch any unhandled errors at the process level
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception in admin API:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection in admin API:', reason);
+});
+
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = process.env.SUPABASE_URL;
