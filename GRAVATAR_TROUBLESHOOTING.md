@@ -1,85 +1,85 @@
-# Gravatar Troubleshooting - Purple "O" Issue
+# Gravatar Profile Picture Troubleshooting
 
-## Why You're Seeing Purple "O" Instead of Orange Logo
+## Current Email Configuration
+- **Sending Email**: `hello@myora.co`
+- **Gravatar Email**: Must match exactly: `hello@myora.co`
 
-The purple "O" is Gravatar's default placeholder. This means:
+## Steps to Fix Gravatar Profile Picture
 
-1. **Image not uploaded yet** - Most common reason
-2. **Image not set as default** - You uploaded but didn't set it as default
-3. **Email mismatch** - The email in Gravatar doesn't match your sending email
-4. **Propagation delay** - Can take a few minutes to hours to update
-
-## Quick Fix Steps
-
-### Step 1: Verify Image is Uploaded
+### 1. Verify Gravatar Account
 1. Go to https://gravatar.com
-2. Log in
-3. Check if you see your ORA logo in "My Gravatars"
-4. If not, upload `adaptive-icon.png`
+2. Sign in with the account that has `hello@myora.co` registered
+3. Check that `hello@myora.co` is listed under "My Gravatars"
+4. Make sure it's set as the **primary email** or has a gravatar assigned
 
-### Step 2: Set as Default
-1. In Gravatar, find your uploaded image
-2. Click on it
-3. Make sure it's rated (G, PG, R, or X)
-4. **IMPORTANT:** Click "Set as default" or drag it to the top
-5. Save changes
+### 2. Upload Avatar Image
+1. Click on `hello@myora.co` in your Gravatar account
+2. Click "Add a new image"
+3. Upload your ORA logo (`adaptive-icon.png`)
+4. Crop and position it as needed
+5. **Rate it G** (General) - this is important!
+6. Click "Set as primary" for this email
 
-### Step 3: Verify Email Matches
-1. Check what email you used in Gravatar
-2. Check your Vercel environment variables:
-   - `ZOHO_HELLO_EMAIL` (for bulk emails)
-   - `ZOHO_FROM_EMAIL` (for regular emails)
-3. **They must match exactly!**
+### 3. Verify Image is Active
+1. Go to https://en.gravatar.com/hello@myora.co
+2. You should see your ORA logo displayed
+3. If you see a default "G" or "O" icon, the image isn't set correctly
 
-### Step 4: Wait for Propagation
-- Gravatar updates can take:
-  - **5-30 minutes** for most email clients
-  - **Up to 24 hours** for some clients
-  - Clear your email cache if needed
+### 4. Check Email Address Match
+- Gravatar uses **exact match** (case-sensitive)
+- `hello@myora.co` ✅
+- `Hello@myora.co` ❌
+- `hello@myora.com` ❌ (different domain)
 
-### Step 5: Test
-1. Send test email to yourself
-2. Check in Gmail/Outlook
-3. If still showing "O", wait a bit longer
+### 5. Propagation Time
+- Gravatar changes can take **up to 24 hours** to propagate
+- Gmail caches avatars, so it may take longer
+- Try sending a test email to yourself after 24 hours
 
-## Common Issues
+### 6. Gmail-Specific Issues
+- Gmail caches avatars aggressively
+- Try sending an email to a different Gmail account
+- Or wait 24-48 hours for cache to clear
 
-### Issue: "I uploaded but it's still showing O"
-**Solution:** Make sure you:
-- Set it as **default** avatar
-- Rated the image (G, PG, R, or X)
-- Used the **exact same email** as your sending email
+### 7. Test Your Gravatar
+Visit this URL to see your Gravatar:
+```
+https://www.gravatar.com/avatar/[MD5_HASH]?s=200&d=404
+```
 
-### Issue: "Email doesn't match"
-**Solution:** 
-- Create new Gravatar account with correct email
-- Or add the email to existing Gravatar account
-- Make sure it matches `ZOHO_HELLO_EMAIL` or `ZOHO_FROM_EMAIL`
+To get your MD5 hash:
+1. Go to https://www.md5hashgenerator.com/
+2. Enter: `hello@myora.co` (lowercase, no spaces)
+3. Copy the hash
+4. Replace `[MD5_HASH]` in the URL above
 
-### Issue: "Still purple after 24 hours"
-**Solution:**
-- Double-check email matches exactly
-- Try clearing browser cache
-- Test in different email client
-- Verify image is set as default in Gravatar
+Or use this direct link:
+```
+https://en.gravatar.com/hello@myora.co
+```
+
+## Alternative: Zoho Mail Profile Picture
+
+If Gravatar still doesn't work, you can also set a profile picture in Zoho Mail:
+
+1. Log into Zoho Mail (https://mail.zoho.com)
+2. Go to Settings → Profile
+3. Upload your profile picture
+4. This may show in some email clients
 
 ## Quick Checklist
+- [ ] Gravatar account exists with `hello@myora.co`
+- [ ] Image uploaded and rated G
+- [ ] Image set as primary for this email
+- [ ] Verified at https://en.gravatar.com/hello@myora.co
+- [ ] Waited 24 hours for propagation
+- [ ] Tested with a fresh Gmail account
 
-- [ ] Uploaded `adaptive-icon.png` to Gravatar
-- [ ] Set image as **default** avatar
-- [ ] Rated the image (G, PG, R, or X)
-- [ ] Email in Gravatar matches `ZOHO_HELLO_EMAIL` exactly
-- [ ] Waited at least 30 minutes
-- [ ] Sent test email
-- [ ] Checked in Gmail/Outlook
+## Still Not Working?
 
-## Alternative: Use Orange Placeholder
-
-If Gravatar still doesn't work, you can:
-1. Go to Gravatar settings
-2. Choose a default icon style
-3. Some styles are orange/colored
-4. Better than purple "O"!
-
-But the best solution is to upload your actual logo and set it as default! 🎨
-
+If after 24 hours it's still not showing:
+1. Double-check the email address matches exactly
+2. Try creating a new Gravatar account with `hello@myora.co`
+3. Make sure the image is rated G (General)
+4. Check if other email clients (Outlook, Apple Mail) show it
+5. Gmail may need more time to update its cache
