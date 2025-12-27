@@ -1516,9 +1516,15 @@ Visit us at https://myora.co</textarea>
                         <div id="creatorPoolRecipientsSection" style="display: none;">
                             <label style="display: block; color: #1e293b; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Select Creators from Pool</label>
                             <div style="background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-                                <p style="color: #64748b; font-size: 12px; margin: 0;">All creators from your Creator Pool will be included. Use the Creator Pool tab to manage your list.</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <p style="color: #64748b; font-size: 12px; margin: 0;">Select which creators to email. Only checked creators will receive the email.</p>
+                                    <button type="button" onclick="toggleAllCreatorPoolRecipients()" 
+                                        style="padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #3b82f6; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif;">
+                                        Select All
+                                    </button>
+                                </div>
                             </div>
-                            <div id="creatorPoolRecipientsList" style="max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #ffffff;">
+                            <div id="creatorPoolRecipientsList" style="max-height: 300px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #ffffff;">
                                 <div class="loading">Loading creator pool...</div>
                             </div>
                         </div>
@@ -3612,11 +3618,16 @@ Message: ${message}
                             if (creator.twitter) socialMedia.push(`🐦 ${creator.twitter}`);
                             
                             return `
-                                <div style="padding: 12px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px;">
-                                    <div style="font-weight: 600; color: #1e293b; font-size: 14px; margin-bottom: 4px;">${escapeHtml(creator.name)}</div>
-                                    <div style="color: #3b82f6; font-size: 13px; margin-bottom: 4px;">${escapeHtml(creator.email)}</div>
-                                    ${socialMedia.length > 0 ? `<div style="color: #64748b; font-size: 12px; margin-top: 4px;">${socialMedia.join(' • ')}</div>` : ''}
-                                </div>
+                                <label style="display: flex; align-items: start; gap: 12px; padding: 12px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 8px; cursor: pointer; transition: background 0.2s;" 
+                                       onmouseover="this.style.background='rgba(249, 115, 22, 0.1)'" 
+                                       onmouseout="this.style.background='rgba(249, 115, 22, 0.05)'">
+                                    <input type="checkbox" class="creator-pool-recipient-checkbox" value="${escapeHtml(creator.email)}" data-name="${escapeHtml(creator.name)}" data-id="${creator.id}" checked style="width: 18px; height: 18px; cursor: pointer; margin-top: 2px; flex-shrink: 0;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #1e293b; font-size: 14px; margin-bottom: 4px;">${escapeHtml(creator.name)}</div>
+                                        <div style="color: #3b82f6; font-size: 13px; margin-bottom: 4px;">${escapeHtml(creator.email)}</div>
+                                        ${socialMedia.length > 0 ? `<div style="color: #64748b; font-size: 12px; margin-top: 4px;">${socialMedia.join(' • ')}</div>` : ''}
+                                    </div>
+                                </label>
                             `;
                         }).join('')}
                     </div>
@@ -3625,6 +3636,20 @@ Message: ${message}
                 console.error('Error loading creator pool recipients:', error);
                 document.getElementById('creatorPoolRecipientsList').innerHTML = '<div style="text-align: center; padding: 20px; color: #ef4444; font-size: 14px;">Error loading creator pool. Please try again.</div>';
             }
+        }
+
+        // Toggle all creator pool recipients
+        function toggleAllCreatorPoolRecipients() {
+            const checkboxes = document.querySelectorAll('.creator-pool-recipient-checkbox');
+            if (checkboxes.length === 0) return;
+            
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+            });
+            
+            const button = event.target;
+            button.textContent = allChecked ? 'Select All' : 'Deselect All';
         }
 
         // Live Email Preview Function
@@ -3890,25 +3915,18 @@ Message: ${message}
                     displayName: cb.dataset.name || cb.value.split('@')[0]
                 }));
             } else if (recipientType === 'creator-pool') {
-                // Get creators from localStorage
-                try {
-                    const saved = localStorage.getItem('creatorPool');
-                    const poolData = saved ? JSON.parse(saved) : [];
-                    
-                    if (poolData.length === 0) {
-                        alert('Your Creator Pool is empty. Please add creators to the pool first.');
-                        return;
-                    }
-                    
-                    recipients = poolData.map(creator => ({
-                        email: creator.email,
-                        displayName: creator.name || creator.email.split('@')[0]
-                    }));
-                } catch (error) {
-                    console.error('Error loading creator pool:', error);
-                    alert('Error loading creator pool. Please try again.');
+                // Get checked creators from the creator pool
+                const checked = document.querySelectorAll('.creator-pool-recipient-checkbox:checked');
+                
+                if (checked.length === 0) {
+                    alert('Please select at least one creator from the pool to send emails to.');
                     return;
                 }
+                
+                recipients = Array.from(checked).map(cb => ({
+                    email: cb.value,
+                    displayName: cb.dataset.name || cb.value.split('@')[0]
+                }));
             } else if (recipientType === 'manual') {
                 const emailInputs = document.querySelectorAll('.bulk-email-manual-input');
                 const emailList = Array.from(emailInputs)
